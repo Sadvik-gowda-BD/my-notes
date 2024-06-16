@@ -1,0 +1,29 @@
+Interview SQL
+
+
+Q)What is database
+A database is an organized collection of structured information, or data, typically stored electronically in a computer system.
+
+Q) Difference between Relational and Non-Relational Databases
+	Relational Database:- Store data in table format, and each row called as record.
+	Ex:- MS SQL server, MySql, Oracal Database etc
+
+	Non-Relational Databases:- 
+	A non-relational database stores data in a non-tabular form, NoSQL database technology stores information in JSON documents instead of columns and rows used by relational databases.
+	Ex:- MangoDb, Cassesndra, Redis Db etc.
+
+
+Q)
+
+Sequence generator
+Joins
+Views
+stored procedure
+
+
+To revisit
+
+GO
+
+write view and store procedure query , it'll be easy to remember
+find nth highest salary

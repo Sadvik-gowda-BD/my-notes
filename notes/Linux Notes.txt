@@ -1,0 +1,66 @@
+
+LINUX Notes.
+
+1) UNIX is the base OS created in 1960.
+2) LINUX is the extension of UNIX OS.
+
+3)OS components
+All OS contains 2 components.
+		1)Shell - It is the ouer most layer and takes the command from user and validate it. After validation it convert the command into kernal understandable form
+		2)Kernel - Communicate with the hardware component. It execute the command and provide result
+					Memory and processor allocation will be takes care by Kernel
+					
+					
+4)Type of users
+		1)Normal user ($ will be display in terminal)
+		2)Super user/ root user (# will be display in terminal)
+		
+
+
+6)File Management
+	1)/ ---> root directory
+	2)/home/testadmin  --> user home dir for user testadmin
+	3)/home/sadu       --> user home dir for user sadu
+
+7)In LINUX everything is file.
+	1)/dev dir contains the device file 
+	2)for ex /dev/pts/0 is for terminal 1, /dev/pts/1 is for terminal 2
+
+
+
+
+
+cmd
+1)rename file
+	>mv [options] source_file destination_file
+	>mv index.html web_page.html
+	
+2)exit
+	>exit
+	Logout from current user
+	
+3)to display the type of file
+	>file file-name
+	
+4) > output redirection
+	>echo "Hello world" > file1.txt ( > will override the data in file)
+	>echo "Hello world" > /dev/pts/1 (redirect data from one terminal to another terminal)
+	>echo "adding some tesxts" >> file1.txt		( >> will append the data into file)
+	
+4)Types of files in LINUX  (ls -l provide type of the file)
+	1)-	->	normal/ordinary file
+	2)d	-> directory file
+	3)l	-> linked file
+	4)c	-> character special file
+	5)b	->	block special file
+	6)s	->	socket file
+	
+
+
+	
+	
+	
+	
+	
+	
+	

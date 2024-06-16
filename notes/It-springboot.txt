@@ -1,0 +1,274 @@
+Interview Springboot & Micrpo services
+
+
+Microservices/ springboot,
+
+Q&A
+
+Q)What is spring IOC? - Inversion of Control Container 
+Spring IoC container is the program that injects dependencies into an object and make it ready for our use.
+
+Ex:- BeanFactory and ApplicationContext
+
+@)What is Dependency Injection.
+Spring injects bean to its depnedent class. (For example ControllerClass is depend on ServiceClass, here spring create a bean of service class and it injects to variable)
+
+Q)Stereo type annotations
+component, controller, service, repository
+
+Q)Use of response body
+The @ResponseBody annotation tells view name is not sending to the dispatcher servlet and sending only the response object, the returned object is automatically serialized into JSON and passed back into the HttpResponse object.
+
+Q)Difference between Controller and RestController
+
+	@Controller - It returns a View object(MAV) that is responsible for rendering a web page that can be viewed by the user. 
+	@RestController - It returns a ResponseBody object that contains data in a format such as JSON or XML that can be consumed by other applications.
+					@RestController = @Controller + @ResponseBody
+
+Q)Difference between ControllerAdvice and RestControllerAdvice
+	@ControllerAdvice is used for handling exceptions in web applications and returns a view as a response
+	@RestControllerAdvice is used for handling exceptions in RESTful web services and returns a JSON or XML response.
+
+		
+Q)Ways of communication in microservices
+	1)HTTP service - REST API calls  - Mostly sync call , this can be async also
+	2)gRPC - open-source Remote Procedure Call (RPC) 
+	3)Message Brokers / Event driven MSA -Kafka/RabbitMQ - Mostly Async calls
+	
+Q)What are steriotype annotation?
+It is used to mark a Java class as a bean.
+ @Component, @Controller , @Service and @Repository
+
+	@Component
+		It is a class-level annotation. It is used to denote a class as a Component.
+		We can use @Component across the application to mark the beans as Spring’s managed components.
+		
+	@Controller
+		It is a stereotype for the presentation layer (spring-MVC). It is also specialization of @Component Annotation.
+		It’s used to mark a class as a web request handler.
+		We cannot switch this annotation with any other like @Service or @Repository. 
+		
+		
+	@Service
+	It is a stereotype for the service layer. It is also specialization of @Component Annotation.
+	It is used to mark the class as a service provider.
+	Switch can be possible. But it is not recommended. 
+	
+	@Repository
+	It is also a stereotype for the DAO layer. It is also specialization of @Component Annotation.
+	It is used to mark the interface as DAO (Data Access Object) provider.
+	Switch can be possible. But it is not recommended. 
+	
+Q)Can we use @Component/@Service in place of @Controller ?
+No we cant't TODO check
+
+Q)How to establish relationship between two Entities
+	
+
+
+
+1)What is the use of the @pathVariable over @RequestParam?
+
+In both values can be declare as optional. but in path variable it makes confuse when there is multiple vlues link /employee/{id1}/{id2}/{id3} , we can't give id1 as optional by sepcifing id2 and id3
+
+	1) @pathVariable
+	localhost:8443/employee/get/{id}
+	It is not URL encoded	-> localhost:8443/employee/get/ab+c result of id is a+b
+	Default value cannot be mention
+----
+ID: ab+c
+	
+	2)@RequestParam
+	localhost:8443/emplyee/get/name=virat?company=HCL?location=Bengaluru    
+	It is URL encoded (encoded url :- localhost%3A8443%2Femplyee%2Fget%2Fname%3Dvirat%3Fcompany%3DHCL%3Flocation%3DBengaluru)
+	
+	localhost:8443/employee/get/id=ab+c result of id is a b (here + is removed because of URL encode)
+	Default value can be sepecified  @RequestParam(defaultValue = "0", name = "age", required = false) String age)
+
+
+Q)Why microservice is better than monolithic
+
+	Monolothic
+		All services will be available in single instance
+		New technology barriers :- Can't able to use different technologies because all services are in single project
+		if we need to scale up we need to do for whole big application 
+		If application goes down then it effect all services
+		Maintainance cost is low
+
+	Microservices
+		Each services has it's own MSA and instance
+		Different technology can be used for different services.
+		We can scale-up most demanded service
+		If one service goes down, it will not effect other services. (If register service goes down, still payment service can be work independently)
+		Maintainance cost is high
+		
+
+
+Difference between @PropertySource and @ConfigurationProperties
+@PropertySource is to reference a properties file and load it into the Spring environment (where it may be used by @ConfigurationProperties or @Value). @Value is to inject a particular property value by its key into a variable (member field or constructor argument).
+
+ex:- 
+	@PropertySource("classpath:foo.properties")
+	@ConfigurationProperties(prefix = "myserver.allvalues")
+	
+
+
+
+======= Explaination
+
+1)Callback method
+A callback operation in Java is one method that is passed to another method and executed after some action is completed.
+Ex:- 
+a) In kafka
+ CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(topic1, "Hello how r u");
+		//Callback method
+        future.whenComplete((result, ex) -> {
+            if (ex != null) {
+                System.out.println("Exception occurred");
+                throw new RuntimeException("Exceptio in publisher", ex);
+       0     }
+            System.out.println("Message sent successfully. Offset " + result.getRecordMetadata().offset());
+        });
+		
+b)initialzation and destruction in bean lifecycle
+@PostConstruct and @PreDestroy
+		
+		
+		
+2)Async call in sprinboot
+ 
+
+Q)logpattern
+
+Q)Microservices patterns
+
+
+3)In memory Cache in springboot database
+SimpleCacheManager --> Spring's default cache manager that's used if you don't specify a cache manager. It's simple because its underlying implementation uses a Java ConcurrentHashMap and it doesn't give you a whole lot of customization options.
+
+CaffeineCacheManager --> The Caffeine Cache manager is slightly different in that there a more configuration-driven customization options such as having the ability to specify the cache timeout expiry limit (in order to 'bust' the cache after a certain time period) and the cache maximum size limit in order to limit the capacity of the cache.
+
+6)Redies - distribution cache
+Redies is a in-memory data structure store used as a database cache.
+Run on its own server
+
+
+4)How to increase MSA performance
+Implemnent circuit breaker to save the resource
+
+
+5)Circuitbreaker
+It is design pattern to handle failure services. 
+Here we save resource(JWT call etc) by not invoking the failed microservice, insted we return default message.
+we also can implement retry mechanism.
+
+6)Service discovery/ service registry/ Eureka server
+In Microservices, Service Discovery helps us by providing a database of available service instances so that services can be discovered, registered, and de-registered based on usage.
+This registry keeps track of all entries of individual services (client instances) IP address & port.
+It is the client side service discovery, because assume we are calling PAYMENT-SERVICE from CUSTOMER-CUSTOMER service, these 2 are clients of BANK-SERVICE-REGISTRY (Eureka server/service registry).
+when we make a call from CUSTOMER-SERVICE to PAYMENT-SERVICE, at first CUSTOMER-SERVICE call service registry (BANK-SERVICE-REGISTRY) and get the ip address of PAYMENT-SERVICE and then it will invoke PAYMENT-SERVICE.
+
+7)API gateway
+It receives incoming requests, performs authentication & routing (if enabled) and forwards requests to actual microservice.
+It should register in service registry so it can identify the other services 
+
+
+8)Handle Error response from other microservices
+
+
+===========Spring data JPA
+What is ORM?
+Object Relational Mapping (ORM) is a functionality which is used to develop and maintain a relationship between an object and relational database by mapping an object state to database column. It is capable to handle various database operations easily such as inserting, updating, deleting etc.
+Ex:- Hibernate, TopLink, iBATIS etc
+
+Q)JPA - Java Persistance API
+It is specification provided by Java and implemented by ORM providers.
+At any time we can change our project from Hibernate to other orm without effecting our springboot code.
+
+
+Q)spring.jpa.hibernate.ddl-auto
+values are CREATE UPDATE CREATE-DROP NONE, Recommended to use NONE in production,
+because table structure modify happens by using SQL query by DBA spring.jpa.hibernate.ddl-auto=none
+
+Q)
+ @Modifying and @Transactional is mandatory for update and delete queries in JPA repository
+ 
+ 
+ -cascade
+ fetch types
+ 
+ P) If one class has Relationship like oneToOne/OneToMay/ManyToOne then in other class will be used as mappedBy in Bidirectional mapping.
+ For ManyToMany relationship we need to provide table name and inverse TODO
+    
+
+======================================
+
+
+Microservice Design patterns
+
+1)Database per service
+2)Shared Database per service
+3)Saga pattern
+4)Strangler pattern
+5)Service Discovery Pattern/ service registry pattern
+6)API gateway pattern
+7)Change data capture (CDC) pattern
+8)Circuit breaker pattern
+9)Sidecar
+
+Saga pattern
+	Implement each business transaction that spans multiple services as a saga. A saga is a sequence of local transactions. Each local transaction updates the database and publishes a message or event to trigger the next local transaction in the saga. If a local transaction fails because it violates a business rule then the saga executes a series of compensating transactions that undo the changes that were made by the preceding local transactions.
+	Uses Kafka, etc
+
+Simple explation
+In microservices it's difficult to handl the transaction if each microservices uses different database, in that time below methods helps to resolve this issue.
+
+It can be achieve by 2 ways:- 1)Orchestration and 2)Choreography
+
+example of Choreography by using KAFKA,
+Assume there is an oder service and payment service, when we place an order order-service publish order-event, then payment-service consume order-event message and process like debit amount if there is a sufficient balance, then publish payment-event with success or failure. Then order-service consume payment-event and update the database whith order placed successfully or not.
+
+Service Discovery Pattern/ service registry pattern:-
+	The service discovery pattern, also known as the service registry pattern, is a microservices pattern that provides discovery of the service locations in an environment where all microservices live. A service registry is simply a database of services that the other service accesses to find the address data of the other services
+
+strangler pattern:
+	Problem
+		How do you migrate a legacy monolithic application to a microservice architecture?
+
+	Solution
+		The strangler pattern is a microservices pattern that helps you migrate a monolith application to a microservice application. Implementing the pattern requires an incremental process for developing new microservices while keeping the monolith running.
+		The strangler application consists of two types of services. First, there are services that implement functionality that previously resided in the monolith. Second, there are services that implement new features. The latter are particularly useful since they demonstrate to the business the value of using microservices.
+
+API gateway pattern:-
+	When working with microservices, you shouldn’t directly expose the individual API endpoints of each microservice.
+	This pattern provides a single entry point for all clients of a microservice-based application.
+	We can implement security mechanism
+
+Circuit breaker pattern
+	Used to handle the fault toluratance
+
+Change data capture (CDC) pattern
+
+Sidecar
+Same pod contains 2 container - one for main application and other for sidercar application.
+Main application can have business logic and sidecar can have logging, monitoring, configs, alaraming etc
+
+Q)Swagger 
+Swagger in Spring Boot is an open-source project that helps generate documents of REST APIs for RESTful web services via a web browser. 
+Whenever update happens to api, swagger will take care of re-document, dev no need to worry.
+It is used as:
+		Develop API, Interact with API, Document API's
+
+
+
+TODO:
+Swagger
+filters
+Api gateway and Eureka server
+profilers
+
+
+
+
+
+

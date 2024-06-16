@@ -1,0 +1,439 @@
+Interview Java
+
+
+Q)Run java file from terminal
+
+	Before Java-11 version
+		>javac filename.java
+		>java filename
+		
+	Java-11 and higher version
+		>java filename.java
+
+Q)Difference between JDK, JRE and JVM
+
+ JDK and JRE are platform-dependent, but we can compile and run in different system.
+
+	JDK - Java Development Kit
+		It is a platform dependent
+		It contains JVM & JRE, javac compiler, Java docs and other libraries which help us to create an application.
+		Libraries:- javac compiler, java doc, java debugger
+	
+	JRE - Java Runtime Environament
+		It is used to run the java application
+		It contains JIT compiler which is used to convert bytecode into binary code (machine code)
+		Libraries:- java lang, util, collections, math, regEx, classloader
+		
+	
+	JVM - Java Virtual Environament
+	It is a platform dependent
+	JVM is physically not exist and can't be installed alone. JVM is a part of JRE, we need to install JRE
+	
+
+	
+Q)Can we run jar or bytecode with out installing jre
+Yes, we can, but we need JRE extracted files from jre zip, then navigate to jre\bin\java.exe -jar executable-file.jar
+
+Q)JDK 11
+jre is no longer offered in JDK 11
+
+Q)OpenJdk vs Oracale/RedHat JDK
+Open jdk - It an open source project that is maintained by Oracale, RedHat and community
+
+Oracale/RedHat JDK - It is licensed one 
+
+Q)If Open JDK is free then why do we need licensed jdk like Oracale and RedHat 
+Becaue vendor provide some support and bug fixes etc.
+
+Q)Memories in java
+	Heap memory:	
+		-used to store the objects/instance data
+		-The instance variable will be stored in a heap as part of object data
+	stack memory:
+		-stores the method call sequence and reference value of objects
+		
+Q)Generations
+	It is a segment of Heap memory used to group objects based on their age and lifecycle (for sake of garbage collection).
+	
+	1)Young Generation:
+		This is where all new objects are allocated and aged. A minor Garbage collection occurs when this fills up.
+		Hold short-lived objects.
+		Takes less time for GC.
+	
+	2)Old or Tenured Generation:
+		this is where long-surviving objects are stored. When objects are stored in the Young Generation, a threshold for the object's age is set, and when that threshold is reached, the object is moved to the old generation.
+		Hold long-lived objects.
+		Takes more time for GC.
+	
+	3)Permanent Generation:
+		this consists of JVM metadata for the runtime classes and application methods.
+	
+
+P)In Java, all the wrapper classes (like Integer, Boolean, Byte, Short, Float, Double, Long) and String class is immutable.
+	we can also create a custom immutable class- it should contain only constructor/builder and getters, no setters.
+
+1)Object class
+	The Object class is the parent class of all the classes in java by default. In other words, it is the topmost class of java.
+	
+	Methods:-
+		getClass()
+		equals() - compares the given object to this object.
+		hashCode()
+		toString() - returns the string representation of this object
+		finalize() - It is invoked by the garbage collector before object is being garbage collected.
+		
+Q)Use of finalize() method
+It is invoked by the garbage collector before destroy the object. It is used to release the resources and clean up.
+
+Q)How memory leaks can be happen
+	Whenever the unused connection or resources are not closed/terminated.
+	When the garbage collection takes more time.
+
+Q)How to increase the java heap memory size 
+java -Xms512m -Xmx1024m TestData.java
+
+-Xms: initial heap size
+-Xmx: Maximum heap size
+
+Q)What is generics
+generics enable types (classes and interfaces) to be parameters when defining classes, interfaces and methods
+It provide type safty, it hold only one type of object.
+Before generics, we can store any type of objects in the collection, i.e., non-generic. Now generics force the java programmer to store a specific type of objects.
+
+Q)Does importing of com.myMainPackage.* also import com.myMainPackage.mySubPackage.*?
+   NO, Importing the parent package only results in the import of the classes within it and not the contents of its child/sub-packages. Importing of the sub-packages of a package needs to be done explicitly.
+
+
+
+Q)What is functional interface
+An Interface that contains exactly one abstract method. SAM (Single abstract method).
+Ex:-
+	Runnable -> run()
+	Comparable  -> compareTo()
+
+
+Q)Integer cache
+Java keeps an integer cache of integer instances in range of -128 to 127, like integer pool.
+Cache is applicable for Integer=18 and Integer.valueOf(18). Not applicable of Integer i = new Integer(10), because "new" always creates a new object in Heap memory.
+
+java.lang.Long has a cache for long between -128 to +127.
+Integer i1 == Integer i2 ==> true if range is b/w -128 and 127, false if value is beyond that
+Ex:- Integer i1=60, i2=60 => i1==i2 //true (it check the reference and reference is same)
+	Integer i1=500, i2=500 => i1==i2 //false (it check the reference ans reference is difference)
+
+
+Q)Difference between String, StringBuffer and StringBuilder
+
+String:-
+The String class is immutable. (cannot change the object).
+String is slow and consumes more memory when we concatenate too many strings because every time it creates new instance
+String class is slower while performing concatenation operation
+String class overrides the equals() method of Object class. So you can compare the contents of two strings by equals() method
+String class uses String constant pool
+
+StringBuffer:-
+The StringBuffer class is mutable.
+StringBuffer is fast and consumes less memory when we concatenate n strings.
+StringBuffer class is faster while performing concatenation operation than String 
+StringBuffer class doesn't override the equals() method of Object class
+StringBuffer always uses Heap memory
+StringBuffer is called a thread safe class.
+
+StringBuilder:-
+StringBuilder is not a thread safe class.
+StringBuilder is faster than StringBuffer, because stringbuffer is synchronized and additional check is required
+
+P)Cannot be able to invoke static method by objects like obj.metName().
+P)override in static method does not make any sense, because static method belongs to class not to objects
+
+Q)How is the ‘new’ operator different from the ‘newInstance()’ operator in java?
+If we don’t know the class name for which we need to create the object, Or we get the class name from the command line argument, or the database, or the file. Then in that case we use the ‘newInstance()’ operator.
+
+Student st = new Student() // Here we should know the class name
+
+Class c = Class.forName("Student");  
+Student st = (Student)c.newInstance();  
+
+
+
+Q)What are shallow copy and deep copy in java?
+
+Shallow copy:
+	It copy the reference of one object to another, modifying on one object effect on another object
+
+Deep copy:
+	It stores copies of the object's value and modifying on one object doesn't effect on another object.
+		
+Q)Cloneable interfate 
+	The default implementation of Java Object clone() method is using shallow copy.
+		Ex:- class A implements Cloneable
+
+
+2)Comparable and Comparator
+Both are functional interface which contain SAM method.
+	1)Comparable
+		This funtional interface contain SAM compareTo() method.
+		A comparable object is capable of comparing itself with another object.
+		Here we can compare by only one member of class. (It affects the original class. i.e., actual class is altered.)
+		Ex:- Collections.sort(listOfStudent);
+		
+		
+	2)Comparator
+		This funtional interface contain SAM compare() method. (It also contain equals() method but it not considered because this method exist in Object class)
+		It’s a separate class. We create multiple separate classes (that implement Comparator) to compare by different members.
+		Ex:- listOfStudent.sort(new AgeComparator())
+			 listOfStudent.sort(new NameComparator())
+		
+3)Singleton pattern with thread safe double check locking
+--> Make class as final, so not able for inheretence
+--> Make private constructor
+--> make instance variable as volatile, so always value will be fetch from main memory not from cache
+
+if (null == instance) {
+	synchronized (SingletonClass.class) {
+		if (null == instance) {
+			instance = new SingletonClass();
+		}
+	}
+}
+return instance
+
+		
+		
+Q)What is OOP's concept?
+Object-oriented programming aims to implement real-world entities like inheritance, hiding, polymorphism etc
+
+	Interface -It is a blueprint of a class
+	Class - It is a template/blueprint of an object
+	Object - It is an instance of class
+	Inheritance - Aquring properties from one class (parent class) to another (child class).
+		‘IS-A’ relationship is another name for inheritance. When we inherit the base class from the derived class, then it forms a relationship between the classes. 
+		For ex:- bike and car inherits properties from vehical parent class, then here relationship is bike IS-A vehical.
+		Java doesn't support multiple inheritance
+		
+	Polymorphism - task that performs a single action in different ways, one type manyforms.
+		compiletime-polymorphism - Method overloading
+		Runtime-polymorphism - method overriding (because object creates at runtime)
+	Abstraction -  a process of hiding the implementation details and showing only functionality to the use. Ex Interfaces and Abstract class - Can't able to create object to Abstract class
+	Encapsulation - Wrapping of data (variable and method) into a single unit. Ex:- Class with private variable , getters and setters.
+
+P)we can say that we cannot use this() and super() keywords in the same block, it will compilation error
+
+
+4)Multithreading
+
+	In Java cannot be able to restart the thread, new instance will be required 
+
+	Actually thread.start() creates a new thread and have its own execution scenario.
+	but thread.run() not creating any new thread, instead it execute the run method in the current running thread just like invokation of normal thread.
+	
+	MIN_PRIORITY: It has an integer value assigned with 1.
+	MAX_PRIORITY: It has an integer value assigned with 10.
+	NORM_PRIORITY: It has an integer value assigned with 5.
+
+The t1.join() method of thread class waits for a thread t1 to die (wait t1 to complete the work)
+
+Multithreading:- Do multiple operation at same time with in the single application. It is a lightweight process.
+
+In java we can achieve by 2 types by extending Thread class and implementing Runnable interface. (Here it supports multiple inheritence)
+
+EX:-
+	A basic example of multithreading is downloading two files from two different tabs in a single web browser
+	Spelling check in wordpad, The typing happens in Main thred and speelling check is happen on different thread (with low priority).
+	In gaming application car, bike runs in different threads
+	In youtube video is playing on one thread, comment, ads play in different threads.
+	Multiple request & response process in a sigle web server.
+	
+Q)Life cycle of java thred
+	New
+	Runnable
+	Running
+	Non-Runnable (Block/wait) - during synchronized block/methods
+	Terminated
+Multitasking/multi programming:- One user run multiple program in at same time called multitasking.
+	Ex:- running chrome, edge, youtube and MS word at same time
+
+Q)DIfference b/w Multithreading and Async
+
+
+MultiThread:-
+
+
+Async:-
+It doesn't wait for the response, 
+Async programming is about non-blocking execution between functions
+
+
+
+
+Q)Threadpool
+
+Q)Java class execution flow
+	static block 	//execution happens only once for static block, for others executiom/initialization happens for every object
+	initialization of static variable
+	main method()
+	instance block
+	initialization of class variable
+	constructor
+
+5)Design principals
+SOLID principal
+KISS - Keep It Simple, Stupid ===> don't write complex methods
+DRY - Don’t Repeat Yourself
+YAGNI - You Aren't Gonna Need It ---> don't write code based on assumption of future use
+
+
+
+1)What is transient keyword and volatile
+
+transient - it is used with variable. During serialization and deserialization the transient variable will skip. 
+For example if we use [private tansient String password = "pwd123"] after serialize & deserialize the object the value of password will be null.
+It helps us while sending the sensitive data over network
+ 
+Q)What is an Array?
+	An array is a container object that holds a fixed number of values of a single type. 
+ 
+2)Collection framework
+Collection is a framework that stores and manipulates a group of objects. 
+
+Q)Difference b/w collection and collections
+	Collection is called interface in java whereas Collections is called a utility class in java
+	
+	Collection - It is a interface implemented by List, set etc
+	Collections - It is a utility class in java and it contain only static methods. Ex:- Collections.emptyList(), Collections.emptySet(), Collections.sort() etc.
+ 
+2)List
+ 
+	1)Arraylist
+		The ArrayList class implements the List interface. It uses a dynamic array to store the duplicate element of different data types.
+		Insertion and deletion operation is slow becasuse of shifting.
+		Read data/accessing from index is fast beacause of contigous memeory allocation.
+ 
+	2)LinkedList
+	LinkedList implements the Collection interface. It uses a doubly linked list internally to store the elements. It can store the duplicate elements.
+	insertion is deletion is fast.
+	Data access is slow.
+	Consumes more memory than ArrayList.
+ 
+	3)Vector
+	Vector uses a dynamic array to store the data elements. It is similar to ArrayList. However, It is synchronized and works in a multithreading environment
+ 
+4)Set
+It represents the unordered set of elements which doesn't allow us to store the duplicate items.
+	1)Hash Set
+		It does't maintain any order. It is faster than all other sets. It internally uses HashMap to hold data.
+	2)Linked Hash Set
+		LinkedHashSet class represents the LinkedList implementation of Set Interface. Like HashSet, It also contains unique elements. It maintains the insertion order and permits null elements.
+	3)TreeSet
+		Java TreeSet class implements the Set interface that uses a tree for storage. The elements in TreeSet stored in ascending order.
+
+5)Map
+	1)HashMap
+		->HashMap in Java is basically an array of bucket where each bucket uses linked list to hold elements. A linked list is a list of nodes where each node contains a key-value pair(EntrySet).
+		->The default initial capacity of HashMap is 16 (i.e. the number of buckets). and load factor is 75%
+		->First the hascode of key will taken (for null hascode will be 0) then pass that hascode to hash() method it returns bucket location (int value). In that bucket key,value pair will bw stored in LinkedList.
+		->Time complexity to insert and retrieve a value is O(1)
+		HashMap in Java 8 
+		In Java 8, HashMap replaces the linked list with another useful data structure i.e. balanced trees (specifically red-black trees) tree on breaching a certain threshold, which is known as TREEIFY_THRESHOLD (size is 8, if bucket size/number of elements in a bucket is more than 8 link list become Red-Black tree). Once this threshold is reached, the linked list of Entries is converted to the Red-Black TreeNodes which reduces the time complexity from O(n) to O(log(n)).
+ 
+		TreeNodes are nothing but the structures supporting the balanced trees (specifically red-black trees) trees which have two nodes, smaller node goes to the left and the larger to the right. Whenever we want to search for any key the whole left or right subtree is discarded with a single check. This is how the time complexity is reduced to O(log(n). This change has lead to a significant improvement of HashMap.
+ 
+		Once the number of entries is decreased due to removal or resizing of HashMap (UNTREEIFY_THRESHOLD = 6), the structure is converted back to the older implementation which is LinkedList.
+
+
+Q)HashMap Vs ConcurrentHashMap Vs HashTable 
+	HashMap:-
+		HashMap is not synchronized there by making it better for non-threaded applications.
+		Allows only one null key but any number of null in the values.
+		It is fast.
+		Supports order of insertion by making use of its subclass LinkedHashMap.
+		Suitable for single thread appliactions.
+		
+	ConcurrentHashMap:-
+		ConcurrentHashMap is synchronized and thread safe.
+		This does not allow null in both keys or values.
+		It is slow.
+		Suitable for multi-thread appliactions.
+		
+	HashTable:-
+		HashTable is synchronized and hence it is suitable for threaded applications.
+		This does not allow null in both keys or values.
+		It is slow
+		Order of insertion is not guaranteed in HashTable.
+		Suitable for multi-thread appliactions.
+		It is legacy class. We can use ConcurrentHashMap instead of HashTable.
+		
+Q)Why does the java array index start with 0?
+It is because the 0 index array avoids the extra arithmetic operation to calculate the memory address.
+
+
+Q)Unmodifiable list 
+
+
+Q)ImmutableList
+ImmutableList<String> immutableList =  ImmutableList.of("Geeks", "For", "Geeks"); 
+java 9 = List.of(1,2,3);
+
+Q)Datastructure
+
+
+
+Q)read and write file
+FileReader and FileWriter
+
+Q)How to read Excel file in Java
+We can do this by using 3rd party library like Apache POI
+
+Q)What is Iterator
+ In Java, an iterator is an interface that is used to traverse through a collection of objects one by one.
+
+Q)Difference between Iterator and ListIterator
+
+Iterator
+	Can traverse elements present in Collection only in the forward direction.
+	Helps to traverse Map, List and Set.
+	Indexes cannot be obtained by using Iterator.
+	Certain methods of Iterator are hasNext(), next() and remove()
+	
+
+ListIterator
+	Can traverse elements present in Collection both in forward and backward directions.
+	Helps to traverse List only.
+	It has methods like nextIndex() and previousIndex() to obtain indexes of elements at any time while traversing List.
+	Certain methods of ListIterator are next(), previous(), hasNext(), hasPrevious(), add(E e), set(E e), nextIndex(), previousIndex().
+	
+
+
+Q)regex	
+
+
+Q)final keywords
+
+final variable - variable can only initialize only once. final varibale object state can be chanage, not able to change reference.
+final method - final methods can't be overriden by subclass. It is useful when implementation of method remains unchange.
+final class - final class can be inherit. Useful for security design to prevent inheretence.
+
+
+@)static
+
+Static class:
+	->Static classes in Java are a way to group classes together & it is one of the most popular keywords associated with many things.
+	->We can declare a class static by using the static keyword. A class can be declared static only if it is a nested class. It does not require any reference of the outer class. The property of the static class is that it does not allows us to access the non-static members of the outer class.
+	
+	->we can create a static class inside another class.
+
+
+
+Note:-
+finally() methos may not be invoke if we invoke garbage collector in middle of try or catch
+finally() and finalize() method may not invoke when we exit the thread like System.exit()
+System.exit() makes terminate the code
+
+Java send signal to Interface AutoCloseable close() method during the try-with-resource to close the opened resource
+
+Exception
+Exception handle in catch block should be in order like Runtime --> Exception etc, otherwise compiletime error will be thrown
+After try block catch or finally is must expected
+Finally block allways execute
+If try, catch and finally has return statement then always finally block value will be returned. (error or non-error doesn't matter)
+

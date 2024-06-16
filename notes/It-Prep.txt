@@ -1,0 +1,51 @@
+
+
+Common Questions.
+
+Q)Explain about last project
+
+Q)What are the components used in last project
+Java as programming language
+springboot as framework
+Maven as project management tool
+MS SQL as database
+Microsoft TFS for agile methodology for project management approach
+GIT as version control system
+splunk for logging
+
+Q)How data validation handled
+used spring-boot-starter-validation to validate the incoming request
+used custom validator for other complex functionalities
+used custom Exception and RestControllerAdvise as GlobalExceptionHandler 
+ 
+
+
+
+
+What is auto configuration?
+bean type- prototype and singleton and lookup
+
+What is OOP's concept?
+ 
+ 
+Springboot
+ 
+
+ 
+ 
+TODO:
+ 
+ 
+Core Java:
+
+ 
+Springboot:
+
+ 
+ 
+Sql
+
+
+
+
+

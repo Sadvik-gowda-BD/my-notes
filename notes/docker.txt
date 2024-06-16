@@ -1,0 +1,50 @@
+
+
+TODO:
+1)Different different profiles for test and prod environment
+2)Maintain roles in different reference table
+3)Enhance application to user can have multiple roles
+4)Enhance application to produce and consume JSON messages
+
+
+=======================
+
+Build image 
+	docker build -t image-name .
+	docker build -t image-name:tag-name directory
+	//if we don't give tag anme it conside as latest. "." -> current directory
+	>docker build -t user-service-0.0.1.jar .
+
+Run docker image
+
+	host_port:container_port image_name
+	>docker run -p 8081:8090 user-service
+
+	
+
+run docker-compose
+	
+	>docker-compose up
+	>docker-compose down
+
+
+
+
+
+
+
+===============================
+
+
+
+docker-compose exec kafka kafka-topics.sh --create --topic baeldung_linux
+  --partitions 1 --replication-factor 1 --bootstrap-server kafka:9092
+  
+  
+  
+docker-compose exec kafka kafka-topics.sh --list --bootstrap-server kafka:9092
+
+
+docker-compose exec kafka kafka-broker-api-versions.sh --bootstrap-server kafka:9092 
+
+

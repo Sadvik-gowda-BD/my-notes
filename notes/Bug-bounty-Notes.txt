@@ -1,0 +1,15 @@
+
+
+Sql injection
+1)Error based SQL injection
+	Add special char ' in text box and submit. If there is any possible of SQL injection then SQL error will be thrown
+		Then try 
+		1)If we know usernName and don't know pwd
+			usernName = myUserName
+			password = pwd' OR 1=1 -- 
+		2)If we don't know usernName and pwd both
+			usernName = test' OR 1=1
+			password = pwd' OR 1=1 --
+		
+2)Blind SQL Injection
+	It may not give error when we input special character ', but still it can vulnerabilities

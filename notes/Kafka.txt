@@ -1,0 +1,54 @@
+Kafka
+
+D:\kafka-software\kafka-3.5.0
+
+Be in path D:\kafka-software\kafka-3.5.0>
+
+Start Zookepeer
+>bin\windows\zookeeper-server-start.bat config\zookeeper.properties
+
+
+Start bootstrap server
+>bin\windows\kafka-server-start.bat config\server.properties
+
+create topic
+>bin\windows\kafka-topics.bat --bootstrap-server localhost:9092 --create --topic sadu-topic-1 --partitions 1 --replication-factor 1
+
+
+describe topic (details of topic)
+>bin\windows\kafka-topics.bat --bootstrap-server localhost:9092 --describe --topic sadu-topic-1
+
+list of topic
+>bin\windows\kafka-topics.bat --bootstrap-server localhost:9092 --list
+
+run producer console
+>bin\windows\kafka-console-producer.bat --bootstrap-server localhost:9092 --topic sadu-topic-1
+
+Run consumer console
+>bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic sadu-topic-1
+
+>bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic sadu-topic-1 --group group1
+
+list of brokers
+>bin\windows\kafka-broker-api-versions.bat --bootstrap-server localhost:9092 
+
+
+from beginning
+>bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic sadu-topic-1 --group group1 --from-beginnning
+//It will read from uncommitted offset
+
+list consumer groups
+>bin\windows\kafka-consumer-groups.bat --bootstrap-server localhost:9092 --list
+//we can describe the grup also
+
+
+
+--- Confluent
+
+properties D:\kafka-software\confluent-7.6.0\confluent-7.6.0\etc\kafka
+bat file D:\kafka-software\confluent-7.6.0\confluent-7.6.0\bin\windows
+
+
+Zookeper
+bin\windows\zookeeper-server-start.bat \etc\kafka\zookeeper.properties
+
