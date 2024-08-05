@@ -19,6 +19,10 @@ Run docker image
 
 	host_port:container_port image_name
 	>docker run -p 8081:8090 user-service
+	
+	
+stop container 
+>docker stop container_id
 
 	
 
@@ -27,8 +31,44 @@ run docker-compose
 	>docker-compose up
 	>docker-compose down
 
+############################################## Ubuntu Docker ###############################
 
 
+Run ubuntu on docker
+>docker run -it ubuntu
+
+root@>apt-get update
+if vi editor not found on container
+root@> apt-get install vim
+
+
+
+Ideally when we start and stop the container, every time it will create a new container, if we need to use same container again and again the create a container with specific name, then container will be create with specified name, then every time start container with the given name
+
+#Run docker container with specific name (test1_container)
+
+>docker run -it --name test1_container ubuntu
+
+>docker stop
+
+restart the container
+-a attaches to containers output, -i makes the terminal interactive
+>docker start -ai test1_container
+
+OR
+By using Volumes - Way to save the data outside of the container's filesystem, and files will be shared across the containers. 
+
+create a volume
+>docker volume create my_test_volume
+
+Run container with volume mounted
+>docker  run -it -v my_test_volume:/data ubuntu 
+
+inside container, create a file in the /data directory
+>touch /data/myfile.txt
+
+
+ 
 
 
 

@@ -28,6 +28,8 @@ Q)Difference between JDK, JRE and JVM
 	JVM - Java Virtual Environament
 	It is a platform dependent
 	JVM is physically not exist and can't be installed alone. JVM is a part of JRE, we need to install JRE
+	It enables the execution of Java bytecode. The JVM acts as an interpreter between the Java programming language and the underlying hardware.
+	It provides a runtime environment for Java applications to run on different platforms and operating systems.
 	
 
 	
@@ -44,6 +46,8 @@ Oracale/RedHat JDK - It is licensed one
 
 Q)If Open JDK is free then why do we need licensed jdk like Oracale and RedHat 
 Becaue vendor provide some support and bug fixes etc.
+Long-Term Support (LTS)
+Security
 
 Q)Memories in java
 	Heap memory:	
@@ -52,7 +56,7 @@ Q)Memories in java
 	stack memory:
 		-stores the method call sequence and reference value of objects
 		
-Q)Generations
+Q)Generations 
 	It is a segment of Heap memory used to group objects based on their age and lifecycle (for sake of garbage collection).
 	
 	1)Young Generation:
@@ -78,7 +82,7 @@ P)In Java, all the wrapper classes (like Integer, Boolean, Byte, Short, Float, D
 	Methods:-
 		getClass()
 		equals() - compares the given object to this object.
-		hashCode()
+		hashCode() - method is a part of the Object class and is used to return an integer value, which is a hash code representation of the object. This method plays a crucial role in the functioning of hash-based collections like HashMap, HashSet, and Hashtable.
 		toString() - returns the string representation of this object
 		finalize() - It is invoked by the garbage collector before object is being garbage collected.
 		
@@ -121,6 +125,8 @@ Integer i1 == Integer i2 ==> true if range is b/w -128 and 127, false if value i
 Ex:- Integer i1=60, i2=60 => i1==i2 //true (it check the reference and reference is same)
 	Integer i1=500, i2=500 => i1==i2 //false (it check the reference ans reference is difference)
 
+Q) Is there any difference in defining or creating a String by using String literal and by using the new() operator?
+Creating string using the new operator ensures that the String is created in the heap alone and not into the string pool. Whereas, creating string using literal ensures that the string is created in the string pool. String pool exists as part of the perm area in the heap. This ensures that the multiple Strings created using literal having same values are pointed to one object and prevents duplicate objects with the same value from being created.
 
 Q)Difference between String, StringBuffer and StringBuilder
 
@@ -159,10 +165,17 @@ Student st = (Student)c.newInstance();
 Q)What are shallow copy and deep copy in java?
 
 Shallow copy:
-	It copy the reference of one object to another, modifying on one object effect on another object
+	It copy the reference of one object to another, modifying on one object effect on another object.
+	Person cloned = (Person) super.clone();
 
 Deep copy:
 	It stores copies of the object's value and modifying on one object doesn't effect on another object.
+	@Override
+    protected Object clone() throws CloneNotSupportedException {
+        Person cloned = (Person) super.clone();
+        cloned.address = (Address) address.clone(); // Clone the address
+        return cloned;
+    }
 		
 Q)Cloneable interfate 
 	The default implementation of Java Object clone() method is using shallow copy.
@@ -181,7 +194,8 @@ Both are functional interface which contain SAM method.
 	2)Comparator
 		This funtional interface contain SAM compare() method. (It also contain equals() method but it not considered because this method exist in Object class)
 		It’s a separate class. We create multiple separate classes (that implement Comparator) to compare by different members.
-		Ex:- listOfStudent.sort(new AgeComparator())
+		Ex:- Collections.sort(myList, Comparator.reverseOrder());
+			 listOfStudent.sort(new AgeComparator())
 			 listOfStudent.sort(new NameComparator())
 		
 3)Singleton pattern with thread safe double check locking
@@ -264,9 +278,9 @@ It doesn't wait for the response,
 Async programming is about non-blocking execution between functions
 
 
-
-
-Q)Threadpool
+Q)Java Threadpool
+	Java Thread pool represents a group of worker threads that are waiting for the job and reused many times.
+	In the case of a thread pool, a group of fixed-size threads is created. A thread from the thread pool is pulled out and assigned a job by the service provider. After completion of the job, the thread is contained in the thread pool again.
 
 Q)Java class execution flow
 	static block 	//execution happens only once for static block, for others executiom/initialization happens for every object
@@ -311,7 +325,7 @@ Q)Difference b/w collection and collections
  
 	2)LinkedList
 	LinkedList implements the Collection interface. It uses a doubly linked list internally to store the elements. It can store the duplicate elements.
-	insertion is deletion is fast.
+	insertion and deletion is fast.
 	Data access is slow.
 	Consumes more memory than ArrayList.
  
@@ -331,7 +345,7 @@ It represents the unordered set of elements which doesn't allow us to store the 
 	1)HashMap
 		->HashMap in Java is basically an array of bucket where each bucket uses linked list to hold elements. A linked list is a list of nodes where each node contains a key-value pair(EntrySet).
 		->The default initial capacity of HashMap is 16 (i.e. the number of buckets). and load factor is 75%
-		->First the hascode of key will taken (for null hascode will be 0) then pass that hascode to hash() method it returns bucket location (int value). In that bucket key,value pair will bw stored in LinkedList.
+		->First the hascode of key will taken (for null hascode will be 0) then pass that hascode to hash() method it returns bucket location (int value). In that bucket key,value pair will be stored in LinkedList.
 		->Time complexity to insert and retrieve a value is O(1)
 		HashMap in Java 8 
 		In Java 8, HashMap replaces the linked list with another useful data structure i.e. balanced trees (specifically red-black trees) tree on breaching a certain threshold, which is known as TREEIFY_THRESHOLD (size is 8, if bucket size/number of elements in a bucket is more than 8 link list become Red-Black tree). Once this threshold is reached, the linked list of Entries is converted to the Red-Black TreeNodes which reduces the time complexity from O(n) to O(log(n)).
@@ -339,6 +353,10 @@ It represents the unordered set of elements which doesn't allow us to store the 
 		TreeNodes are nothing but the structures supporting the balanced trees (specifically red-black trees) trees which have two nodes, smaller node goes to the left and the larger to the right. Whenever we want to search for any key the whole left or right subtree is discarded with a single check. This is how the time complexity is reduced to O(log(n). This change has lead to a significant improvement of HashMap.
  
 		Once the number of entries is decreased due to removal or resizing of HashMap (UNTREEIFY_THRESHOLD = 6), the structure is converted back to the older implementation which is LinkedList.
+		
+Q))Types of Map available in java
+HashMap
+LinkedHashMap
 
 
 Q)HashMap Vs ConcurrentHashMap Vs HashTable 
@@ -437,3 +455,14 @@ After try block catch or finally is must expected
 Finally block allways execute
 If try, catch and finally has return statement then always finally block value will be returned. (error or non-error doesn't matter)
 
+
+Q) Reflections
+Reflection is commonly used by programs which require the ability to examine or modify the runtime behavior of applications running in the Java virtual machine. 
+
+
+Q) Default Methods In Java 8
+
+The default methods were introduced to provide backward compatibility so that existing interfaces can use the lambda expressions without implementing the methods in the implementation class. Default methods are also known as defender methods or virtual extension methods.
+
+
+-----------------------Crypto

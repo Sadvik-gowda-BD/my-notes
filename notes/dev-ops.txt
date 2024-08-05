@@ -1,0 +1,40 @@
+
+
+
+
+
+
+openssl can be used from git bash temainal as well
+
+########### Ansible
+
+Ansible
+Ansible is a software tool that provides simple but powerful automation for cross-platform computer support. It is primarily intended for IT professionals, who use it for application deployment, updates on workstations and servers, cloud provisioning, configuration management, intra-service orchestration, and nearly anything a systems administrator does on a weekly or daily basis. Ansible doesn't depend on agent software and has no additional security infrastructure, so it's easy to deploy.
+
+
+Install ansible on WSL
+
+>apt install ansible
+or
+>sudo apt install ansible
+
+
+#### Ansible vault
+
+>create an yml file - secrets.yml
+>ansible-vault encrypt secrets.yml
+you will be prompted to enter and confirm a password.
+Then the file will bw encrypted
+
+#Decrypt the file
+>ansible-vault decrypt secrets.yml
+It will ask for password and provide that
+
+OR
+>ansible-vault decrypt --vault-password-file vault_password.txt secrets.yml
+
+
+
+
+resources:-
+youtube: https://youtu.be/-W_VuYt_qQw?si=qViJ4p_KI4vq6px1 

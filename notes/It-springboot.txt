@@ -35,7 +35,7 @@ Q)Ways of communication in microservices
 	2)gRPC - open-source Remote Procedure Call (RPC) 
 	3)Message Brokers / Event driven MSA -Kafka/RabbitMQ - Mostly Async calls
 	
-Q)What are steriotype annotation?
+Q)What are stereotype annotation?
 It is used to mark a Java class as a bean.
  @Component, @Controller , @Service and @Repository
 
@@ -111,6 +111,13 @@ ex:-
 	@PropertySource("classpath:foo.properties")
 	@ConfigurationProperties(prefix = "myserver.allvalues")
 	
+	
+Q)How Singleton bean works when multiple request comes at same time
+	Here we won't get any concurrency issue because 
+		->Two different thread will have their own exection context which won't overlap with each other
+		->Singleton bean is a stateless
+		
+		->Since the Singleton bean is shared, it needs to be thread-safe if it handles state that could be modified by concurrent requests. If the bean is stateless (it doesn't store any information that changes per request), it doesn't require special handling for concurrency.
 
 
 
@@ -155,11 +162,13 @@ Run on its own server
 
 4)How to increase MSA performance
 Implemnent circuit breaker to save the resource
+Implement in memory cache
+add index to DB
 
 
 5)Circuitbreaker
 It is design pattern to handle failure services. 
-Here we save resource(JWT call etc) by not invoking the failed microservice, insted we return default message.
+Here we save resource(JWT call etc) by not invoking the failed microservice, instead we return default message.
 we also can implement retry mechanism.
 
 6)Service discovery/ service registry/ Eureka server
@@ -257,7 +266,25 @@ Q)Swagger
 Swagger in Spring Boot is an open-source project that helps generate documents of REST APIs for RESTful web services via a web browser. 
 Whenever update happens to api, swagger will take care of re-document, dev no need to worry.
 It is used as:
-		Develop API, Interact with API, Document API's
+		Develop API, Interact with API, Document API's	
+		
+		
+Q)Difference between get() and load() in hibernate?
+
+get()	-	Customer customer = (Customer) session.get(Customer.class, 1L);
+	- Eager intialization
+	- Use when we need complete object
+	- get() method returns null if there is no object present in the database.
+	- get() method only hits the database if the object is not present in the session cache. If the same object is already present in the cache then it returns previously stored data from the cache.
+	- get() method is used to retrieve a persistent object from the database. It is a member of the Session interface, and it takes the class of the object to be retrieved and the primary key of the object as arguments.
+
+load()
+	- Lazy intialization
+	- Use when we don't need complete object which includes foreign key object
+	- load() method throws ObjectNotFoundException if there is no object found in the database.
+	-load() method does not retrieve the object from the database when it is called. Instead, it returns a proxy object that represents the object. The actual object is only 		retrieved from the database when it is needed, such as when a method of the object is called or a property is accessed. This technique is known as “lazy loading” and it is used to improve the performance of Hibernate by avoiding unnecessary database queries.
+	-load() method is used to retrieve an object from the database by its identifier (primary key). It is used to initialize a proxy object instead of a fully-initialized object, so it can be used to lazily load the object when it is needed.
+
 
 
 

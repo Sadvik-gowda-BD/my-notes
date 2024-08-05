@@ -55,6 +55,40 @@ cmd
 	5)b	->	block special file
 	6)s	->	socket file
 	
+## check current linux distribution and version
+>cat /etc/os-release
+	
+
+
+
+
+
+
+###############Linux WSL in windows commands
+
+## Updates the list of available packages and their versions, but it does not install or upgrade any packages.
+>sudo apt update 
+
+Upgrades all the installed packages to their latest versions and automatically answers "yes" to any confirmation prompts.
+>sudo apt upgrade -y
+
+## Accessing Windows Files from WSL
+You can access your Windows file system from the WSL terminal through the /mnt directory. For example:
+To access your C: drive, you would use /mnt/c/.
+Your user directory would be /mnt/c/Users/<YourUsername>/.
+
+Ex: cd /mnt/c/Users/<YourUsername>/Documents
+
+
+## Manually run and stop WSL
+>wsl --list --running
+
+stop WSL maually
+>wsl --shutdown
+
+start WSL maually
+>wsl
+
 
 
 	

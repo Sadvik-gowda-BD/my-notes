@@ -52,3 +52,22 @@ bat file D:\kafka-software\confluent-7.6.0\confluent-7.6.0\bin\windows
 Zookeper
 bin\windows\zookeeper-server-start.bat \etc\kafka\zookeeper.properties
 
+
+
+
+
+
+--------------------It 
+
+Difference between KAFAK and Rabbitmq
+
+Rabbitmq:
+The ordering of messages is not supported here. 
+In this, priorities can be specified for the messages and the messages can be consumed according to their priority.
+Atomicity is not guaranteed in this case, even when the transaction involves a single queue.
+
+KAFAK:
+Partitions in Kafka enable message ordering. Message keys are used while sending the messages to the topic.
+Prioritising the messages is not possible in  Kafka.
+In Kafka, it is guaranteed that the whole batch of messages in a partition is either sent successfully or failed.
+

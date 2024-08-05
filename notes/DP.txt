@@ -1,0 +1,22 @@
+
+
+Q)Why do we need design pattern (DP)?
+A design pattern is a well-described solution to a common software problem. 
+
+Creational Design Pattern
+	Creational design patterns are concerned with the way of creating objects.
+	These patterns define the best way to create an object in a particular situation.
+
+1)Singleton Pattern 
+	The Singleton pattern ensures that a class has only one instance and provides a global access point to that instance. 
+	This pattern is useful when a single instance of a class is required to coordinate actions across the system. 
+	It ensures that only one instance of the class exists in the Java Virtual Machine.
+	Ex:- JDBCSingleton class,  logging, drivers objects, caching, and thread pool.
+	
+2) Factory design Method
+	That provide an interface for creating objects in superclass, but subclasses are responsible to create the instance of the class.
+	Ex:- java.util.Calendar, ResourceBundle and NumberFormat getInstance() methods uses Factory pattern.
+	
+3) Builder Design Pattern
+	Builder Pattern says that "construct a complex object from simple objects using step-by-step approach".
+	For example if a POJO class has 20 variables and if user has to create an object with 10 fields then it is very deficult because for every object he may need use different variables. And also if some one add new variable then again it won't be a part of constructor. Builder pattern will solve this issue

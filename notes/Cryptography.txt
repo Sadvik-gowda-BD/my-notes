@@ -1,0 +1,52 @@
+
+
+Encryption:
+	->Encryption is the process of converting a normal readable message (plaintext) into a garbage message (not readable message) known as Ciphertext. The ciphertext obtained from the encryption can easily be transformed into plaintext using the encryption key. 
+	->
+	It is less secure in comparison to hashing.
+	Ex:- RSA, AES, and Blowfish.
+
+
+Hashing:
+
+	->Hashing also scrambles data, but the intent is to prove its authenticity. Administrators can run a check on hashed data to determine the contents haven't been touched or altered while in storage. No deciphering key exists.
+	
+	->It is more secure in comparison to encryption.
+	
+	Ex:-MD5, SHA256.
+
+
+
+SSL/TLS
+
+SSL is standard technology for securing an internet connection by encrypting data sent between a website and a browser (or between two servers). 
+
+Why SSL?
+It prevent the Man in the Middle Attack
+Source identity verification - To identify the genune website
+Client/Server authentication 
+
+
+
+Q)Having four certificates—client keystore, server keystore, client truststore, and server truststore—is typical in applications that use mutual TLS (Transport Layer Security) for secure communication. Here's why each of these certificates is necessary:
+
+	1. Client Keystore
+		Purpose: Stores the client's private key and the client's certificate.
+		Usage: Used by the client to authenticate itself to the server. The private key is used to sign data, and the certificate is sent to the server during the TLS handshake to prove the client's identity.
+	2. Server Keystore
+		Purpose: Stores the server's private key and the server's certificate.
+		Usage: Used by the server to authenticate itself to the client. The private key is used to sign data, and the certificate is sent to the client during the TLS handshake to prove the server's identity.
+	3. Client Truststore
+		Purpose: Stores the certificates of trusted CAs (Certificate Authorities) that can be used to verify the server's certificate.
+		Usage: Used by the client to verify the server's certificate during the TLS handshake. If the server's certificate is signed by a CA that is present in the client truststore, the server is trusted.
+	4. Server Truststore
+		Purpose: Stores the certificates of trusted CAs that can be used to verify the client's certificate.
+		Usage: Used by the server to verify the client's certificate during the TLS handshake (if mutual authentication is enabled). If the client's certificate is signed by a CA that is present in the server truststore, the client is trusted.
+		Summary of the TLS Handshake Process
+		
+	Client Authentication (if mutual TLS):
+		The client presents its certificate from the client keystore.
+		The server verifies this certificate against the server truststore.
+	Server Authentication:
+		The server presents its certificate from the server keystore.
+		The client verifies this certificate against the client truststore.
