@@ -5,13 +5,31 @@ Microservices/ springboot,
 
 Q&A
 
+Q1. What Is Spring Boot and What Are Its Main components/Features?
+Starters – a set of dependency descriptors to include relevant dependencies at a go
+Auto-configuration – a way to automatically configure an application based on the dependencies present on the classpath
+Actuator – to get production-ready features such as monitoring
+Spring Initializer
+Spring CLI
+Security – to provide authentication and authorization
+Logging – to record events at certain points during program execution
+
 Q)What is spring IOC? - Inversion of Control Container 
-Spring IoC container is the program that injects dependencies into an object and make it ready for our use.
+Spring IoC container is the program that injects dependencies into an object and make it ready for our use. It manages the beans.
 
-Ex:- BeanFactory and ApplicationContext
+P)2 types spring IOC contaiiner: BeanFactory and ApplicationContext
 
-@)What is Dependency Injection.
+Q)What is Dependency Injection.
 Spring injects bean to its depnedent class. (For example ControllerClass is depend on ServiceClass, here spring create a bean of service class and it injects to variable)
+
+Q)What is springboot starter dependency
+In Spring Boot, a "starter" is a set of convenient dependency descriptors that you can include in your application. Starters are used to simplify the process of setting up and configuring a Spring Boot application. They provide a way to include a group of related dependencies with a single dependency declaration, eliminating the need to manually specify each individual dependency.
+
+Why we need?: Quick Setup:, Developers do not need to know the names of the dependencies required for an application, Developers do not need to know the exact version of the dependencies to use
+for ex: springboot-starter-web will be include tomacat dependency, springboot-starter-test will include junit and mockit, power mock all test related dependency
+
+Q)Describe spring-boot-starter-parent?
+It is a unique starter which adds jars to the classpath for easy Maven or Gradle dependency management.
 
 Q)Stereo type annotations
 component, controller, service, repository
@@ -62,6 +80,40 @@ It is used to mark a Java class as a bean.
 Q)Can we use @Component/@Service in place of @Controller ?
 No we cant't TODO check
 
+Q) How to exclude auto configuration in springboot
+
+	Ex1: Application main class
+	@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
+	
+	Ex2: properties file
+	spring.autoconfigure.exclude= \org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, \org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
+	
+Q)How to Register a Custom Auto-Configuration?
+we can below property in properties file
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.baeldung.autoconfigure.CustomAutoConfiguration
+
+Q)How many request can springboot handle simultaneously?
+It is does not depend on spring boot frame work iself, it is depend on embedded container (like Tomcat, Undertow, Jetty).
+
+	we can see the default configuration on autoconfigure jar C:org\......\spring-boot-autoconfigure-3.2.5.jar!\META-INF\spring-configuration-metadata.json
+	The default config is:
+	"name": "server.tomcat.max-connections", "defaultValue": 8192 //number of request simultaneously
+	"name": "server.tomcat.accept-count", "defaultValue": 100 //number of request can be in waiting
+	
+	We can also override this value in properties file.
+	Ex:- server.tomcat.max-connections: 8000
+		 server.tomcat.accept-count: 200
+
+Q)What Is Spring Boot Actuator Used For?
+	env exposes environment properties
+	health shows application health information
+	httptrace displays HTTP trace information
+	info displays arbitrary application information
+	metrics shows metrics information
+	loggers shows and modifies the configuration of loggers in the application
+	mappings displays a list of all @RequestMapping paths
+	It also shows the circuit breaker status
+
 Q)How to establish relationship between two Entities
 	
 
@@ -85,6 +137,8 @@ ID: ab+c
 	localhost:8443/employee/get/id=ab+c result of id is a b (here + is removed because of URL encode)
 	Default value can be sepecified  @RequestParam(defaultValue = "0", name = "age", required = false) String age)
 
+Q)Why URL encoding is required
+URLs can contain characters that are not safe or meaningful in their raw form. Special characters like spaces, ampersands (&), question marks (?), slashes (/), and others have special meanings in URLs. URL encoding converts these characters into a format that can be safely transmitted over the web.
 
 Q)Why microservice is better than monolithic
 
@@ -110,6 +164,15 @@ Difference between @PropertySource and @ConfigurationProperties
 ex:- 
 	@PropertySource("classpath:foo.properties")
 	@ConfigurationProperties(prefix = "myserver.allvalues")
+
+Q)
+@Configuration:
+	Used to define a configuration class that contains bean definitions.
+	Focused on creating and configuring beans within the Spring context.
+@ConfigurationProperties:
+	Used to bind external configuration properties to a Java object.
+	Focused on externalizing configuration and mapping it to a structured, type-safe bean.
+	Ex:- ConfigurationProperties(prefix = "app")
 	
 	
 Q)How Singleton bean works when multiple request comes at same time
@@ -142,7 +205,7 @@ b)initialzation and destruction in bean lifecycle
 		
 		
 		
-2)Async call in sprinboot
+2)Async call in springboot
  
 
 Q)logpattern
@@ -151,9 +214,9 @@ Q)Microservices patterns
 
 
 3)In memory Cache in springboot database
-SimpleCacheManager --> Spring's default cache manager that's used if you don't specify a cache manager. It's simple because its underlying implementation uses a Java ConcurrentHashMap and it doesn't give you a whole lot of customization options.
+SimpleCacheManager --> Spring's default cache manager, that's used if you don't specify a cache manager. It's simple because its underlying implementation uses a Java ConcurrentHashMap and it doesn't give you a whole lot of customization options.
 
-CaffeineCacheManager --> The Caffeine Cache manager is slightly different in that there a more configuration-driven customization options such as having the ability to specify the cache timeout expiry limit (in order to 'bust' the cache after a certain time period) and the cache maximum size limit in order to limit the capacity of the cache.
+CaffeineCacheManager --> The Caffeine Cache manager is slightly different, in that there a more configuration-driven customization options such as having the ability to specify the cache timeout expiry limit (in order to 'bust' the cache after a certain time period) and the cache maximum size limit in order to limit the capacity of the cache.
 
 6)Redies - distribution cache
 Redies is a in-memory data structure store used as a database cache.
@@ -164,23 +227,31 @@ Run on its own server
 Implemnent circuit breaker to save the resource
 Implement in memory cache
 add index to DB
+added cache for ping JWT call
 
+@)How sensitive data like password maintained in springboot properties file?
+1)Sensitive data can be send via commandline arguments at run time. Ex:- mvn spring-boot:run -Dspring.datasource.password=secretpassword
+2)Sensitive data can be encrypted in property file and it can decrypt at run time using Jasypt library. Secret key for encyption and decryption can be pass from command line argument/ kubernetes environment varibale
+	Ex:- In properties file password:ENC(encrypted key) -> ENC(scEjemHosjc/hjA8saT7Y6uC65bs0swg)
+		 >mvn spring-boot:run -Djasypt.encryptor.password=secretkey
+		 
+3)We can use vault servers like ansible vault, spring cloud vault by HashiCorp etc.
 
 5)Circuitbreaker
 It is design pattern to handle failure services. 
+we can implement fallbackMethod to return the default messages
 Here we save resource(JWT call etc) by not invoking the failed microservice, instead we return default message.
 we also can implement retry mechanism.
 
 6)Service discovery/ service registry/ Eureka server
 In Microservices, Service Discovery helps us by providing a database of available service instances so that services can be discovered, registered, and de-registered based on usage.
 This registry keeps track of all entries of individual services (client instances) IP address & port.
-It is the client side service discovery, because assume we are calling PAYMENT-SERVICE from CUSTOMER-CUSTOMER service, these 2 are clients of BANK-SERVICE-REGISTRY (Eureka server/service registry).
+It is the client side service discovery, because assume we are calling PAYMENT-SERVICE from CUSTOMER-SERVICE, these 2 are clients of BANK-SERVICE-REGISTRY (Eureka server/service registry).
 when we make a call from CUSTOMER-SERVICE to PAYMENT-SERVICE, at first CUSTOMER-SERVICE call service registry (BANK-SERVICE-REGISTRY) and get the ip address of PAYMENT-SERVICE and then it will invoke PAYMENT-SERVICE.
 
 7)API gateway
 It receives incoming requests, performs authentication & routing (if enabled) and forwards requests to actual microservice.
 It should register in service registry so it can identify the other services 
-
 
 8)Handle Error response from other microservices
 
@@ -199,14 +270,13 @@ Q)spring.jpa.hibernate.ddl-auto
 values are CREATE UPDATE CREATE-DROP NONE, Recommended to use NONE in production,
 because table structure modify happens by using SQL query by DBA spring.jpa.hibernate.ddl-auto=none
 
-Q)
- @Modifying and @Transactional is mandatory for update and delete queries in JPA repository
+P)@Modifying and @Transactional is mandatory for update and delete queries in JPA repository
  
  
  -cascade
  fetch types
  
- P) If one class has Relationship like oneToOne/OneToMay/ManyToOne then in other class will be used as mappedBy in Bidirectional mapping.
+ P) If one class has Relationship like oneToOne/OneToMany/ManyToOne then in other class will be used as mappedBy in Bidirectional mapping.
  For ManyToMany relationship we need to provide table name and inverse TODO
     
 
@@ -235,7 +305,7 @@ In microservices it's difficult to handl the transaction if each microservices u
 It can be achieve by 2 ways:- 1)Orchestration and 2)Choreography
 
 example of Choreography by using KAFKA,
-Assume there is an oder service and payment service, when we place an order order-service publish order-event, then payment-service consume order-event message and process like debit amount if there is a sufficient balance, then publish payment-event with success or failure. Then order-service consume payment-event and update the database whith order placed successfully or not.
+Assume there is an oder service and payment service, when we place an order order-service publish order-event, then payment-service consume order-event message and process like debit amount if there is a sufficient balance, then publish payment-event with success or failure. Then order-service consume payment-event and update the database with order placed successfully or not.
 
 Service Discovery Pattern/ service registry pattern:-
 	The service discovery pattern, also known as the service registry pattern, is a microservices pattern that provides discovery of the service locations in an environment where all microservices live. A service registry is simply a database of services that the other service accesses to find the address data of the other services
@@ -286,16 +356,46 @@ load()
 	-load() method is used to retrieve an object from the database by its identifier (primary key). It is used to initialize a proxy object instead of a fully-initialized object, so it can be used to lazily load the object when it is needed.
 
 
+Q)What is springboot CLI
+Spring Boot CLI (Command Line Interface) is a command line software or tool. This tool is provided by the Spring framework for quickly developing and testing Spring Boot applications from the command prompt.
+
+->Frist we need install the sprinboot CLI tool and set bin path in env variables
+->we can use by running the commands
+
+commands:
+	>spring version
+	>spring init --dependencies=web,data-jpa my-project //to create a new project from the CLI with name my-project
+	>spring run HelloWorld.groovy
+	>mvn spring-boot:run
+
+Q)Difference between Junit and Mockito
+	Junit:
+		->we use JUnit to run the testing logic and confirm the test outcome
+		->It provides a set of annotations, assertions, and test runners to create, manage, and run test cases.
+		->Ex annotations:- @Test, @BeforeEach, @AfterEach, @BeforeAll, @AfterAll, @Disabled, @DisplayName, @ExtendWith(), assertEquals, assertTrue, assertNotNull etc. 
+	
+	Mockito:
+		->Mockito is a framework that helps us generate objects (mocks) of certain classes and control their behavior during testing
+		->It allows developers to create stubs and mocks for external dependencies, ensuring that unit tests remain isolated and focused on the code being tested.
+		->Ex annotations:- @Mock, @InjectMocks, @Spy, @Captor, MockitoExtension.class, Mockito.when.
+	
+
+Q)Stubbing
+	Stubs are usually handwritten, and some are generated by tools.
+	
+Q)What is distributed tracing in microservices?
+Distributed tracing in microservices is a technique used to track and observe requests as they propagate through various services within a microservices architecture. It provides visibility into how a single request moves across different services, making it easier to diagnose issues, optimize performance, and understand the flow of transactions.
+	spring-cloud-starter-sleuth
+	spring-cloud-starter-zipkin
 
 
+
+spring-cloud-starter-zipkin
 TODO:
 Swagger
 filters
 Api gateway and Eureka server
 profilers
-
-
-
 
 
 

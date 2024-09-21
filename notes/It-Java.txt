@@ -21,15 +21,16 @@ Q)Difference between JDK, JRE and JVM
 	
 	JRE - Java Runtime Environament
 		It is used to run the java application
+		JRE is a physical implementation of the JVM.
 		It contains JIT compiler which is used to convert bytecode into binary code (machine code)
 		Libraries:- java lang, util, collections, math, regEx, classloader
 		
 	
 	JVM - Java Virtual Environament
-	It is a platform dependent
-	JVM is physically not exist and can't be installed alone. JVM is a part of JRE, we need to install JRE
-	It enables the execution of Java bytecode. The JVM acts as an interpreter between the Java programming language and the underlying hardware.
-	It provides a runtime environment for Java applications to run on different platforms and operating systems.
+		It is a platform dependent. Different JVM is designed for different OS and byte code is able to run on different OS.
+		JVM is physically not exist and can't be installed alone. JVM is a part of JRE, we need to install JRE
+		It enables the execution of Java bytecode. The JVM acts as an interpreter between the Java programming language and the underlying hardware.
+		It provides a runtime environment for Java applications to run on different platforms and operating systems.
 	
 
 	
@@ -52,9 +53,13 @@ Security
 Q)Memories in java
 	Heap memory:	
 		-used to store the objects/instance data
+		-Objects stored in the heap are globally accessible.
 		-The instance variable will be stored in a heap as part of object data
+		-Whenever you create an object, it is always stored in the heap space. 
 	stack memory:
-		-stores the method call sequence and reference value of objects
+		-Stack memory only contains method call sequence, local primitive and reference variables to objects in heap space.
+		-Method variables stored in stack memory
+		-Stack memory is used only by one thread of execution, Other threads can’t access stack memory.
 		
 Q)Generations 
 	It is a segment of Heap memory used to group objects based on their age and lifecycle (for sake of garbage collection).
@@ -71,7 +76,37 @@ Q)Generations
 	
 	3)Permanent Generation:
 		this consists of JVM metadata for the runtime classes and application methods.
+		
+Q)Types of Garbage collector
+	JVM has four types of GC implementations:
+	1)Serial Garbage Collector
+		->The Serial Garbage Collector is the simplest and oldest garbage collector in Java. It uses a single thread to perform garbage collection, making it suitable for single-threaded applications or small-scale applications with limited memory.
+		->Used until java-8
+		->If you want to use serial garbage collector, then we have to explicitly mention while running jar like: >java -XX:+UseSerialGC -jar Application.java 
 	
+	2)Parallel Garbage Collector
+		->It’s the default GC of the JVM from Java 5 until Java 8
+		->It uses multiple threads to perform cleaning of unused heap area.
+		->java -XX:+UseParallelGC -XX:ParallelGCThreads=NumberOfThreads -jar Application.java
+		->java -XX:+UseParallelGC -jar Application.java //Java 9
+	
+	3)CMS (Concurrent Mark-Sweep) Garbage Collector
+		->This garbage collector uses multiple threads to scan the heap memory consistently to the mark objects that are unused and then sweep the marked objects. 
+		->If we compare CMS collector with Parallel garbage collector, CMS collector uses more CPU to ensure better application throughput.
+		->java -XX:+UseParNewGC -jar Application.java
+	
+	4)G1 Garbage Collector
+		->Firstly G1 Garbage Collector is introduced in JDK 7
+		->G1 (Garbage First) Garbage Collector is designed for applications running on multi-processor machines with large memory space. 
+		->java -XX:+UseG1GC -jar Application.java
+
+Q)Default garbage collector
+
+	Java 7 - Parallel GC
+	Java 8 - Parallel GC
+	Java 9 - G1 GC
+	Java 10 - G1 GC
+	java 11 - G1 GC
 
 P)In Java, all the wrapper classes (like Integer, Boolean, Byte, Short, Float, Double, Long) and String class is immutable.
 	we can also create a custom immutable class- it should contain only constructor/builder and getters, no setters.
@@ -90,14 +125,30 @@ Q)Use of finalize() method
 It is invoked by the garbage collector before destroy the object. It is used to release the resources and clean up.
 
 Q)How memory leaks can be happen
-	Whenever the unused connection or resources are not closed/terminated.
-	When the garbage collection takes more time.
+A Memory Leak is a situation where there are objects present in the heap that are no longer used, but the garbage collector is unable to remove them from memory
+	
+	Types of memory leaks
+	1)Memory Leak Through static Fields
+		In Java, static fields have a life that usually matches the entire lifetime of the running application (unless ClassLoader becomes eligible for garbage collection).
+		Ex:- 
+	public class StaticFieldsMemoryLeakUnitTest {
+			public static List<Double> list = new ArrayList<>();
+
+			public void populateList() {
+				for (int i = 0; i < 10000000; i++) {
+            list.add(Math.random());
+			}
+		}
+
+	2)Whenever the unused connection or resources are not closed/terminated. Ex: File resource, DB connection sessions
+		Whenever we make a new connection or open a stream, the JVM allocates memory for these resources. A few examples of this include database connections, input streams, and session objects.
+	3)When the garbage collection takes more time.
 
 Q)How to increase the java heap memory size 
 java -Xms512m -Xmx1024m TestData.java
 
 -Xms: initial heap size
--Xmx: Maximum heap size
+-Xmx: Maximum heap size 
 
 Q)What is generics
 generics enable types (classes and interfaces) to be parameters when defining classes, interfaces and methods
@@ -125,8 +176,10 @@ Integer i1 == Integer i2 ==> true if range is b/w -128 and 127, false if value i
 Ex:- Integer i1=60, i2=60 => i1==i2 //true (it check the reference and reference is same)
 	Integer i1=500, i2=500 => i1==i2 //false (it check the reference ans reference is difference)
 
-Q) Is there any difference in defining or creating a String by using String literal and by using the new() operator?
+Q)Is there any difference in defining or creating a String by using String literal and by using the new() operator?
 Creating string using the new operator ensures that the String is created in the heap alone and not into the string pool. Whereas, creating string using literal ensures that the string is created in the string pool. String pool exists as part of the perm area in the heap. This ensures that the multiple Strings created using literal having same values are pointed to one object and prevents duplicate objects with the same value from being created.
+
+P)The String Pool in Java is a special memory area located in the heap
 
 Q)Difference between String, StringBuffer and StringBuilder
 
@@ -149,8 +202,16 @@ StringBuilder:-
 StringBuilder is not a thread safe class.
 StringBuilder is faster than StringBuffer, because stringbuffer is synchronized and additional check is required
 
-P)Cannot be able to invoke static method by objects like obj.metName().
+P)we cannot be able to invoke static method by objects like obj.metName().
 P)override in static method does not make any sense, because static method belongs to class not to objects
+
+Q)How many ways to create an object?
+	Using new keyword - GFG obj = new GFG(); 
+	Using new instance -  Class cls = Class.forName("GFG"); GFG obj = (GFG)cls.newInstance(); 
+	Using clone() method - GFG obj2 = (GFG)obj1.clone(); 
+	Using deserialization - 
+	Using newInstance() method of Constructor class
+
 
 Q)How is the ‘new’ operator different from the ‘newInstance()’ operator in java?
 If we don’t know the class name for which we need to create the object, Or we get the class name from the command line argument, or the database, or the file. Then in that case we use the ‘newInstance()’ operator.
@@ -159,7 +220,6 @@ Student st = new Student() // Here we should know the class name
 
 Class c = Class.forName("Student");  
 Student st = (Student)c.newInstance();  
-
 
 
 Q)What are shallow copy and deep copy in java?
@@ -211,7 +271,6 @@ if (null == instance) {
 	}
 }
 return instance
-
 		
 		
 Q)What is OOP's concept?
@@ -231,8 +290,15 @@ Object-oriented programming aims to implement real-world entities like inheritan
 	Abstraction -  a process of hiding the implementation details and showing only functionality to the use. Ex Interfaces and Abstract class - Can't able to create object to Abstract class
 	Encapsulation - Wrapping of data (variable and method) into a single unit. Ex:- Class with private variable , getters and setters.
 
-P)we can say that we cannot use this() and super() keywords in the same block, it will compilation error
+P)we can say that we cannot use this() and super() keywords in the same block, it will compilation error. super() should be first statement inside any constructor
 
+P)IS-A and HAS-A (composition or aggregatio)
+IS-A
+	The "IS-A" relationship in Java refers to inheritance.
+	bike ia Vehicle, car is a vehicle
+HAS-A 
+	car has engine
+	car has tires
 
 4)Multithreading
 
@@ -247,7 +313,7 @@ P)we can say that we cannot use this() and super() keywords in the same block, i
 
 The t1.join() method of thread class waits for a thread t1 to die (wait t1 to complete the work)
 
-Multithreading:- Do multiple operation at same time with in the single application. It is a lightweight process.
+Multithreading:- Do multiple operation at same time with in the single application. Threads are lightweight processes within processes as seen. 
 
 In java we can achieve by 2 types by extending Thread class and implementing Runnable interface. (Here it supports multiple inheritence)
 
@@ -257,6 +323,7 @@ EX:-
 	In gaming application car, bike runs in different threads
 	In youtube video is playing on one thread, comment, ads play in different threads.
 	Multiple request & response process in a sigle web server.
+	JUnits uses threads to run test cases in parallel
 	
 Q)Life cycle of java thred
 	New
@@ -265,18 +332,46 @@ Q)Life cycle of java thred
 	Non-Runnable (Block/wait) - during synchronized block/methods
 	Terminated
 Multitasking/multi programming:- One user run multiple program in at same time called multitasking.
+Multitasking is the ability of an operating system to run multiple tasks (processes) at the same time.
+	
+Multitasking
+	Definition: Multitasking is the ability of an operating system to run multiple tasks (processes) at the same time.
+	How It Works: The operating system manages multiple processes by allocating CPU time slices to each task. These time slices are so small that it appears as though the tasks are running simultaneously, but in reality, the CPU is rapidly switching between tasks.
 	Ex:- running chrome, edge, youtube and MS word at same time
+	
+Multithreading
+	Definition: Multithreading is the ability of a single process to manage multiple threads of execution within itself.
+	How It Works: A single process can be divided into multiple threads, where each thread represents a separate path of execution. These threads share the same memory space but can execute independently.
+	Ex: web servers, where each thread can handle a separate client request concurrently
+	JUnits uses threads to run test cases in parallel
+	
+Thread obj.wait():-
+	that causes the current thread to wait and go to sleep until some other threads call the notify () or notifyAll() method for the object’s monitor (lock). It simply releases the lock and is mostly used for inter-thread communication.
+	It is defined in the object class, and should only be called from a synchronized context. 
+	
+Thread.sleep(100):-
+	 it is a static method that pauses or stops the execution of the current thread for some specified period. It doesn’t release the lock while waiting and is mostly used to introduce pause on execution.
+	 It is defined in thread class, and no need to call from a synchronized context.
+
+Q)Reentrent lock 
+Reentrancy: A thread can acquire the same lock multiple times without causing a deadlock. For each call to lock(), there must be a corresponding call to unlock(), and the lock is only released when the number of unlocks matches the number of locks.
+ReentrantLock can be configured to be fair. When fairness is set to true, the longest-waiting thread will acquire the lock next, ensuring first-come, first-served access.
 
 Q)DIfference b/w Multithreading and Async
 
 
 MultiThread:-
 
+P)Daemon Thread & User Thread
+The main difference between user thread and daemon thread is that JVM does not wait for daemon thread  before exiting while it do waits for the user thread.
+Daemon thread is a low-priority thread that runs in the background.
 
 Async:-
 It doesn't wait for the response, 
 Async programming is about non-blocking execution between functions
 
+Q)What is excecuterService?
+The ExecutorService interface simplifies the execution of asynchronous tasks, such as running tasks in parallel, scheduling tasks, and managing the lifecycle of tasks and threads.
 
 Q)Java Threadpool
 	Java Thread pool represents a group of worker threads that are waiting for the job and reused many times.
@@ -343,9 +438,12 @@ It represents the unordered set of elements which doesn't allow us to store the 
 
 5)Map
 	1)HashMap
+		
+		It is a known fact that the HashMap key utilizes the hashCode() and the equals() method for finding the index and finding a key's value. Therefore, it is required to implement these methods properly. If these methods are not implemented properly, then hashMap will not work properly. 
+	
 		->HashMap in Java is basically an array of bucket where each bucket uses linked list to hold elements. A linked list is a list of nodes where each node contains a key-value pair(EntrySet).
 		->The default initial capacity of HashMap is 16 (i.e. the number of buckets). and load factor is 75%
-		->First the hascode of key will taken (for null hascode will be 0) then pass that hascode to hash() method it returns bucket location (int value). In that bucket key,value pair will be stored in LinkedList.
+		->First the hascode of key will taken (for null hascode will be 0) then pass that hashcode to hash() method it returns bucket location (int value). In that bucket key,value pair will be stored in LinkedList.
 		->Time complexity to insert and retrieve a value is O(1)
 		HashMap in Java 8 
 		In Java 8, HashMap replaces the linked list with another useful data structure i.e. balanced trees (specifically red-black trees) tree on breaching a certain threshold, which is known as TREEIFY_THRESHOLD (size is 8, if bucket size/number of elements in a bucket is more than 8 link list become Red-Black tree). Once this threshold is reached, the linked list of Entries is converted to the Red-Black TreeNodes which reduces the time complexity from O(n) to O(log(n)).
@@ -353,6 +451,12 @@ It represents the unordered set of elements which doesn't allow us to store the 
 		TreeNodes are nothing but the structures supporting the balanced trees (specifically red-black trees) trees which have two nodes, smaller node goes to the left and the larger to the right. Whenever we want to search for any key the whole left or right subtree is discarded with a single check. This is how the time complexity is reduced to O(log(n). This change has lead to a significant improvement of HashMap.
  
 		Once the number of entries is decreased due to removal or resizing of HashMap (UNTREEIFY_THRESHOLD = 6), the structure is converted back to the older implementation which is LinkedList.
+
+Q)How Hashset works internally?
+A HashSet is backed by a HashMap. Each element in the HashSet is stored as a key in this HashMap, with a constant dummy value associated with it (typically Boolean.TRUE).
+This means that while HashSet ensures unique elements, the underlying HashMap handles the storage, retrieval, and management of these elements.
+
+
 		
 Q))Types of Map available in java
 HashMap
@@ -383,7 +487,13 @@ Q)HashMap Vs ConcurrentHashMap Vs HashTable
 		
 Q)Why does the java array index start with 0?
 It is because the 0 index array avoids the extra arithmetic operation to calculate the memory address.
-
+   
+Q)BlockingQueue
+BlockingQueue is a java Queue that support operations that wait for the queue to become non-empty when retrieving and removing an element, and wait for space to become available in the queue when adding an element.
+	a). It is always thread-safe.
+	b). It can hold arbitrary data
+	c). Producer has to wait if the queue is already full
+	d). Consumer has to be wait if no item is present in the queue.
 
 Q)Unmodifiable list 
 
@@ -421,7 +531,6 @@ ListIterator
 	Certain methods of ListIterator are next(), previous(), hasNext(), hasPrevious(), add(E e), set(E e), nextIndex(), previousIndex().
 	
 
-
 Q)regex	
 
 
@@ -440,7 +549,12 @@ Static class:
 	
 	->we can create a static class inside another class.
 
-
+Q)can we print "Hello world" in java without using main method?
+	Yes, by using static method. Here we can just compile and run java file.
+	static {
+        System.out.println("Hello World");
+        System.exit(0); // Exits the program so that the JVM doesn't look for the main method
+    }
 
 Note:-
 finally() methos may not be invoke if we invoke garbage collector in middle of try or catch
@@ -466,3 +580,5 @@ The default methods were introduced to provide backward compatibility so that ex
 
 
 -----------------------Crypto
+
+

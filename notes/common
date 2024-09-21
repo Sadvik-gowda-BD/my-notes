@@ -1,0 +1,105 @@
+Managerial round
+
+Q) How you will convince client if you are unable to deliver requested item?
+1. Acknowledge the Situation Honestly
+	First, I would approach the situation with transparency. It's important to acknowledge the issue upfront and explain the reasons why the requested item cannot be delivered as initially planned. Be polite and honest
+2. Present Alternative Solutions
+	After acknowledging the issue, I would immediately shift the focus to finding alternatives.
+3. Communicate the Benefits of the Alternative
+	I’d explain how the alternative solution can still meet the client’s objectives and provide value. The goal is to help the client see that while the original request isn’t feasible, the alternative is a worthwhile option.
+4. Commit to a Resolution and Follow-Up
+	I’d conclude by committing to a clear plan of action, ensuring that the alternative solution is delivered as promised. I’d also schedule a follow-up meeting to review progress and ensure the client is satisfied with the outcome.
+
+
+Q)how do you handle pressure?
+1. Acknowledge the Reality of Pressure
+	pressure is a common aspect of any job and that you've learned how to manage it effectively over time.
+
+2. Stay Calm and Focused
+	When faced with pressure, I prioritize staying calm and focused on the task at hand. I find that keeping a level head allows me to think more clearly and make better decisions.
+	
+3. Prioritize and Plan
+	I handle pressure by prioritizing tasks and planning my approach. I break down larger challenges into manageable steps and tackle them systematically.
+	
+4. Effective Communication
+	I believe in maintaining clear communication with my team and stakeholders when under pressure. This ensures everyone is aligned and can contribute to finding solutions.
+5. Contribute as a team
+	
+Q)What is your reason for leaving your current position?
+
+
+Q)Where do you see your self in next 5 years? They may identify how long I'll stay in company
+Advance My Technical Skills
+Take on More Responsibility
+Contribute to Strategic Decisions
+Continuous Learning
+Achieve Career Milestones
+Want to be in better position and take some major responsibilities.
+
+
+Q)Consider the scenario: You win a million-dollar lottery. Would you still be working?
+This is a classic HR question meant to gauge your passion for your work, your motivations, and your values.
+That said, the lottery win would give me more flexibility. I might take some time to invest in personal development or side projects I'm passionate about, but I would still want to be involved in meaningful work, whether that’s in my current role or exploring new opportunities that align with my interests."
+
+My passon is on IT and I don't want to change.
+
+Q)What would you do if you were working under a bad boss?
+"If I were working under a bad boss, I would remain professional and focused on delivering high-quality work. I’d try to understand their perspective and the pressures they might be facing, and I’d aim to communicate openly to address any issues. I’d also seek feedback to ensure that I’m doing everything I can to improve the working relationship. If the situation didn’t improve, I would consider seeking advice from HR or a mentor to find a constructive solution. Ultimately, I’d use the experience as an opportunity to learn and grow, which would help me become even more resilient and adaptable in my career."
+
+Q)What is your expectation salary? 
+Based on my research and understanding of the market, I know that the typical salary range for a Java developer with my experience in this region is between $X and $Y.
+We have to sell our skills
+
+
+-----------------------------------------Logic
+
+Q)How many times in a day does the clock's hand overlap?
+Ans:- 11*2 = 22
+
+The hands of a clock overlap approximately every 65 minutes.
+In a 12-hour period, the hands overlap 11 times.
+Therefore, in a full 24-hour period, the hands overlap 22 times.
+The overlap occurs slightly less than every hour because, after each overlap, the minute hand catches up to the hour hand again a bit faster.
+
+Q)Judy's mother had four children. The eldest was April, the second was May, and the third was June. What was the name of the fourth child?
+Ans:- Judy
+
+Q)If there are total 10 teams and if each team plays twice with others then each team pays how many matches?
+Ans:- 18
+
+Each team playes with 9 diifferent teams, so 9*2 = 18
+
+Q)What is the minimum match is required to win to qualify the semi final?
+Ans:- 10 (min 50%+)
+
+In equal cases minimum 50% + win is required, so 9+1 10 matches will be required to win
+
+Q)If there are total 10 teams and if each team plays twice with others then what is the total number of matches in the tournament?
+Ans:- 90
+
+Q)You have only two vessels of 3l and 5l volume, and you are given an unending water supply. How can you get 4l of water by using these two vessels?
+
+	Fill the 5-liter vessel completely.
+
+	Now you have 5 liters in the 5-liter vessel.
+	Pour water from the 5-liter vessel into the 3-liter vessel until the 3-liter vessel is full.
+
+	Now you have 3 liters in the 3-liter vessel and 2 liters remaining in the 5-liter vessel.
+	Empty the 3-liter vessel.
+
+	Now the 3-liter vessel is empty, and you still have 2 liters in the 5-liter vessel.
+	Pour the 2 liters from the 5-liter vessel into the 3-liter vessel.
+
+	Now you have 2 liters in the 3-liter vessel and the 5-liter vessel is empty.
+	Fill the 5-liter vessel again.
+
+	Now you have 5 liters in the 5-liter vessel.
+	Pour water from the 5-liter vessel into the 3-liter vessel until the 3-liter vessel is full.
+
+	Since the 3-liter vessel already has 2 liters in it, you can only add 1 more liter to it (to make it full).
+	Now you have 3 liters in the 3-liter vessel and 4 liters remaining in the 5-liter vessel.
+	Now, you have exactly 4 liters of water in the 5-liter vessel.
+	
+	
+Q)There is a magic bowl and it's value gets double day by day, and bowl fills complets in 100 days, so in which day half bowl will be filled?
+Ans:- 99th day

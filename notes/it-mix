@@ -1,0 +1,106 @@
+it java2
+
+Q)Difference betwen error and throw in java?
+
+Errors:
+	Errors are usually caused by serious problems that are outside the control of the program (not recoverable), such as running out of memory or a system crash. Errors are represented by the Error class and its subclasses.
+
+	OutOfMemoryError: Thrown when the Java Virtual Machine (JVM) runs out of memory.
+	StackOverflowError: Thrown when the call stack overflows due to too many method invocations.
+	NoClassDefFoundError: Thrown when a required class cannot be found.
+
+Exceptions:
+	Exceptions, on the other hand, are used to handle errors that can be recovered from within the program. Exceptions are represented by the Exception class and its subclasses. Some common examples of exceptions in Java include:
+
+	NullPointerException: Thrown when a null reference is accessed.
+	IllegalArgumentException: Thrown when an illegal argument is passed to a method.
+	IOException: Thrown when an I/O operation fails.
+	
+
+Q)Difference between OAuth 1.0 and OAuth 2.0?
+
+	OAuth 1.0:
+		Doesn't requires HTTPS communication
+		
+	OAuth 2.0:
+		It requires HTTPS communication
+
+Q)Java 7 features
+Try-with-resources statement
+Underscores in numeric literals. int one_million = 1_000_000;	
+Type Inference for Generic Instance: List<String> l = new ArrayList<>();
+
+
+Q)Java 8 features
+	Lambda Expressions: Concise functional code using ->.
+	Functional Interfaces: Single-method interfaces.
+	Introduced and Improved APIs:
+	Stream API: Efficient Data Manipulation.
+	Date/Time API: Robust Date and Time Handling.
+	Collection API Improvements: Enhanced Methods for Collections (e.g., removeIf, replaceAll).
+	Concurrency API Improvements: New classes for parallel processing (e.g., CompletableFuture).
+	Optional Class: Handle null values safely.
+	forEach() Method in Iterable Interface: Executes an action for each element in a Collection.
+	Default Methods: Evolve interfaces without breaking compatibility.
+	Static Methods: Allows adding methods with default implementations to interfaces.
+	Method References: Refer to methods easily.
+
+Q)Java 11 features
+In this version, JRE or Server JRE is no longer offered. Only JDK is offered.
+Several new methods of String such as isBlank(), lines(),repeat(n), stripLeading(), stripTrailing(), and strip() are introduce.
+Java 11 allows us to use var variables to be used in lambda expressions.
+List.of(), Set.of() etc
+
+Before Java-11 version
+	>javac filename.java
+	>java filename
+		
+run file Java-11 and higher version
+	>java filename.java
+
+Q)Java 17 features
+Not much changes on code level, more changes happen on security and JVM level
+
+Q)Difference between Web Application and Non-Web Application
+Web Application: 
+	This is a software application that runs on a web server and is accessed through a web browser over the internet or an intranet. Examples include Google Docs, online banking portals, and social media platforms. Web applications rely on web technologies like HTML, CSS, and JavaScript, and they often require an internet connection to function.
+	->It requires internet connection
+	->It uses remote server resources
+
+Non-Web Application: 
+	This category includes applications that don’t run in a web browser. Examples are desktop applications (like Microsoft Word or Adobe Photoshop), mobile applications (like WhatsApp or Instagram on your phone), and command-line tools. These applications are often installed directly on a user’s device and can work offline.
+	->It can be used offline
+	->It uses user system resources
+	
+P)Example of springboot non web applications.
+Batch Processing Applications, Event-Driven Applications, Console Applications
+
+
+Q)what are exception handling and why we need to handle?
+Exception handling is the process of responding to unwanted or unexpected events when a computer program runs.
+The Exception Handling in Java is one of the powerful mechanism to handle the runtime errors so that the normal flow of the application can be maintained.
+
+Q)Why We Need to Handle Exceptions?
+->Prevent Application Crashes
+->Provide User-Friendly Error Messages
+->Maintain Application Flow
+->Debugging and Logging
+
+Q)What is output? output is String.
+
+	public void print(Object i) {
+
+        System.out.println("Object");
+
+    }
+    
+    public void print(String a) {
+
+        System.out.println("String");
+
+    }
+	
+	output is String.
+	
+P)The output is "String" because when passing null, Java chooses the most specific method, which is print(String a), since String is a subclass of Object.
+If we use anyMethod(null) always subclass method will invoke.

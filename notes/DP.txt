@@ -15,8 +15,10 @@ Creational Design Pattern
 	
 2) Factory design Method
 	That provide an interface for creating objects in superclass, but subclasses are responsible to create the instance of the class.
-	Ex:- java.util.Calendar, ResourceBundle and NumberFormat getInstance() methods uses Factory pattern.
+	Ex:- Collections.emptyList(),NumberFormat#getInstance(), java.util.Calendar, ResourceBundle and NumberFormat getInstance() methods uses Factory pattern.
 	
 3) Builder Design Pattern
 	Builder Pattern says that "construct a complex object from simple objects using step-by-step approach".
 	For example if a POJO class has 20 variables and if user has to create an object with 10 fields then it is very deficult because for every object he may need use different variables. And also if some one add new variable then again it won't be a part of constructor. Builder pattern will solve this issue
+	
+	Ex:- Stream.Builder, StringBuilder#append(), StringBuffer#append() 

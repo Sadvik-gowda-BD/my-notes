@@ -16,10 +16,13 @@ Q) Difference between Relational and Non-Relational Databases
 Q)
 
 Sequence generator
-Joins
+Joins - left outer, inner joins etc
 Views
 stored procedure
 
+
+@Lob in entity
+Normalization
 
 To revisit
 
@@ -27,3 +30,221 @@ GO
 
 write view and store procedure query , it'll be easy to remember
 find nth highest salary
+
+
+Q)Print max salary by each department with employee name
+
+WITH DepartmentMaxSalaries AS (
+    SELECT Department, MAX(Salary) AS HighestSalary
+    FROM Employees
+    GROUP BY Department
+)
+SELECT e.EmployeeName, e.Department, e.Salary AS HighestSalary
+FROM Employees e
+INNER JOIN DepartmentMaxSalaries dms
+ON e.Department = dms.Department AND e.Salary = dms.HighestSalary; 
+
+Q)Print the day where temp is increased
+
+Select * from whether w1 where w1.temp > (select temp from whether w2 where w2.day = (w1.day-1));
+
+Select w2.day from whether w1 
+join whether w2 on (w1.day+1) = w2.day
+where w2.temp > w1.temp
+
+Note:- when W1=1 then W2=2
+
+
+P)In SQL Server, the WITH clause is used to define a Common Table Expression (CTE). A CTE is a temporary result set that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement. It is similar to creating a temporary table, but it's only available for the duration of the query it is defined in.
+	
+Q)How database index works
+When you create an index on a column, you’re creating a new table with two columns: one for the column you indexed on, and another for the pointer to the record it relates to.
+This index structure is then sorted, allowing Binary Searches to be performed on it. As a result, your query is O Log(n) efficient compare to linear search O(N/2)
+	
+
+
+Q)Difference between 1st and 2nd level cache
+
+In hibernate session factory configuration details will be in hibernate.cfg.xml file then  
+SessionFactory sessionFactoty = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+
+1st level cache
+	->By default in hibernate
+	->First Level cache is associated with the Session object
+	->mandatory and for only one session, once the session is closed it will be removed from cache.
+	For Ex:- in a session if get user id 101 data and if I fetch same data again and again it won't hit database multiple time hit only once, it returns from the L1 cache.
+	
+	Session session = sessionFactoty.openSession();
+	session.get(UserDetails.class, 101); //hit database
+	session.get(UserDetails.class, 101); //won't hit database return data from cache
+	session.close();
+	
+	
+2nd level cache
+	->We have to implement manually
+	->Second Level Cache is associated with the Session Factory object
+	->optional and shared by all sessions
+	
+	Ex: By default L2 cache will be diabled, we can enable by below property
+		<property name="hibernate.cache.use_second_level_cache">true</property>
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.jcache.JCacheRegionFactory</property>
+        <property name="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</property>
+
+
+
+
+
+
+---------------------------------MONGODB
+
+MongoDb
+
+P)JSON
+only 6 data types - String, Number, Object, Array, Boolean, Null
+
+Ex:-
+{
+	"id": 101,
+	"type":"Phone",
+	"price":120,
+	"inStock":true,
+	"features":["wifi","5g","HD camera"],
+	"others":null
+}
+
+P)BSON / Binary JSON
+
+->BSON is a binary-encoded serialization of JSON documents, and includes all JSON data structure types
+->All documents in MongoDb stores in the format of BSON
+
+Common BSON types
+String, Object, Array, Boolean, Integer NumberInt(50), Double, ObjectId("xyz"), Date ISODate("2018-....)
+
+To start mongo shell
+>mongosh
+
+
+To check service is running or not
+netstat -an | findstr 27017
+
+
+> db.version()
+
+> show dbs
+> use testdb //testdb won't be created until we create any collections
+
+> show collections
+
+//Create collections
+> db.createCollection("collection_name")
+
+-----Insert data into collection db.Collection_name or db.getCollection(Collection_name)
+
+>db.Collection_name.insertOne({Name: "Akshay", Marks: 500})
+
+or
+
+//create variable and use that variable during insertion
+>const val1 = {Name: "Akshay", Marks: 500};
+>db.Collection_name.insertOne(val1)
+
+>db.Collection_name.insertMany([{name:"Ajay",age:20},
+                       {name:"Bina",age:24},
+                       {name:"Ram",age:23}])
+
+//Or
+
+>db.Collection_name.insert(
+<document or [document1, document2,...]>,
+{
+    writeConcern: <document>,
+    ordered: <boolean>
+})
+
+
+------------Read Operations
+>db.getCollection('collection_name').find()
+>db.Collection_name.findOne()
+
+//Get all the data from collection
+>db.yourCollectionName.find()
+
+//get data based on key value pair
+>db.yourCollectionName.find({age:20})
+>db.yourCollectionName.find({"address.city":"Bengaluru"}) //for embedded variable "" is mandatory like "address.city"
+
+
+---------query operators
+
+$or, $and, $eq, $neq, $lt, $gt,$gte, $in, $nin, $regex etc
+
+//age > 20
+>db.Collection_name.find({"age":{$gt:20}})
+
+//name="Ram" && age>20
+>db.Collection_name.find({$and:[{name:"Ram"}, {age:{$gt:20}}]})
+
+//name in 
+>db.Collection_name.find({name:{$in:["Ajay","Vijay"]}});
+
+------------Helper methods
+sort(), limit(), skip()
+
+>db.Collection_name.find().skip(2).sort({age:1}).limit(3);
+> db.Collection_name.find().sort({age:1}); // value should be 1 or -1. 1=ascending order, -1=descending order
+> db.Collection_name.find().skip(2)
+
+----update
+We can use update function to update or addd new fields
+
+db.COLLECTION_NAME.update({SELECTION_CRITERIA}, {$set:{UPDATED_DATA}}, {
+     upsert: <boolean>,
+     multi: <boolean>,
+     writeConcern: <document>,
+     collation: <document>,
+     arrayFilters: [ <filterdocument1>, ... ],
+     hint:  <document|string>        
+   })
+
+//updateOne() is a method that is used to update a single document that matches a specified filter.
+>db.Collection_name.updateOne({name: "Annu"}, {$set:{age:25}});
+
+//The MongoDB updateMany is used to update multiple documents in a collection that match a specified filter. This method allows us to apply updates to all documents that meet the criteria defined in the filter.
+>db.Collection_name.updateMany({age:18},{$set:{eligible:"true"}})
+
+---delete
+
+//Delete only one doc which is first
+>db.Collection_name.deleteOne({name:"Ram"});
+>db.Collection_name.deleteMany({name:"Ram"})
+>db.Collection_name.deleteMany({age: {$lt:20}})
+
+
+---MongoDB Aggregation Pipeline
+Aggregation in MongoDB is a powerful feature that allows for complex data transformations and computations on collections of documents. It enables users to group, filter, and manipulate data to produce summarized results.
+
+//To get all unique ages
+>db.Collection_name.aggregate([{$group:{_id:"$age"}}])
+
+//print group by age and count the records
+>db.Collection_name.aggregate([{$group:{_id:"$age", count: {$sum:1}}}])
+
+
+--indexes
+
+>db.Collection_name.getIndexes()
+
+
+
+
+----Others
+
+//count of documents in collections
+>db.Collection_name.countDocuments(); //output is 8
+>db.Collection_name.aggregate([{ $count: "totalDocumentsCount" }]); //output is [ { totalDocumentsCount: 8 } ]
+
+
+
+
+
+

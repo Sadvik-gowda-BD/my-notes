@@ -2,7 +2,7 @@
 
 Encryption:
 	->Encryption is the process of converting a normal readable message (plaintext) into a garbage message (not readable message) known as Ciphertext. The ciphertext obtained from the encryption can easily be transformed into plaintext using the encryption key. 
-	->
+	->It is a two way function, for example we can encrypt and decrypt the same message.
 	It is less secure in comparison to hashing.
 	Ex:- RSA, AES, and Blowfish.
 
@@ -50,3 +50,75 @@ Q)Having four certificates—client keystore, server keystore, client truststore
 	Server Authentication:
 		The server presents its certificate from the server keystore.
 		The client verifies this certificate against the client truststore.
+
+
+
+
+================================= JWT tokens ===================================
+Q)How RSA jwt token works
+
+-> JWT token contains 3 part Header, Payload, Signature
+
+	JWT = <Base64Url(header)>.<Base64Url(payload)>.<Base64Url(signature)>
+
+	Header: This is a JSON object that specifies the type of token and the signing algorithm used. For RSA JWTs, this might look like. It is a base64 encoded and anyone can read the data
+	{
+		"alg": "RS256",
+		"typ": "JWT"
+	}
+	
+	Payload: This contains the data like role, capablities, expity_time, name etc. It is a base64 encoded and anyone can read the data
+	{
+		"sub": "1234567890",
+		"name": "John Doe",
+		"admin": true
+		"roles": ["USER", "MANAGER"]
+		"expity_time": 12345676
+	}
+	
+	Signature: This is used to verify that the sender of the JWT is who it says it is and to ensure that the message wasn't changed along the way.
+	
+	signature = RSASHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), secrect_key/ privateKey or publicKey)
+	
+Q)How signature creation and validation works
+	In the context of RSA JWT tokens, the private and public keys used for signing and validation are part of an asymmetric cryptographic system.
+	
+	Signing the JWT Token
+		Private Key for Signing:
+			The private key used to sign the JWT token belongs to the entity (such as a server or an issuer) that creates and issues the JWT. This entity is responsible for proving the authenticity of the token.
+			This private key is kept secure and is never shared publicly. It is used to encrypt the hash of the token's header and payload, creating the signature part of the JWT.
+	Verifying the JWT Token
+		Public Key for Validation:
+			The public key is used by the recipient (such as a client or another server) to verify the JWT's signature.
+			This public key corresponds to the private key used to sign the JWT and can be shared openly. It is used to decrypt the signature, verifying that the sender is indeed who they claim to be and that the token has not been tampered with.
+			
+			
+Q)Works in ping identity
+
+	Signing the JWT with Ping Identity
+		1)Ping Identity Configuration:
+			Ping Identity acts as the issuer of the JWT tokens. It will have a private key configured within its system to sign the JWTs.
+			This private key is securely stored within the Ping Identity infrastructure.
+		2)Token Issuance:
+			When a user authenticates or requests a JWT, Ping Identity generates the token, which includes a header, payload, and a signature.
+			The signature is created using the private key and the specified algorithm (e.g., RS256).
+	
+	Verifying the JWT
+		1)Public Key Access:
+			Ping Identity provides the corresponding public key, which is necessary for clients or other services to verify the JWT signature.
+			This public key is often available through a JWKS (JSON Web Key Set) endpoint. For example, it might be accessed at a URL like https://your-ping-identity-server/.well-known/jwks.json.
+		2)JWT Verification:
+			When a client or a service receives a JWT, it retrieves the public key from Ping Identity's JWKS endpoint.
+			The recipient uses this public key to verify the signature on the JWT, ensuring it was indeed signed by Ping Identity and has not been tampered with.
+	
+	How Ping Identity Manages Keys
+		Key Rotation:
+			Ping Identity may periodically rotate its signing keys for security reasons. When this happens, the JWKS endpoint will provide updated public keys, and clients should be able to handle key rotation smoothly.
+		Trust and Certificates:
+			The public key may be associated with an X.509 certificate, providing additional information and trust about the key's origin.
+			Summary
+	In the case of using Ping Identity:
+		Private Key: Managed by Ping Identity for signing JWTs.
+		Public Key: Accessible via a public endpoint, allowing clients and services to verify JWTs.
+		Configuration: Ensure your systems are configured to retrieve and use the correct public key from Ping Identity to verify the JWTs. This often involves setting up your application to fetch the JWKS from Ping Identity and cache it appropriately.
+	
