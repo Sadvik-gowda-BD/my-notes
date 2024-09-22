@@ -46,13 +46,30 @@ ON e.Department = dms.Department AND e.Salary = dms.HighestSalary;
 
 Q)Print the day where temp is increased
 
-Select * from whether w1 where w1.temp > (select temp from whether w2 where w2.day = (w1.day-1));
+	Select * from whether w1 where w1.temp > (select temp from whether w2 where w2.day = (w1.day-1));
 
-Select w2.day from whether w1 
-join whether w2 on (w1.day+1) = w2.day
-where w2.temp > w1.temp
+	--By using joins
 
-Note:- when W1=1 then W2=2
+	SELECT 
+		t1.day AS CurrentDay, 
+		t1.temperature AS CurrentTemp, 
+		t2.day AS PreviousDay, 
+		t2.temperature AS PreviousTemp
+	FROM 
+		weather t1
+	JOIN 
+		weather t2 
+		ON t1.day = DATEADD(day, 1, t2.day)  -- t1 is the day after t2
+	WHERE 
+		t1.temperature > t2.temperature;     -- temp increased
+		
+		-------------------------------------------------------------------------------
+		
+	Select w2.day from whether w1 
+	join whether w2 on (w1.day+1) = w2.day
+	where w2.temp > w1.temp
+
+	Note:- when W1=1 then W2=2
 
 
 P)In SQL Server, the WITH clause is used to define a Common Table Expression (CTE). A CTE is a temporary result set that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement. It is similar to creating a temporary table, but it's only available for the duration of the query it is defined in.

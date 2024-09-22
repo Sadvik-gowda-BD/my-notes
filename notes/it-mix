@@ -104,3 +104,22 @@ Q)What is output? output is String.
 	
 P)The output is "String" because when passing null, Java chooses the most specific method, which is print(String a), since String is a subclass of Object.
 If we use anyMethod(null) always subclass method will invoke.
+
+Q)Java memories
+	->Heap Memory:
+		->There is typically one heap memory per Java Virtual Machine (JVM), and it is shared among all threads of the application.
+		->One per JVM.
+	->stack memory: 
+		->Each thread in a Java application has its own stack memory. The stack is used for storing local variables, method calls, and reference variables.
+		->Each thread’s stack is independent of others
+		->One per thread.
+		
+Q)Below code give compole error - attempting to assign weaker access privileges; was public
+
+Class A {
+	public void print(){}
+}
+
+Class B extends A {
+	protected/private void print(){}
+}

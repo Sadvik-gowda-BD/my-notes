@@ -27,6 +27,7 @@ Q)Difference between JDK, JRE and JVM
 		
 	
 	JVM - Java Virtual Environament
+		The JIT compiler is part of the JVM, not the JDK.
 		It is a platform dependent. Different JVM is designed for different OS and byte code is able to run on different OS.
 		JVM is physically not exist and can't be installed alone. JVM is a part of JRE, we need to install JRE
 		It enables the execution of Java bytecode. The JVM acts as an interpreter between the Java programming language and the underlying hardware.
@@ -65,14 +66,16 @@ Q)Generations
 	It is a segment of Heap memory used to group objects based on their age and lifecycle (for sake of garbage collection).
 	
 	1)Young Generation:
-		This is where all new objects are allocated and aged. A minor Garbage collection occurs when this fills up.
+		This is where all new objects are allocated and aged.
 		Hold short-lived objects.
 		Takes less time for GC.
+		Ex:  Temporary variables, Method-local objects, Loop variables, Request-scope objects
 	
 	2)Old or Tenured Generation:
-		this is where long-surviving objects are stored. When objects are stored in the Young Generation, a threshold for the object's age is set, and when that threshold is reached, the object is moved to the old generation.
+		this is where long-surviving objects are stored.
 		Hold long-lived objects.
 		Takes more time for GC.
+		Ex: Singleton instances, Caches, User sessions, Thread pools, Global or static objects
 	
 	3)Permanent Generation:
 		this consists of JVM metadata for the runtime classes and application methods.
@@ -174,7 +177,7 @@ Cache is applicable for Integer=18 and Integer.valueOf(18). Not applicable of In
 java.lang.Long has a cache for long between -128 to +127.
 Integer i1 == Integer i2 ==> true if range is b/w -128 and 127, false if value is beyond that
 Ex:- Integer i1=60, i2=60 => i1==i2 //true (it check the reference and reference is same)
-	Integer i1=500, i2=500 => i1==i2 //false (it check the reference ans reference is difference)
+	Integer i1=500, i2=500 => i1==i2 //false (it check the reference and reference is different)
 
 Q)Is there any difference in defining or creating a String by using String literal and by using the new() operator?
 Creating string using the new operator ensures that the String is created in the heap alone and not into the string pool. Whereas, creating string using literal ensures that the string is created in the string pool. String pool exists as part of the perm area in the heap. This ensures that the multiple Strings created using literal having same values are pointed to one object and prevents duplicate objects with the same value from being created.
@@ -282,7 +285,8 @@ Object-oriented programming aims to implement real-world entities like inheritan
 	Inheritance - Aquring properties from one class (parent class) to another (child class).
 		‘IS-A’ relationship is another name for inheritance. When we inherit the base class from the derived class, then it forms a relationship between the classes. 
 		For ex:- bike and car inherits properties from vehical parent class, then here relationship is bike IS-A vehical.
-		Java doesn't support multiple inheritance
+		Java doesn't support multiple inheritance - to avoid the complexity and ambiguity that can arise from it.
+		To avoid Diamond Problem.
 		
 	Polymorphism - task that performs a single action in different ways, one type manyforms.
 		compiletime-polymorphism - Method overloading
@@ -311,7 +315,7 @@ HAS-A
 	MAX_PRIORITY: It has an integer value assigned with 10.
 	NORM_PRIORITY: It has an integer value assigned with 5.
 
-The t1.join() method of thread class waits for a thread t1 to die (wait t1 to complete the work)
+The t1.join() method of thread class waits for a thread t1 to die (wait till t1 completes the work)
 
 Multithreading:- Do multiple operation at same time with in the single application. Threads are lightweight processes within processes as seen. 
 
@@ -325,7 +329,8 @@ EX:-
 	Multiple request & response process in a sigle web server.
 	JUnits uses threads to run test cases in parallel
 	
-Q)Life cycle of java thred
+Q)Life cycle of java thread
+
 	New
 	Runnable
 	Running
@@ -350,7 +355,7 @@ Thread obj.wait():-
 	It is defined in the object class, and should only be called from a synchronized context. 
 	
 Thread.sleep(100):-
-	 it is a static method that pauses or stops the execution of the current thread for some specified period. It doesn’t release the lock while waiting and is mostly used to introduce pause on execution.
+	 it is a static method that pauses or stops the execution of the current thread for some specified period. It doesn’t release the lock while waiting and is mostly used to introduce pause on current execution.
 	 It is defined in thread class, and no need to call from a synchronized context.
 
 Q)Reentrent lock 
@@ -417,6 +422,7 @@ Q)Difference b/w collection and collections
 		The ArrayList class implements the List interface. It uses a dynamic array to store the duplicate element of different data types.
 		Insertion and deletion operation is slow becasuse of shifting.
 		Read data/accessing from index is fast beacause of contigous memeory allocation.
+		Consumes less memeory compare to LinkedList
  
 	2)LinkedList
 	LinkedList implements the Collection interface. It uses a doubly linked list internally to store the elements. It can store the duplicate elements.
@@ -427,6 +433,17 @@ Q)Difference b/w collection and collections
 	3)Vector
 	Vector uses a dynamic array to store the data elements. It is similar to ArrayList. However, It is synchronized and works in a multithreading environment
  
+Q) How to make any LinkedList or ArrayList thread safe in java
+-> 1. Using Collections.synchronizedList()
+	List<String> list = new LinkedList<>(); // or ArrayList
+    List<String> synchronizedList = Collections.synchronizedList(list);
+	
+->2. Using CopyOnWriteArrayList
+	It also help us to avoid ConcurrentModificationException
+	CopyOnWriteArrayList<String> list = new CopyOnWriteArrayList<>();
+	This class creates a new copy of the array every time a write operation (like add() or remove()) is performed.
+
+
 4)Set
 It represents the unordered set of elements which doesn't allow us to store the duplicate items.
 	1)Hash Set
@@ -443,7 +460,7 @@ It represents the unordered set of elements which doesn't allow us to store the 
 	
 		->HashMap in Java is basically an array of bucket where each bucket uses linked list to hold elements. A linked list is a list of nodes where each node contains a key-value pair(EntrySet).
 		->The default initial capacity of HashMap is 16 (i.e. the number of buckets). and load factor is 75%
-		->First the hascode of key will taken (for null hascode will be 0) then pass that hashcode to hash() method it returns bucket location (int value). In that bucket key,value pair will be stored in LinkedList.
+		->First the hascode of key will taken (for null key hascode will be 0) then pass that hashcode to hash() method it returns bucket location (int value). In that bucket key,value pair will be stored in LinkedList.
 		->Time complexity to insert and retrieve a value is O(1)
 		HashMap in Java 8 
 		In Java 8, HashMap replaces the linked list with another useful data structure i.e. balanced trees (specifically red-black trees) tree on breaching a certain threshold, which is known as TREEIFY_THRESHOLD (size is 8, if bucket size/number of elements in a bucket is more than 8 link list become Red-Black tree). Once this threshold is reached, the linked list of Entries is converted to the Red-Black TreeNodes which reduces the time complexity from O(n) to O(log(n)).
@@ -453,14 +470,14 @@ It represents the unordered set of elements which doesn't allow us to store the 
 		Once the number of entries is decreased due to removal or resizing of HashMap (UNTREEIFY_THRESHOLD = 6), the structure is converted back to the older implementation which is LinkedList.
 
 Q)How Hashset works internally?
-A HashSet is backed by a HashMap. Each element in the HashSet is stored as a key in this HashMap, with a constant dummy value associated with it (typically Boolean.TRUE).
+Internally, a HashSet uses a HashMap to store its elements. When you add an element to a HashSet, it actually adds the element as a key in the HashMap with a constant dummy value (HashMap.PRESENT), which acts as a placeholder.
 This means that while HashSet ensures unique elements, the underlying HashMap handles the storage, retrieval, and management of these elements.
-
 
 		
 Q))Types of Map available in java
-HashMap
-LinkedHashMap
+HashMap: offers 0(1) lookup and insertion
+LinkedHashMap: LinkedHashMap offers 0(1) lookup and insertion
+TreeMap: offers O(log N) lookup and insertion
 
 
 Q)HashMap Vs ConcurrentHashMap Vs HashTable 
@@ -548,6 +565,7 @@ Static class:
 	->We can declare a class static by using the static keyword. A class can be declared static only if it is a nested class. It does not require any reference of the outer class. The property of the static class is that it does not allows us to access the non-static members of the outer class.
 	
 	->we can create a static class inside another class.
+	-> Used in Builder Design
 
 Q)can we print "Hello world" in java without using main method?
 	Yes, by using static method. Here we can just compile and run java file.
@@ -566,7 +584,7 @@ Java send signal to Interface AutoCloseable close() method during the try-with-r
 Exception
 Exception handle in catch block should be in order like Runtime --> Exception etc, otherwise compiletime error will be thrown
 After try block catch or finally is must expected
-Finally block allways execute
+Finally block always execute
 If try, catch and finally has return statement then always finally block value will be returned. (error or non-error doesn't matter)
 
 
@@ -579,6 +597,5 @@ Q) Default Methods In Java 8
 The default methods were introduced to provide backward compatibility so that existing interfaces can use the lambda expressions without implementing the methods in the implementation class. Default methods are also known as defender methods or virtual extension methods.
 
 
------------------------Crypto
 
 

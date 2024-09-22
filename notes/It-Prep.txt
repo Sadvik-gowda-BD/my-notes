@@ -20,32 +20,11 @@ used custom Exception and RestControllerAdvise as GlobalExceptionHandler
  
 
 
-
-
-What is auto configuration?
-bean type- prototype and singleton and lookup
-
-What is OOP's concept?
- 
- 
-Springboot
- 
-
- 
- 
-TODO:
- 
- 
-Core Java:
-
- 
-Springboot:
-
- 
- 
-Sql
-
-
+1)Sting methods to remember
+str.split(" ")
+str.substring(0, index)
+str.substring(5) // index 5 to last
+stringBuilder.setCharAt(index, ch);
 
 
 
