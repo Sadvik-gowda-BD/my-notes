@@ -210,7 +210,7 @@ P)override in static method does not make any sense, because static method belon
 
 Q)How many ways to create an object?
 	Using new keyword - GFG obj = new GFG(); 
-	Using new instance -  Class cls = Class.forName("GFG"); GFG obj = (GFG)cls.newInstance(); 
+	Using new instance -  Student obj = Class.forName("Student").newInstance();
 	Using clone() method - GFG obj2 = (GFG)obj1.clone(); 
 	Using deserialization - 
 	Using newInstance() method of Constructor class
@@ -292,9 +292,42 @@ Object-oriented programming aims to implement real-world entities like inheritan
 		compiletime-polymorphism - Method overloading
 		Runtime-polymorphism - method overriding (because object creates at runtime)
 	Abstraction -  a process of hiding the implementation details and showing only functionality to the use. Ex Interfaces and Abstract class - Can't able to create object to Abstract class
-	Encapsulation - Wrapping of data (variable and method) into a single unit. Ex:- Class with private variable , getters and setters.
+	Encapsulation:
+		Wrapping of data (variable and method) into a single unit. 
+		Ex:- Class with private variable , getters and setters.
+		Java POJO and Java Beans
+		
+Q) Java POJO vs Java Bean
+
+	POJO (Plain Old Java Object):
+		 A simple Java object that doesn’t follow any special conventions or requirements.
+		 No need to implement any specific interfaces.
+		 No restrictions on access modifiers for fields (can be public, private, etc.).
+		 Can have any constructors, including parameterized ones.
+		 
+	JavaBean:
+		Must implement the Serializable interface.
+		All fields should be private.
+		Must have a no-argument constructor.
+		Fields are accessed using public getter and setter methods.
+		Used mainly in UI frameworks and for data encapsulation.
 
 P)we can say that we cannot use this() and super() keywords in the same block, it will compilation error. super() should be first statement inside any constructor
+
+P)Association,Aggregation, composition
+	Association:
+		It is a general term that describes a relationship between two independent classes. It can be unidirectional or bidirectional and can exist in various forms such as one-to-one, one-to-many, many-to-one, and many-to-many.
+		
+	Aggregation:
+		Aggregation is a specific form of association in which one class, the whole, contains a collection of other classes.
+		A special form of association with a “has-a” relationship
+		Ex: Library and Books
+		
+	Composition:
+		A stronger form of association with a “part-of” relationship.
+		Ex: Car and Engine, car cannot exist without an Engine
+		
+
 
 P)IS-A and HAS-A (composition or aggregatio)
 IS-A
@@ -303,6 +336,8 @@ IS-A
 HAS-A 
 	car has engine
 	car has tires
+	
+
 
 4)Multithreading
 
@@ -386,9 +421,11 @@ Q)Java class execution flow
 	static block 	//execution happens only once for static block, for others executiom/initialization happens for every object
 	initialization of static variable
 	main method()
+	initialization of instance variable
 	instance block
-	initialization of class variable
 	constructor
+	
+	Note:- if there is an inheritance then first parent classes (initialization of instance variable,instance block, constructor )will invoke then child class values
 
 5)Design principals
 SOLID principal
@@ -470,8 +507,11 @@ It represents the unordered set of elements which doesn't allow us to store the 
 		Once the number of entries is decreased due to removal or resizing of HashMap (UNTREEIFY_THRESHOLD = 6), the structure is converted back to the older implementation which is LinkedList.
 
 Q)How Hashset works internally?
-Internally, a HashSet uses a HashMap to store its elements. When you add an element to a HashSet, it actually adds the element as a key in the HashMap with a constant dummy value (HashMap.PRESENT), which acts as a placeholder.
-This means that while HashSet ensures unique elements, the underlying HashMap handles the storage, retrieval, and management of these elements.
+	->Internally, a HashSet uses a HashMap to store its elements. When you add an element to a HashSet, it actually adds the element as a key in the HashMap with a constant dummy value (HashMap.PRESENT), which acts as a placeholder.
+	->Each element in the HashSet is stored as a key in the HashMap.
+	
+    // Dummy value to associate with an Object in the backing Map
+    private static final Object PRESENT = new Object();
 
 		
 Q))Types of Map available in java
@@ -501,6 +541,51 @@ Q)HashMap Vs ConcurrentHashMap Vs HashTable
 		Order of insertion is not guaranteed in HashTable.
 		Suitable for multi-thread appliactions.
 		It is legacy class. We can use ConcurrentHashMap instead of HashTable.
+		
+Q)Interanl working 
+
+	Arraylist:
+		->ArrayList uses a regular array (of type Object[]) internally to store elements.
+		->This array is resized dynamically as needed (i.e., when the array reaches capacity, a larger array is created, and elements are copied over).
+		->When an ArrayList is initialized, a default size is allocated for the internal array (usually 10).
+		->Time complexity for Insert/Remove at beginning/middle: O(n) 
+		
+	LinkedList:
+		->A LinkedList in Java is implemented as a doubly linked list.
+		->Time complexity for Insert/Remove at end is O(1), Insert/Remove at middle: O(n) due to traversal.
+		
+
+	
+	1)HashMap
+		
+		It is a known fact that the HashMap key utilizes the hashCode() and the equals() method for finding the index and finding a key's value. Therefore, it is required to implement these methods properly. If these methods are not implemented properly, then hashMap will not work properly. 
+	
+		->HashMap in Java is basically an array of bucket where each bucket uses linked list to hold elements. A linked list is a list of nodes where each node contains a key-value pair(EntrySet).
+		->The default initial capacity of HashMap is 16 (i.e. the number of buckets). and load factor is 75%
+		->First the hascode of key will taken (for null key hascode will be 0) then pass that hashcode to hash() method it returns bucket location (int value). In that bucket key,value pair will be stored in LinkedList.
+		->Time complexity to insert and retrieve a value is O(1)
+		HashMap in Java 8 
+		In Java 8, HashMap replaces the linked list with another useful data structure i.e. balanced trees (specifically red-black trees) tree on breaching a certain threshold, which is known as TREEIFY_THRESHOLD (size is 8, if bucket size/number of elements in a bucket is more than 8 link list become Red-Black tree). Once this threshold is reached, the linked list of Entries is converted to the Red-Black TreeNodes which reduces the time complexity from O(n) to O(log(n)).
+ 
+		TreeNodes are nothing but the structures supporting the balanced trees (specifically red-black trees) trees which have two nodes, smaller node goes to the left and the larger to the right. Whenever we want to search for any key the whole left or right subtree is discarded with a single check. This is how the time complexity is reduced to O(log(n). This change has lead to a significant improvement of HashMap.
+ 
+		Once the number of entries is decreased due to removal or resizing of HashMap (UNTREEIFY_THRESHOLD = 6), the structure is converted back to the older implementation which is LinkedList.
+
+	2)TreeMap
+		->The internal data structure used by TreeMap is a Red-Black Tree, a self-balancing binary search tree.
+		->Red-Black Trees ensure that the tree remains approximately balanced, which guarantees O(log n) time complexity for operations like insertion, deletion, and search.
+		
+	
+	2)Hashset
+		->Internally, a HashSet uses a HashMap to store its elements. When you add an element to a HashSet, it actually adds the element as a key in the HashMap with a constant dummy value (HashMap.PRESENT), which acts as a placeholder.
+		->Each element in the HashSet is stored as a key in the HashMap.
+		// Dummy value to associate with an Object in the backing Map
+		private static final Object PRESENT = new Object();
+	
+	
+	
+	
+	
 		
 Q)Why does the java array index start with 0?
 It is because the 0 index array avoids the extra arithmetic operation to calculate the memory address.
@@ -597,5 +682,41 @@ Q) Default Methods In Java 8
 The default methods were introduced to provide backward compatibility so that existing interfaces can use the lambda expressions without implementing the methods in the implementation class. Default methods are also known as defender methods or virtual extension methods.
 
 
+Q)JVM architecture
+
+	ClassLoader:
+		Loading: The Class loader reads the “.class” file, generate the corresponding binary data and save it in the method area.
+		Linking: 
+		Initialization: In this phase, all static variables are assigned with their values defined in the code and static block(if any).
+		
+	JVM Memory:
+		Method area: 
+			In the method area, all class level information like class name, immediate parent class name, methods and variables information etc. are stored, including static variables. There is only one method area per JVM, and it is a shared resource.
+			
+		Heap area: 
+			Information of all objects is stored in the heap area. There is also one Heap Area per JVM. It is also a shared resource.
+			
+		Stack area:
+			 All local variables of that method are stored in their corresponding frame. After a thread terminates, its run-time stack will be destroyed by JVM. It is not a shared resource.
+			 
+		PC Registers: 
+			Store address of current execution instruction of a thread. Obviously, each thread has separate PC Registers.
+			
+	Execution Engine:
+		Interpreter: 
+			It interprets the bytecode line by line and then executes. The disadvantage here is that when one method is called multiple times, every time interpretation is required.
+		JIT Compiler(Just-In-Time): 
+			It is used to increase the efficiency of an interpreter. It compiles the entire bytecode and changes it to native code so whenever the interpreter sees repeated 	method calls, JIT provides direct native code for that part so re-interpretation is not required, thus efficiency is improved.
+		Garbage Collector:
+			It destroys un-referenced objects.
+		
+	Java Native Interface (JNI)
+		It enables JVM to call C/C++ libraries and to be called by C/C++ libraries which may be specific to hardware. By using JNI we can invoke other language file like c, C++ files.
+		
 
 
+P) Access specifier of java outer class	should be public or default.
+		public - Class can access anywhere in java code.
+		default - Class can access only access within the package
+
+P) .class will be created for java all java file like class, Interface, Enum, NextedClass, Abstract class etc.
