@@ -111,6 +111,8 @@ Q)Default garbage collector
 	Java 10 - G1 GC
 	java 11 - G1 GC
 
+P)Garbage collector uses mark and sweep algorithm to remove object
+
 P)In Java, all the wrapper classes (like Integer, Boolean, Byte, Short, Float, Double, Long) and String class is immutable.
 	we can also create a custom immutable class- it should contain only constructor/builder and getters, no setters.
 
@@ -162,7 +164,6 @@ Q)Does importing of com.myMainPackage.* also import com.myMainPackage.mySubPacka
    NO, Importing the parent package only results in the import of the classes within it and not the contents of its child/sub-packages. Importing of the sub-packages of a package needs to be done explicitly.
 
 
-
 Q)What is functional interface
 An Interface that contains exactly one abstract method. SAM (Single abstract method).
 Ex:-
@@ -205,8 +206,8 @@ StringBuilder:-
 StringBuilder is not a thread safe class.
 StringBuilder is faster than StringBuffer, because stringbuffer is synchronized and additional check is required
 
-P)we cannot be able to invoke static method by objects like obj.metName().
-P)override in static method does not make any sense, because static method belongs to class not to objects
+P)we can able to invoke static method by objects like obj.metName() but it not makes any sense because it belongs to class not object.
+P)We cannot override static mehtods because it belongs to Class not objects. If we use it gives compile error.
 
 Q)How many ways to create an object?
 	Using new keyword - GFG obj = new GFG(); 
@@ -236,7 +237,7 @@ Deep copy:
 	@Override
     protected Object clone() throws CloneNotSupportedException {
         Person cloned = (Person) super.clone();
-        cloned.address = (Address) address.clone(); // Clone the address
+        cloned.address = (Address) cloned.address.clone(); // Clone the address
         return cloned;
     }
 		
@@ -274,6 +275,15 @@ if (null == instance) {
 	}
 }
 return instance
+
+Q)Can we override static methods?
+No, In java we can't override static mehtods because it belongs to Class not objects. If we use it gives compile error.
+
+Q)Can we override main method?
+No, because main method is also static method
+
+Q)Can we overload main method?
+Yes
 		
 		
 Q)What is OOP's concept?
@@ -327,7 +337,6 @@ P)Association,Aggregation, composition
 		A stronger form of association with a “part-of” relationship.
 		Ex: Car and Engine, car cannot exist without an Engine
 		
-
 
 P)IS-A and HAS-A (composition or aggregatio)
 IS-A
@@ -418,8 +427,8 @@ Q)Java Threadpool
 	In the case of a thread pool, a group of fixed-size threads is created. A thread from the thread pool is pulled out and assigned a job by the service provider. After completion of the job, the thread is contained in the thread pool again.
 
 Q)Java class execution flow
-	static block 	//execution happens only once for static block, for others executiom/initialization happens for every object
 	initialization of static variable
+	static block 	//execution happens only once for static block, for others executiom/initialization happens for every object
 	main method()
 	initialization of instance variable
 	instance block

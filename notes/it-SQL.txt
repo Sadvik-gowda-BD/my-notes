@@ -108,6 +108,35 @@ SessionFactory sessionFactoty = new Configuration().configure("hibernate.cfg.xml
         <property name="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</property>
 
 
+Q)Databse lock
+	P)Pessimistic Locking
+		Pessimistic locking assumes that conflicts will happen when multiple transactions access the same data, so it locks the data resource preemptively. It prevents other transactions from modifying the data until the current transaction is complete.
+		->Locks the record immediately when a transaction reads it.
+		->No other transaction can read or write the locked data until the lock is released (usually after the transaction completes).
+		->Comes with a performance cost, as other transactions are blocked, and deadlocks may occur if not managed properly.
+		->In SQL Server, you can use row-level locks with the SELECT FOR UPDATE clause (in databases that support it).
+		EX:
+			@Lock(LockModeType.PESSIMISTIC_WRITE)
+			@Query("SELECT a FROM Application a WHERE a.id = :id")
+			Application findByIdWithLock(Long id);
+
+	P)Optimistic Locking
+		Optimistic locking assumes that conflicts are rare. Instead of locking the data at the time of reading, optimistic locking allows transactions to proceed without locking, but it checks for conflicts before committing the transaction.
+		->No locks are placed when reading or modifying data.
+		->The transaction checks if the data was modified by another transaction before committing the changes. If another transaction has modified the data, the current transaction is rolled back.
+		->Uses a version number or timestamp to detect changes in the data.
+		EX:
+			@Version
+			private Integer version; // Version field for optimistic locking
+
+
+
+
+
+
+
+
+
 
 
 
