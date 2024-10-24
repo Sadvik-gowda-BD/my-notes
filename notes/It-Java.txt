@@ -277,10 +277,13 @@ if (null == instance) {
 return instance
 
 Q)Can we override static methods?
-No, In java we can't override static mehtods because it belongs to Class not objects. If we use it gives compile error.
+No, In java we can't override static mehtods because it belongs to Class not objects. If we use it gives compile error if we use @Override annotation.
 
 Q)Can we override main method?
 No, because main method is also static method
+
+Q)Can we call static method from object like obj.myStaticMethod();
+Yes, but not recomonded
 
 Q)Can we overload main method?
 Yes
@@ -358,6 +361,8 @@ HAS-A
 	MIN_PRIORITY: It has an integer value assigned with 1.
 	MAX_PRIORITY: It has an integer value assigned with 10.
 	NORM_PRIORITY: It has an integer value assigned with 5.
+	
+	Priority of main thread in java is 5
 
 The t1.join() method of thread class waits for a thread t1 to die (wait till t1 completes the work)
 
@@ -405,6 +410,14 @@ Thread.sleep(100):-
 Q)Reentrent lock 
 Reentrancy: A thread can acquire the same lock multiple times without causing a deadlock. For each call to lock(), there must be a corresponding call to unlock(), and the lock is only released when the number of unlocks matches the number of locks.
 ReentrantLock can be configured to be fair. When fairness is set to true, the longest-waiting thread will acquire the lock next, ensuring first-come, first-served access.
+
+p)notify() and notifyAll() 
+	notify():
+		It wakes up one randomly chosen thread that is waiting on the same object's monitor.
+		
+	notifyAll():
+		Wakes up all threads that are waiting on the object's monitor.
+
 
 Q)DIfference b/w Multithreading and Async
 
@@ -486,6 +499,7 @@ Q) How to make any LinkedList or ArrayList thread safe in java
 	
 ->2. Using CopyOnWriteArrayList
 	It also help us to avoid ConcurrentModificationException
+	It is a thread safe
 	CopyOnWriteArrayList<String> list = new CopyOnWriteArrayList<>();
 	This class creates a new copy of the array every time a write operation (like add() or remove()) is performed.
 
@@ -498,6 +512,7 @@ It represents the unordered set of elements which doesn't allow us to store the 
 		LinkedHashSet class represents the LinkedList implementation of Set Interface. Like HashSet, It also contains unique elements. It maintains the insertion order and permits null elements.
 	3)TreeSet
 		Java TreeSet class implements the Set interface that uses a tree for storage. The elements in TreeSet stored in ascending order.
+		It wom't allow NULL values, because of sorting
 
 5)Map
 	1)HashMap
@@ -528,6 +543,8 @@ HashMap: offers 0(1) lookup and insertion
 LinkedHashMap: LinkedHashMap offers 0(1) lookup and insertion
 TreeMap: offers O(log N) lookup and insertion
 
+WeakHashMap: This means that if a key is not strongly referenced elsewhere in the application, the garbage collector will remove the key-value pair from the map when the key becomes weakly reachable. (It will be removed automatically when the key object don't have any references).
+IdentityHashMap: IdentityHashMap stores strong key reference not on .equals(), Compares keys based on reference (==) rather than logical equality (equals()).
 
 Q)HashMap Vs ConcurrentHashMap Vs HashTable 
 	HashMap:-
@@ -607,7 +624,8 @@ BlockingQueue is a java Queue that support operations that wait for the queue to
 	d). Consumer has to be wait if no item is present in the queue.
 
 Q)Unmodifiable list 
-
+->List.of()
+->Collections.unmodifiableList(modifiableList);
 
 Q)ImmutableList
 ImmutableList<String> immutableList =  ImmutableList.of("Geeks", "For", "Geeks"); 
@@ -633,6 +651,7 @@ Iterator
 	Helps to traverse Map, List and Set.
 	Indexes cannot be obtained by using Iterator.
 	Certain methods of Iterator are hasNext(), next() and remove()
+	Ex:- ListIterator<Integer> lstItr = myList.listIterator();
 	
 
 ListIterator
@@ -676,7 +695,7 @@ System.exit() makes terminate the code
 Java send signal to Interface AutoCloseable close() method during the try-with-resource to close the opened resource
 
 Exception
-Exception handle in catch block should be in order like Runtime --> Exception etc, otherwise compiletime error will be thrown
+Exception handle in catch block should be in order like NullPointer --> Runtime --> Exception etc, otherwise compiletime error will be thrown
 After try block catch or finally is must expected
 Finally block always execute
 If try, catch and finally has return statement then always finally block value will be returned. (error or non-error doesn't matter)

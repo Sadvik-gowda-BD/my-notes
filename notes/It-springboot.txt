@@ -205,7 +205,9 @@ a) In kafka
 		
 b)initialzation and destruction in bean lifecycle
 @PostConstruct and @PreDestroy
-		
+
+@PostConstruct: Used to execute logic after the bean is initialized and dependencies are injected. (After invoking the constructor)
+@PreDestroy: Used to execute cleanup logic just before the bean is destroyed. This method is executed when the Spring context is shutting down or the bean is being destroyed (e.g., in case of an application shutdown).		
 		
 		
 2)Async call in springboot
@@ -391,6 +393,23 @@ Distributed tracing in microservices is a technique used to track and observe re
 	spring-cloud-starter-sleuth
 	spring-cloud-starter-zipkin
 
+
+Q)Queries in springboot
+	
+	 // HQL query
+    @Query("SELECT s FROM Student s WHERE s.age > :age")
+    List<Student> findStudentsOlderThan(@Param("age") int age);
+	
+	// JPQL query
+    @Query("SELECT s FROM Student s WHERE s.name = :name")
+    List<Student> findStudentsByName(@Param("name") String name);
+	
+	// Native SQL query
+    @Query(value = "SELECT * FROM student WHERE age > :age", nativeQuery = true)
+    List<Student> findStudentsOlderThanNative(@Param("age") int age);
+	
+	HQL and JPQL work on entity properties (e.g., Student's fields like age and name).
+	Native SQL works directly on database tables and columns (e.g., student table, age column).
 
 
 spring-cloud-starter-zipkin
