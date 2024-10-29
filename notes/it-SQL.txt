@@ -131,7 +131,12 @@ Q)Databse lock
 
 
 
+Q)Pagination query
 
+SELECT * from STUDENT ORDER BY CREATE_DATE OFFSET (@Page_Number-1)* @PageSize FETCH NEXT @PageSize
+
+//OFFSET - starting row
+//LIMIT or FETCH NEXT - Number of records to return after OFFSET
 
 
 
