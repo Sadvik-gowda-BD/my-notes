@@ -139,7 +139,14 @@ SELECT * from STUDENT ORDER BY CREATE_DATE OFFSET (@Page_Number-1)* @PageSize FE
 //LIMIT or FETCH NEXT - Number of records to return after OFFSET
 
 
-
+P)Order of execution
+FROM
+WHERE
+GROUP BY
+HAVING
+SELECT
+ORDER BY
+LIMIT/TOP
 
 
 

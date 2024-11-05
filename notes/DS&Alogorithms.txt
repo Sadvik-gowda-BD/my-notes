@@ -1,0 +1,188 @@
+
+
+Data Structures:
+
+1. Linear Data Structures 
+	Elements are stored in sequential order, Middle elements will have one predessor and one successor.
+2. Non-Linear Data Structures
+		Elements are stored in non-sequential order.
+		
+3. Static data structure
+	Memory allocated at compile time.
+	Fast access
+	slow insertion and deletion
+	
+4. Dynamic data structure
+	Memory allocate at run time. Maximum size is flexible
+	Faster insertion and deletion
+	Slower access
+	
+
+1. Linear Data Structures - elements are stored in swquential order (Middle elements will have one predessor and one successor)
+1)Array:
+	 A fixed-size, contiguous block of elements, where each element is accessed by its index.
+	 
+	 Ex:
+		Databases: Storing fixed-length records.
+		Game Development: Storing game boards or grid data for chess, snack & ladder (e.g., in a 2D array).
+		2-D array in bookMyShow, bus or flight booking
+		Mathematical Computations: Representing matrices and vectors.
+
+2)Linked List:
+	A collection of nodes, each containing data and a reference to the next node. 
+	Types include:
+		Singly Linked List
+		Doubly Linked List
+		Circular Linked List
+		
+	Ex:
+		Music and Video Players: Playlists are often implemented as linked lists, where songs can be added or removed easily.
+		Operating Systems: Managing active processes and threads.
+		Memory Management: Tracking free memory blocks for allocation.
+		
+3) Stack:
+	A Last-In-First-Out (LIFO) structure; elements are added and removed from the same end.
+	
+	Ex:
+		Browser: History management, where back and forward actions follow a stack.
+		Function Call Stack: In programming languages, managing function calls and returns.
+		Expression Evaluation: Converting infix expressions to postfix/prefix and vice versa.
+		undo & redo option
+
+4)Queue: 
+	A First-In-First-Out (FIFO) structure; elements are added at the back and removed from the front.
+	Variants: 
+	Circular Queue
+	Priority Queue - non-linear data structure
+	Deque (Double-Ended Queue) - supports add and remove element from both ends
+	Blocking Queue - thread safe
+	
+	Ex:
+		Customer Service: Ticketing systems where requests are handled in order of arrival.
+		Message application: message need to display in sequence FIFO.
+		Networking: Handling packets in routers, where packets are processed in the order received.
+		Task Scheduling: Implementing LRU (Least Recently Used) cache where items are added/removed from both ends.
+
+2. Non-Linear Data Structures
+
+5)Tree: A hierarchical structure with nodes connected by edges.
+	Binary Tree
+	Ex:
+		File Systems: Organizing directories and files in a tree structure.
+		Organization Structures: Representing reporting hierarchy.
+		Compiler Design: Abstract Syntax Tree (AST) for representing the structure of code
+
+	Binary Search Tree (BST)
+		Ex:
+			Databases: Implementing indexing for efficient search.
+			Auto-complete Systems: Storing words in a structured way for quick lookup.
+			Priority Queues: In applications requiring dynamically ordered items.
+			
+	AVL Tree (self-balancing BST)
+	Red-Black Tree
+		Ex AVL Tree / Red-Black Tree (Self-Balancing Binary Search Trees):
+			Databases and File Systems: Efficient storage and retrieval, even with high insertion and deletion frequency.
+			Memory Management: Managing free blocks in dynamic memory allocation.
+	
+	Segment Tree
+	B-Tree and B+ Tree (used in databases)
+
+6)Graph: Consists of vertices (nodes) and edges; used to represent networks.
+	Ex:
+		Social Networks: Representing users and their connections (nodes as users, edges as relationships).
+		Maps and Navigation: Cities as nodes, roads as edges, finding shortest paths.
+		Recommendation Engines: For example, product recommendations based on user similarity graphs.
+
+3)Hashing Data Structures
+	7)Hash Table: Stores key-value pairs for efficient lookup, insertion, and deletion.
+	8)Hash Map: An implementation of a hash table with more specific optimizations.
+	9)Hash Set
+	
+	Ex:
+		Databases: Implementing caches for faster access to frequently used data.
+		Symbol Table in Compilers: Storing identifiers and corresponding values.
+		Web Applications: Storing session data by mapping session IDs to data objects
+
+4. Specialized Data Structures
+	10)Trie (Prefix Tree): A tree-like data structure used primarily for storing strings and efficient prefix searching.
+		Ex:
+		Search Engines: Autocomplete and spell-checking.
+		Networking: IP routing (trie structures are used to store IP prefixes).
+		Word Games: Validating word entries and finding possible word completions.
+		It will be always in sorted way
+
+	11)Heap: A binary tree-based structure used to implement priority queues.
+	12)Min-Heap
+	13)Max-Heap
+		In heap data will be stored in the Tree hirarchy min/max element will be in root
+		Use Case: Priority-based processing.
+		Ex:
+			Task Scheduling: Managing tasks by priority.
+			Implementing Priority Queues: For use cases like emergency rooms or resource allocation.
+	14)Disjoint Set (Union-Find): A data structure for tracking elements that belong to disjoint sets, commonly used in graph algorithms.
+	15)Bloom Filter: A probabilistic data structure used to test whether an element is a member of a set, with some tolerance for false positives.
+		Ex:
+		Databases: Quickly determining if an element is not present to reduce unnecessary lookups.
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+Problem solving technique
+
+1)Prefix Sum
+2)Two Pointer
+3)Sliding Window
+4)Fast & Slow Pointer
+5)Linked List In-Place Reversal 
+6)Monotonic Stack
+7)Top 'k' Elements
+8)Quick Select
+9)Overlapping Intervals
+10)Modified Binary Search 
+11)Depth-First Search(DFS) - stack is used
+12)Breadth-First Search(BFS) - queue is used
+13)Matrix Traversal
+14)Backtracking - Exploring all possible solution and back track and try other once the solution not satisfy
+15)Dynamic Programming
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+======================================
+Recursion
+public int fact(int n){
+
+	if(n==0){
+		return 1;
+	}
+	
+	return n*fact(n-1);
+
+}
+
+Tail recurssion
+f=1;
+public int fact(int n, int f ){
+
+	if(n==0 ){
+		return f;
+	}
+	
+	return fact(n-1, f*n);
+
+}

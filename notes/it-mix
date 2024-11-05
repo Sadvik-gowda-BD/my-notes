@@ -5,8 +5,8 @@ Q)Difference betwen error and throw in java?
 Errors:
 	Errors are usually caused by serious problems that are outside the control of the program (not recoverable), such as running out of memory or a system crash. Errors are represented by the Error class and its subclasses.
 
-	OutOfMemoryError: Thrown when the Java Virtual Machine (JVM) runs out of memory.
-	StackOverflowError: Thrown when the call stack overflows due to too many method invocations.
+	OutOfMemoryError: Thrown when the Java Virtual Machine (JVM) runs out of memory. Happens when the heap is exhausted.
+	StackOverflowError: Thrown when the call stack overflows due to too many method invocations. Happens when the call stack is exhausted.
 	NoClassDefFoundError: Thrown when a required class cannot be found.
 
 Exceptions:
@@ -60,6 +60,8 @@ run file Java-11 and higher version
 
 Q)Java 17 features
 Not much changes on code level, more changes happen on security and JVM level
+Records: Introduces compact syntax for immutable data classes.
+LTS support
 
 Q)Difference between Web Application and Non-Web Application
 Web Application: 
@@ -89,21 +91,27 @@ Q)Why We Need to Handle Exceptions?
 Q)What is output? output is String.
 
 	public void print(Object i) {
-
         System.out.println("Object");
-
     }
     
     public void print(String a) {
-
         System.out.println("String");
-
     }
+	
+	print(null);
 	
 	output is String.
 	
-P)The output is "String" because when passing null, Java chooses the most specific method, which is print(String a), since String is a subclass of Object.
-If we use anyMethod(null) always subclass method will invoke.
+	The output is "String" because when passing null, Java chooses the most specific method, which is print(String a), since String is a subclass of Object.
+	If we use anyMethod(null) always subclass method will invoke.
+
+Q)What is output? Ambiguous error
+
+	public void print(Object ob, String s) {}
+    
+    public void print(String s, Object ob) {}
+	
+	print(null, null);
 
 Q)Java memories
 	->Heap Memory:
@@ -114,7 +122,7 @@ Q)Java memories
 		->Each thread’s stack is independent of others
 		->One per thread.
 		
-Q)Below code give compole error - attempting to assign weaker access privileges; was public
+Q)Below code give compile error - attempting to assign weaker access privileges; was public
 
 Class A {
 	public void print(){}
@@ -123,3 +131,5 @@ Class A {
 Class B extends A {
 	protected/private void print(){}
 }
+
+-> If we change the return type of overriden method then compile error will occur
