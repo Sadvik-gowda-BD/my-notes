@@ -110,6 +110,11 @@ Data Structures:
 		Networking: IP routing (trie structures are used to store IP prefixes).
 		Word Games: Validating word entries and finding possible word completions.
 		It will be always in sorted way
+		
+		Suffix Trie:
+			A suffix trie is constructed to store all possible suffixes of a string. This means that every possible substring of a string can be located by following a path in the trie.
+			Suffix tries are useful when you need to search for patterns that may appear at any position in a string, not just at the beginning.
+			Suffix tries allow efficient substring searches
 
 	11)Heap: A binary tree-based structure used to implement priority queues.
 	12)Min-Heap
@@ -126,6 +131,8 @@ Data Structures:
 
 
 
+Q)Why B+ trees are used in database index search rather than hash
+Hash indexes are not optimized for range queries, where you need to find records within a range of values(that use the =, >, >=, <, <=, or BETWEEN operators). In such cases, a B-tree index would be more appropriate.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -24,17 +24,21 @@ or
 >create an yml file with name secrets.yml
 >ansible-vault encrypt secrets.yml
 you will be prompted to enter and confirm a password.
-Then the file will bw encrypted
+Then the file will be encrypted
 
 #Decrypt the file
 >ansible-vault decrypt secrets.yml
 It will ask for password and provide that
 
 OR
+
 >ansible-vault decrypt --vault-password-file vault_password.txt secrets.yml
-
-
 
 
 resources:-
 youtube: https://youtu.be/-W_VuYt_qQw?si=qViJ4p_KI4vq6px1 
+
+
+
+============================================================================================
+

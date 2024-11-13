@@ -34,6 +34,13 @@ find nth highest salary
 
 Q)Print max salary by each department with employee name
 
+soln1:
+SELECT e.name AS employee_name, e.salary, d.name AS department_name
+FROM Employee e
+JOIN Department d ON e.department_id = d.id
+WHERE e.salary = (SELECT MAX(e2.salary) FROM Employee e2 WHERE e2.department_id = e.department_id);
+
+soln2:
 WITH DepartmentMaxSalaries AS (
     SELECT Department, MAX(Salary) AS HighestSalary
     FROM Employees
@@ -43,6 +50,10 @@ SELECT e.EmployeeName, e.Department, e.Salary AS HighestSalary
 FROM Employees e
 INNER JOIN DepartmentMaxSalaries dms
 ON e.Department = dms.Department AND e.Salary = dms.HighestSalary; 
+
+Soln3:
+Use RANK() functions
+
 
 Q)Print the day where temp is increased
 
@@ -71,14 +82,12 @@ Q)Print the day where temp is increased
 
 	Note:- when W1=1 then W2=2
 
-
 P)In SQL Server, the WITH clause is used to define a Common Table Expression (CTE). A CTE is a temporary result set that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement. It is similar to creating a temporary table, but it's only available for the duration of the query it is defined in.
 	
 Q)How database index works
 When you create an index on a column, you’re creating a new table with two columns: one for the column you indexed on, and another for the pointer to the record it relates to.
 This index structure is then sorted, allowing Binary Searches to be performed on it. As a result, your query is O Log(n) efficient compare to linear search O(N/2)
 	
-
 
 Q)Difference between 1st and 2nd level cache
 
@@ -147,9 +156,6 @@ HAVING
 SELECT
 ORDER BY
 LIMIT/TOP
-
-
-
 
 
 

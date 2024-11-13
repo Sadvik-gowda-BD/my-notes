@@ -62,6 +62,10 @@ Q)Java 17 features
 Not much changes on code level, more changes happen on security and JVM level
 Records: Introduces compact syntax for immutable data classes.
 LTS support
+Removal of Deprecated APIs (e.g., Applet API, Experimental AOT, and JIT compiler)
+Pattern Matching for switch
+
+Q)Java 21 features
 
 Q)Difference between Web Application and Non-Web Application
 Web Application: 

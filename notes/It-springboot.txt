@@ -83,6 +83,9 @@ It is used to mark a Java class as a bean.
 Q)Can we use @Component/@Service in place of @Controller ?
 No we cant't TODO check
 
+Q)What is auto configuration
+Automatically configure the spring property values into the bean. For example database properties into DataSourceAutoConfiguration.class
+
 Q) How to exclude auto configuration in springboot
 
 	Ex1: Application main class
@@ -108,18 +111,17 @@ It is does not depend on spring boot frame work iself, it is depend on embedded 
 		 server.tomcat.accept-count: 200
 
 Q)What Is Spring Boot Actuator Used For?
-	env exposes environment properties
-	health shows application health information
-	httptrace displays HTTP trace information
-	info displays arbitrary application information
-	metrics shows metrics information
+	/env exposes environment properties
+	/health shows application health information
+	/httptrace displays HTTP trace information
+	/info displays arbitrary application information
+	/metrics shows metrics information
 	loggers shows and modifies the configuration of loggers in the application
 	mappings displays a list of all @RequestMapping paths
 	It also shows the circuit breaker status
 
 Q)How to establish relationship between two Entities
 	
-
 
 
 1)What is the use of the @pathVariable over @RequestParam?
@@ -159,7 +161,6 @@ Q)Why microservice is better than monolithic
 		If one service goes down, it will not effect other services. (If register service goes down, still payment service can be work independently)
 		Maintainance cost is high
 		
-
 
 Difference between @PropertySource and @ConfigurationProperties
 @PropertySource is to reference a properties file and load it into the Spring environment (where it may be used by @ConfigurationProperties or @Value). @Value is to inject a particular property value by its key into a variable (member field or constructor argument).
@@ -221,7 +222,7 @@ Q)Microservices patterns
 3)In memory Cache in springboot database
 SimpleCacheManager --> Spring's default cache manager, that's used if you don't specify a cache manager. It's simple because its underlying implementation uses a Java ConcurrentHashMap and it doesn't give you a whole lot of customization options.
 
-CaffeineCacheManager --> The Caffeine Cache manager is slightly different, in that there a more configuration-driven customization options such as having the ability to specify the cache timeout expiry limit (in order to 'bust' the cache after a certain time period) and the cache maximum size limit in order to limit the capacity of the cache.
+CaffeineCacheManager --> The Caffeine Cache manager is slightly different, in that there are more configuration-driven customization options such as having the ability to specify the cache timeout expiry limit (in order to 'bust' the cache after a certain time period) and the cache maximum size limit in order to limit the capacity of the cache.
 
 6)Redies - distribution cache
 Redies is a in-memory data structure store used as a database cache.
@@ -276,7 +277,6 @@ values are CREATE UPDATE CREATE-DROP NONE, Recommended to use NONE in production
 because table structure modify happens by using SQL query by DBA spring.jpa.hibernate.ddl-auto=none
 
 P)@Modifying and @Transactional is mandatory for update and delete queries in JPA repository
- 
  
  -cascade
  fetch types
