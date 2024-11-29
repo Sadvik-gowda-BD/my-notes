@@ -33,7 +33,6 @@ Q)Difference between JDK, JRE and JVM
 		It enables the execution of Java bytecode. The JVM acts as an interpreter between the Java programming language and the underlying hardware.
 		It provides a runtime environment for Java applications to run on different platforms and operating systems.
 	
-
 	
 Q)Can we run jar or bytecode with out installing jre
 Yes, we can, but we need JRE extracted files from jre zip, then navigate to jre\bin\java.exe -jar executable-file.jar
@@ -61,6 +60,10 @@ Q)Memories in java
 		-Stack memory only contains method call sequence, local primitive and reference variables to objects in heap space.
 		-Method variables stored in stack memory
 		-Stack memory is used only by one thread of execution, Other threads can’t access stack memory.
+	
+	Method Area:
+		-Stores metadata about classes and methods.
+		-Stores class name and its immediate parent class
 		
 Q)Generations 
 	It is a segment of Heap memory used to group objects based on their age and lifecycle (for sake of garbage collection).
@@ -126,6 +129,7 @@ P)In Java, all the wrapper classes (like Integer, Boolean, Byte, Short, Float, D
 		hashCode() - method is a part of the Object class and is used to return an integer value, which is a hash code representation of the object. This method plays a crucial role in the functioning of hash-based collections like HashMap, HashSet, and Hashtable.
 		toString() - returns the string representation of this object
 		finalize() - It is invoked by the garbage collector before object is being garbage collected.
+		notify(), notifyAll(), wait()
 		
 Q)Use of finalize() method
 It is invoked by the garbage collector before destroy the object. It is used to release the resources and clean up.
@@ -211,8 +215,25 @@ StringBuilder:-
 StringBuilder is not a thread safe class.
 StringBuilder is faster than StringBuffer, because stringbuffer is synchronized and additional check is required
 
-P)we can able to invoke static method by objects like obj.metName() but it not makes any sense because it belongs to class not object.
+static
+P)we can able to invoke static method by objects like obj.staticMetName() but it not makes any sense because it belongs to class not object.
+Q)Can we override static methods?
+No, In java we can't override static mehtods because it belongs to Class not objects. If we use it gives compile error .
+
 P)We cannot override static mehtods because it belongs to Class not objects. If we use it gives compile error.
+
+P)In Java, abstract methods cannot be static, because we need to override abstract method
+P)We cannot declare local variable as static
+
+Q)Can we override main method?
+No, because main method is also static method
+
+Q)Can we call static method from object like obj.myStaticMethod();
+Yes, but not recomonded
+
+Q)Can we overload main method?
+Yes
+
 
 Q)How many ways to create an object?
 	Using new keyword - GFG obj = new GFG(); 
@@ -246,7 +267,8 @@ Deep copy:
         return cloned;
     }
 		
-Q)Cloneable interfate 
+Q)Cloneable interface 
+	It is a marker interface ( clone() method is part of Object class)
 	The default implementation of Java Object clone() method is using shallow copy.
 		Ex:- class A implements Cloneable
 
@@ -281,18 +303,6 @@ if (null == instance) {
 	}
 }
 return instance
-
-Q)Can we override static methods?
-No, In java we can't override static mehtods because it belongs to Class not objects. If we use it gives compile error if we use @Override annotation.
-
-Q)Can we override main method?
-No, because main method is also static method
-
-Q)Can we call static method from object like obj.myStaticMethod();
-Yes, but not recomonded
-
-Q)Can we overload main method?
-Yes
 		
 		
 Q)What is OOP's concept?
@@ -376,7 +386,7 @@ HAS-A
 	
 	Priority of main thread in java is 5
 
-The t1.join() method of thread class waits for a thread t1 to die (wait till t1 completes the work)
+The t1.join() method of thread class waits for a thread t1 to die (current thread wait till t1 to completes the work)
 
 Multithreading:- Do multiple operation at same time with in the single application. Threads are lightweight processes within processes as seen. 
 
@@ -397,6 +407,31 @@ Q)Life cycle of java thread
 	Running
 	Non-Runnable (Block/wait) - during synchronized block/methods
 	Terminated
+	
+Q)What is synchronized?
+It is a mechanism that ensures controlled access to shared resources in a multi-threaded environment. 
+
+Q)Ways to Implement Synchronization
+Synchronized Block
+Synchronized Method
+Static Synchronization
+Locks (Explicit Synchronization) :- Lock lock = new ReentrantLock();
+
+Q)How Synchronization works internally
+Synchronization in Java is built around the monitor (lock) mechanism provided by the Java Virtual Machine (JVM). 
+The JVM uses monitor-enter and monitor-exit to enforce synchronization.
+
+intrensic lock
+Synchronized instance methods:
+	The implict lock is 'this', which is object used to invoke the method. Each instance of this class will use their own lock.
+
+Synchronized static methods:
+	The lock is the class object. All instance of this class will use the same lock.
+	Every class in Java, once loaded by JVM, is represented by a unique Class object.
+
+extrensic/explict lock:
+		Ex: reentrent lock
+
 Multitasking/multi programming:- One user run multiple program in at same time called multitasking.
 Multitasking is the ability of an operating system to run multiple tasks (processes) at the same time.
 	
@@ -411,7 +446,7 @@ Multithreading
 	Ex: web servers, where each thread can handle a separate client request concurrently
 	JUnits uses threads to run test cases in parallel
 	
-Thread obj.wait():-
+Thread obj.wait():- lockObj.wait()
 	that causes the current thread to wait and go to sleep until some other threads call the notify () or notifyAll() method for the object’s monitor (lock). It simply releases the lock and is mostly used for inter-thread communication.
 	It is defined in the object class, and should only be called from a synchronized context. 
 	
@@ -446,6 +481,7 @@ Async programming is about non-blocking execution between functions
 
 Q)What is excecuterService?
 The ExecutorService interface simplifies the execution of asynchronous tasks, such as running tasks in parallel, scheduling tasks, and managing the lifecycle of tasks and threads.
+Ex: ThreadPoolTaskExecuter, ForkJoinPool etc.
 
 Q)How the parallel stream works
 The parallel stream uses the ForkJoinPool to execute the tasks. This pool is a type of ExecutorService.
@@ -536,7 +572,7 @@ It represents the unordered set of elements which doesn't allow us to store the 
 	
 		->HashMap in Java is basically an array of bucket where each bucket uses linked list to hold elements. A linked list is a list of nodes where each node contains a key-value pair(EntrySet).
 		->The default initial capacity of HashMap is 16 (i.e. the number of buckets). and load factor is 75%
-		->First the hascode of key will taken (for null key hascode will be 0) then pass that hashcode to hash() method it returns bucket location (int value). In that bucket key,value pair will be stored in LinkedList.
+		->First the hashcode of key will taken (for null key hashcode will be 0) then pass that hashcode to hash() method it returns bucket location (int value). In that bucket key,value pair will be stored in LinkedList.
 		->Time complexity to insert and retrieve a value is O(1)
 		HashMap in Java 8 
 		In Java 8, HashMap replaces the linked list with another useful data structure i.e. balanced trees (specifically red-black trees) tree on breaching a certain threshold, which is known as TREEIFY_THRESHOLD (size is 8, if bucket size/number of elements in a bucket is more than 8 link list become Red-Black tree). Once this threshold is reached, the linked list of Entries is converted to the Red-Black TreeNodes which reduces the time complexity from O(n) to O(log(n)).
@@ -563,7 +599,7 @@ TreeMap:
 
 WeakHashMap: 
 	This means that if a key is not strongly referenced elsewhere in the application, the garbage collector will remove the key-value pair from the map when the key becomes weakly reachable. (It will be removed automatically when the key object don't have any references during garbage collection).
-	If we use same object as key and value and then if we make reference as null, map won't remove because it will be refered by map's value.
+	If we use same object as key and value and then if we make reference as null outside, map won't remove because it will be refered by map's value.
 	Ex:
 		It can be used during cache
 		In event-driven applications, listeners or event handlers may need to be registered for specific events but automatically deregistered when they’re no longer in use.
@@ -573,7 +609,6 @@ IdentityHashMap:
 	Ex:
 		In Hibernate, entities fetched from the database might have overridden equals() and hashCode() methods based on business key attributes. However, the framework may need to track each proxy instance independently, so it could use an IdentityHashMap to manage proxy references.
 		
-
 Q)HashMap Vs ConcurrentHashMap Vs HashTable 
 	HashMap:-
 		HashMap is not synchronized there by making it better for non-threaded applications.
@@ -615,7 +650,7 @@ It is because the 0 index array avoids the extra arithmetic operation to calcula
 Q)BlockingQueue
 BlockingQueue is a java Queue that support operations that wait for the queue to become non-empty when retrieving and removing an element, and wait for space to become available in the queue when adding an element.
 	a). It is always thread-safe.
-	b). It can hold arbitrary data
+	b). It can hold arbitrary data (any type of data by using generics).
 	c). Producer has to wait if the queue is already full
 	d). Consumer has to be wait if no item is present in the queue.
 
@@ -661,7 +696,7 @@ Q)final keywords
 
 final variable - variable can only initialize only once. final varibale object state can be chanage, not able to change reference.
 final method - final methods can't be overriden by subclass. It is useful when implementation of method remains unchange.
-final class - final class can be inherit. Useful for security design to prevent inheretence.
+final class - final class can't be inherit. Useful for security design to prevent inheretence.
 
 
 Nested Inner Class
@@ -700,13 +735,12 @@ Exception
 ->If try, catch and finally has return statement then always finally block value will be returned. (error or non-error doesn't matter)
 ->If exception occur in try block and there a catch and finally block, after exception directly finally block will execure (catch block won't execute).
 
-
 Q) Reflections
 Reflection is commonly used by programs which require the ability to examine or modify the runtime behavior of applications running in the Java virtual machine. 
 
 
 Q) Default Methods In Java 8
-The default methods were introduced to provide backward compatibility so that existing interfaces can use the lambda expressions without implementing the methods in the implementation class. Default methods are also known as defender methods or virtual extension methods.
+The default methods were introduced to provide backward compatibility, so that existing interfaces can use the lambda expressions without implementing the methods in the implementation class. Default methods are also known as defender methods or virtual extension methods.
 
 Q)JVM architecture
 
@@ -745,4 +779,5 @@ P) Access specifier of java outer class	should be public or default.
 		default - Class can access only access within the package
 
 P) .class will be created for java all java file like class, Interface, Enum, NestedClass, Abstract class etc.
+
 P)we can run any .class file which has main method. main method can be in public class or default class. If main method not present then we will get Main method not found error

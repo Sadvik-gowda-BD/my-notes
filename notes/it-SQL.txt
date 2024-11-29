@@ -53,6 +53,18 @@ ON e.Department = dms.Department AND e.Salary = dms.HighestSalary;
 
 Soln3:
 Use RANK() functions
+SELECT DepartmentName, EmployeeName, Salary
+FROM (
+    SELECT 
+        d.DepartmentName,
+        e.EmployeeName,
+        e.Salary,
+        RANK() OVER (PARTITION BY e.DepartmentID ORDER BY e.Salary DESC) AS Rank
+    FROM Employee e
+    JOIN Department d ON e.DepartmentID = d.DepartmentID
+) RankedSalaries
+WHERE Rank = 1;
+
 
 
 Q)Print the day where temp is increased

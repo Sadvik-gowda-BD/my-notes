@@ -1,4 +1,4 @@
-it java2
+it-java 2
 
 Q)Difference betwen error and throw in java?
 
@@ -115,7 +115,9 @@ Q)What is output? Ambiguous error
     
     public void print(String s, Object ob) {}
 	
-	print(null, null);
+	print(null, null); // Ambiguous error
+	
+	we need to down cast to resolve the issue print((String)null, null)
 
 Q)Java memories
 	->Heap Memory:
@@ -133,7 +135,7 @@ Class A {
 }
 
 Class B extends A {
-	protected/private void print(){}
+	default/protected/private void print(){}
 }
 
 -> If we change the return type of overriden method then compile error will occur

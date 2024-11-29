@@ -16,6 +16,7 @@ Logging – to record events at certain points during program execution
 
 Q)What is spring IOC? - Inversion of Control Container 
 Spring IoC container is the program that injects dependencies into an object and make it ready for our use. It manages the beans lifecycle etc.
+It implements the concept of dependency injection (DI)
 
 P)2 types spring IOC contaiiner: BeanFactory and ApplicationContext 
 
@@ -55,6 +56,13 @@ Q)Ways of communication in microservices
 	2)gRPC - open-source Remote Procedure Call (RPC) 
 	3)Message Brokers / Event driven MSA -Kafka/RabbitMQ - Mostly Async calls
 	4)Websockets
+
+P) Websockets used in:
+Used when bidirectional communication is required.
+Ex:
+Real-Time Applications: Chat app, multi-player game
+Live Updates: stock app, sports app to update score, auction etc
+Dashboard
 	
 Q)What are stereotype annotation?
 It is used to mark a Java class as a bean.
@@ -82,6 +90,9 @@ It is used to mark a Java class as a bean.
 	
 Q)Can we use @Component/@Service in place of @Controller ?
 No we cant't TODO check
+
+Q)In which scenerio, you'll use singleton and prototype scope?
+singleton scope should be used with EJB stateless session bean and prototype scope with EJB stateful session bean.
 
 Q)What is auto configuration
 Automatically configure the spring property values into the bean. For example database properties into DataSourceAutoConfiguration.class
@@ -160,7 +171,6 @@ Q)Why microservice is better than monolithic
 		We can scale-up most demanded service
 		If one service goes down, it will not effect other services. (If register service goes down, still payment service can be work independently)
 		Maintainance cost is high
-		
 
 Difference between @PropertySource and @ConfigurationProperties
 @PropertySource is to reference a properties file and load it into the Spring environment (where it may be used by @ConfigurationProperties or @Value). @Value is to inject a particular property value by its key into a variable (member field or constructor argument).
@@ -185,7 +195,6 @@ Q)How Singleton bean works when multiple request comes at same time
 		->Singleton bean is a stateless
 		
 		->Since the Singleton bean is shared, it needs to be thread-safe if it handles state that could be modified by concurrent requests. If the bean is stateless (it doesn't store any information that changes per request), it doesn't require special handling for concurrency.
-
 
 
 ======= Explaination
@@ -246,7 +255,7 @@ Q)How sensitive data like password maintained in springboot properties file?
 5)Circuitbreaker
 It is design pattern to handle failure services. 
 we can implement fallbackMethod to return the default messages
-Here we save resource(JWT call etc) by not invoking the failed microservice, instead we return default message.
+Here we save resource(JWT call etc) by not invoking the failed microservice, instead we return default message. (When circuit is open)
 we also can implement retry mechanism.
 
 6)Service discovery/ service registry/ Eureka server
@@ -346,7 +355,8 @@ It is used as:
 		
 Q)Difference between get() and load() in hibernate?
 
-get()	-	Customer customer = (Customer) session.get(Customer.class, 1L);
+get()	
+	-Customer customer = (Customer) session.get(Customer.class, 1L);
 	- Eager intialization
 	- Use when we need complete object
 	- get() method returns null if there is no object present in the database.

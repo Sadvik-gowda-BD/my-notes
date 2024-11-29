@@ -156,7 +156,7 @@ Problem solving technique
 13)Matrix Traversal
 14)Backtracking - Exploring all possible solution and back track and try other once the solution not satisfy
 15)Dynamic Programming
-
+16)Greedy
 
 
 
@@ -171,6 +171,29 @@ Problem solving technique
 
 
 ======================================
+Sliding Window:
+	In most of the case for sliding window below pattern is used.
+	
+	take l and r pointer.
+	for(r=0 to N){
+	
+		while(condition){
+			update l pointer;
+		}
+	
+	}
+
+
+Greedy:
+A greedy algorithm decides what to do in each step, only based on the current situation, without a thought of how the total problem looks like.
+
+How it works
+	Greedy Choice Property: The problem must be such that making the best choice at each step will lead to the best overall solution.
+	Optimal Substructure: The problem must be such that the best solution to the whole problem is made up of the best solutions to each subproblem.
+
+
+
+
 Recursion
 public int fact(int n){
 
