@@ -103,3 +103,21 @@ Q)You have only two vessels of 3l and 5l volume, and you are given an unending w
 	
 Q)There is a magic bowl and it's value gets double day by day, and bowl fills complets in 100 days, so in which day half bowl will be filled?
 Ans:- 99th day
+
+Q)3 horse puzzle
+There are 25 horses among which you need to find out the fastest 3 horses. You can conduct a race among at most 5 to find out their relative speed. At no point, you can find out the actual speed of the horse in a race. Find out the minimum no. of races which are required to get the top 3 horses.
+
+Ans:- 7 races
+
+Exp: [ 5 RACES DONE ] 
+a1 b1 c1 d1 e1 
+a2 b2 c2 d2 e2 
+a3 b3 c3 d3 e3 
+a4 b4 c4 d4 e4 
+a5 b5 c5 d5 e5 
+
+Winner of 5 races are: a1,b1,c1,d1,e1
+Race 6: a1,b1,c1,d1,e1
+
+winner of race 6- a1, b1, c1
+Race 7: a2,a3,b1,b2,c1 

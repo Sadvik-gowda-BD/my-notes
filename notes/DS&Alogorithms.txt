@@ -182,7 +182,7 @@ Sliding Window:
 		}
 	
 	}
-
+-----------------------------------------------------------------------
 
 Greedy:
 A greedy algorithm decides what to do in each step, only based on the current situation, without a thought of how the total problem looks like.
@@ -191,8 +191,8 @@ How it works
 	Greedy Choice Property: The problem must be such that making the best choice at each step will lead to the best overall solution.
 	Optimal Substructure: The problem must be such that the best solution to the whole problem is made up of the best solutions to each subproblem.
 
-
-
+In Greedy I observed that for most of the problem we need to sort the array.
+---------------------------------------------------------------------
 
 Recursion
 public int fact(int n){
@@ -206,6 +206,7 @@ public int fact(int n){
 }
 
 Tail recurssion
+The recursive call is the last operation in the function.
 f=1;
 public int fact(int n, int f ){
 
@@ -216,3 +217,66 @@ public int fact(int n, int f ){
 	return fact(n-1, f*n);
 
 }
+
+Tree Recursion
+A function calls itself more than once in each invocation.
+public int fibonacci(int n) {
+    if (n == 0 || n == 1) {
+        return n; // Base cases
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2); // Recursive calls
+}
+
+
+Divide and Conquer
+Backtracking: ry possible solutions recursively, and backtrack if a solution doesn't work.
+Pick and non-pick
+
+
+---------------GRAPH-------------------
+
+Topological sort
+Topological sorting for Directed Acyclic Graph (DAG) is a linear ordering of vertices such that for every directed edge u-v, vertex u comes before v in the ordering.
+
+Note: Topological Sorting for a graph is not possible if the graph is not a DAG.
+	
+p) When ever question like something before something the use toplogical sort
+
+P)Dijkstra algorithm
+single source shortest path algorithms.
+It will work for both directed and non-directed graph. But we've to convert non-directed to directed graph.
+It won't work for -ve edges
+P)In Dijkstra algorithm can be solve with Queue, PriorityQueue and Set data struct. PQ is used to optimize the time, by using PQ always we pick the minimum distance Pair from the Queue.
+
+P) If the weight is same for all edges then we can normal Queue, PQ is not required.
+
+P)Bellman Ford Algo
+single source shortest path algorithms.
+we can find shortest path from source to destination for negative edge as well
+	- we can find negative cycle as well (if we able still relax node after V-1 time then it has -ve cycle)
+	
+P)Floyd Warshall
+The Floyd Warshall Algorithm is an all pair shortest path algorithm 
+We can find shortest path for all pairs
+	- we can find -ve cycle (if i==j and ar[i][j] != 0 then negative cycle is there
+	
+
+T)MST - Minimum Spanning Tree
+M- Minimum -> smallest weight
+S- Spanning - connects everything
+T- Tree -> no cycle
+The tree which has n node and n-1 edges and all nodes are reachable from each other.
+
+Prim's Algorithm
+Kruskal's Algorith
+
+Note:
+Marking as visited the visit array when added to the queue:
+Prevents reprocessing: It ensures you don’t add the same node to the queue multiple times. This avoids duplicate work and reduces unnecessary processing especially in undirected graph.
+
+But in Prims algorith, mark visited when we poll from the queue	
+
+P)DSU - (Disjoint Set Union)
+P)In DSU we can group some nodes as component and then we can check they belong to which component by finding the parent
+P)In DSU or any graph problem, if we not able use arr[i] as a node (arr[i] could be -ve), use  ValueToIndex Map and then use index as a graph node.
+

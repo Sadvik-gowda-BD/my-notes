@@ -10,7 +10,7 @@ Encryption:
 Hashing:
 
 	->Hashing also scrambles data, but the intent is to prove its authenticity. Administrators can run a check on hashed data to determine the contents haven't been touched or altered while in storage. No deciphering key exists.
-	
+	->It is one way function, if we hashed some text the we cannot reverse to orginal form, but alway hashing of particular text provide same result. 
 	->It is more secure in comparison to encryption.
 	
 	Ex:-MD5, SHA256.
@@ -79,6 +79,8 @@ Q)How RSA jwt token works
 	Signature: This is used to verify that the sender of the JWT is who it says it is and to ensure that the message wasn't changed along the way.
 	
 	signature = RSASHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), secrect_key/ privateKey or publicKey)
+
+P)Encrypted 
 	
 Q)How signature creation and validation works
 	In the context of RSA JWT tokens, the private and public keys used for signing and validation are part of an asymmetric cryptographic system.

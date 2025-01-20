@@ -168,6 +168,16 @@ generics enable types (classes and interfaces) to be parameters when defining cl
 It provide type safty, it hold only one type of object.
 Before generics, we can store any type of objects in the collection, i.e., non-generic. Now generics force the java programmer to store a specific type of objects.
 
+Q)What is erasure?
+The process by which the generic type information in your code is removed or "erased" at runtime (while creating the byte).
+The goal of type erasure is to ensure backward compatibility with older versions of Java that do not support generics.
+
+If a type paramater has a bound (e.g, <T extends Number>), the type parameter is replaced with its bound (Number in this case).
+If a type paramater is unbounded (e.g, <T>), it replaced with object
+
+Q)Why do we need it?
+Backward compatibility: Allows older Java code (without generics) to interact seamlessly with new code that uses generics.
+
 Q)Does importing of com.myMainPackage.* also import com.myMainPackage.mySubPackage.*?
    NO, Importing the parent package only results in the import of the classes within it and not the contents of its child/sub-packages. Importing of the sub-packages of a package needs to be done explicitly.
 
@@ -221,6 +231,7 @@ Q)Can we override static methods?
 No, In java we can't override static mehtods because it belongs to Class not objects. If we use it gives compile error .
 
 P)We cannot override static mehtods because it belongs to Class not objects. If we use it gives compile error.
+P)Both child and parent class can have static method with same name. - called method hiding
 
 P)In Java, abstract methods cannot be static, because we need to override abstract method
 P)We cannot declare local variable as static
@@ -272,10 +283,10 @@ Q)Cloneable interface
 	The default implementation of Java Object clone() method is using shallow copy.
 		Ex:- class A implements Cloneable
 
-
 2)Comparable and Comparator
 Both are functional interface which contain SAM method.
 	1)Comparable
+		For natural order
 		This funtional interface contain SAM compareTo() method.
 		A comparable object is capable of comparing itself with another object.
 		Here we can compare by only one member of class. (It affects the original class. i.e., actual class is altered.)
@@ -331,6 +342,7 @@ Q)In Java why abstract class is required when there is an Interface
 ->Abstract class can have instance variable and constructor (This can be initialize by using super(i,j))
 ->Interface cannot have instance variable, it will have (public, static, final)variables. 
 ->Abstract class can have protected methods, Interfaces only allow public or default(package private) access
+->Abstract class does not support multiple inheretence
 		
 Q) Java POJO vs Java Bean
 
@@ -449,6 +461,7 @@ Multithreading
 Thread obj.wait():- lockObj.wait()
 	that causes the current thread to wait and go to sleep until some other threads call the notify () or notifyAll() method for the object’s monitor (lock). It simply releases the lock and is mostly used for inter-thread communication.
 	It is defined in the object class, and should only be called from a synchronized context. 
+	It releases the lock
 	
 Thread.sleep(100):-
 	 it is a static method that pauses or stops the execution of the current thread for some specified period. It doesn’t release the lock while waiting and is mostly used to introduce pause on current execution.
@@ -490,6 +503,11 @@ ForkJoinPool manages the threads and splitting/joining of tasks.
 Q)Java Threadpool
 	Java Thread pool represents a group of worker threads that are waiting for the job and reused many times.
 	In the case of a thread pool, a group of fixed-size threads is created. A thread from the thread pool is pulled out and assigned a job by the service provider. After completion of the job, the thread is contained in the thread pool again.
+
+Q)How to prevent deadlock
+Always aquire locks in a consistent order
+Use tryLock with timeout: Instead of using synchronized blocks, use ReentrantLock with timeout. (lock.tryLock(1000)).
+Avoid nested locks
 
 Q)Java class execution flow
 	initialization of static variable
@@ -733,7 +751,6 @@ Exception
 ->After try block catch or finally any one is must expected
 ->Finally block always execute
 ->If try, catch and finally has return statement then always finally block value will be returned. (error or non-error doesn't matter)
-->If exception occur in try block and there a catch and finally block, after exception directly finally block will execure (catch block won't execute).
 
 Q) Reflections
 Reflection is commonly used by programs which require the ability to examine or modify the runtime behavior of applications running in the Java virtual machine. 
@@ -741,6 +758,7 @@ Reflection is commonly used by programs which require the ability to examine or 
 
 Q) Default Methods In Java 8
 The default methods were introduced to provide backward compatibility, so that existing interfaces can use the lambda expressions without implementing the methods in the implementation class. Default methods are also known as defender methods or virtual extension methods.
+you can override a default method from an interface in Java. 
 
 Q)JVM architecture
 

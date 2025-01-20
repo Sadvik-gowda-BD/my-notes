@@ -28,8 +28,6 @@ Q)Difference between OAuth 1.0 and OAuth 2.0?
 Q)Java 7 features
 Try-with-resources statement
 Underscores in numeric literals. int one_million = 1_000_000;	
-Type Inference for Generic Instance: List<String> l = new ArrayList<>();
-
 
 Q)Java 8 features
 	Lambda Expressions: Concise functional code using ->.
@@ -38,7 +36,7 @@ Q)Java 8 features
 	Stream API: Efficient Data Manipulation.
 	Date/Time API: Robust Date and Time Handling.
 	Collection API Improvements: Enhanced Methods for Collections (e.g., removeIf, replaceAll).
-	Concurrency API Improvements: New classes for parallel processing (e.g., CompletableFuture).
+	CompletableFuture - Concurrency API Improvements: New classes for parallel processing (e.g., CompletableFuture).
 	Optional Class: Handle null values safely.
 	forEach() Method in Iterable Interface: Executes an action for each element in a Collection.
 	Default Methods: Evolve interfaces without breaking compatibility.
@@ -46,10 +44,12 @@ Q)Java 8 features
 	Method References: Refer to methods easily.
 
 Q)Java 11 features
+LTS
 In this version, JRE or Server JRE is no longer offered. Only JDK is offered.
 Several new methods of String such as isBlank(), lines(),repeat(n), stripLeading(), stripTrailing(), and strip() are introduce.
 Java 11 allows us to use var variables to be used in lambda expressions.
 List.of(), Set.of() etc
+Added more garbage collectors Z-garbage collector
 
 Before Java-11 version
 	>javac filename.java
@@ -66,6 +66,8 @@ Removal of Deprecated APIs (e.g., Applet API, Experimental AOT, and JIT compiler
 Pattern Matching for switch
 
 Q)Java 21 features
+
+P)The latest version of Java is Java SE 23.0.1
 
 Q)Difference between Web Application and Non-Web Application
 Web Application: 
@@ -139,3 +141,5 @@ Class B extends A {
 }
 
 -> If we change the return type of overriden method then compile error will occur
+
+
