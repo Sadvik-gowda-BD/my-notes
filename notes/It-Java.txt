@@ -16,11 +16,12 @@ Q)Difference between JDK, JRE and JVM
 
 	JDK - Java Development Kit
 		It is a platform dependent
+		Use to develop and copile the code
 		It contains JVM & JRE, javac compiler, Java docs and other libraries which help us to create an application.
 		Libraries:- javac compiler, java doc, java debugger
 	
 	JRE - Java Runtime Environament
-		It is used to run the java application
+		It is used to run the java application. Use only for running already compiled Java program.
 		JRE is a physical implementation of the JVM.
 		It contains JIT compiler which is used to convert bytecode into binary code (machine code)
 		Libraries:- java lang, util, collections, math, regEx, classloader
@@ -38,7 +39,7 @@ Q)Can we run jar or bytecode with out installing jre
 Yes, we can, but we need JRE extracted files from jre zip, then navigate to jre\bin\java.exe -jar executable-file.jar
 
 Q)JDK 11
-jre is no longer offered in JDK 11
+jre is no longer offered from JDK 11 onwards. All vendors provide JDK which includes JRE.
 
 Q)OpenJdk vs Oracale/RedHat JDK
 Open jdk - It an open source project that is maintained by Oracale, RedHat and community

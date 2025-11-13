@@ -1,0 +1,17 @@
+Common commands
+
+Find app on particular port
+>netstat -ano | findstr :8080
+we can also check on resource monitor -> network tab
+
+
+
+======================
+
+In Java
+ServerSocket - ServerSocket is a lower-level API in Java used to create a TCP server that listens for incoming connections.
+HttpServer - HttpServer is a higher-level API provided by Java for creating HTTP servers. It simplifies the process of handling HTTP requests and responses.
+
+
+
+-----

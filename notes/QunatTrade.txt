@@ -1,0 +1,31 @@
+
+
+Here are some great resources to get started with quant trading and HFT using Java:
+
+1. Quantitative Finance & Trading
+	"Quantitative Trading" by Ernest P. Chan – A beginner-friendly book on developing trading strategies.
+	"Algorithmic Trading" by Ernest P. Chan – More advanced, covers machine learning-based strategies.
+	"Advances in Financial Machine Learning" by Marcos López de Prado – Useful if you're interested in ML-driven trading.
+	"Inside the Black Box" by Rishi K. Narang – A good introduction to how quant funds and HFT firms operate.
+
+2. Market Microstructure & HFT
+	"Trading and Exchanges" by Larry Harris – Covers market microstructure in-depth.
+	"Algorithmic and High-Frequency Trading" by Cartea, Jaimungal, and Penalva – Covers execution strategies.
+	"Flash Boys" by Michael Lewis – Not technical but gives insights into HFT firms and market mechanics.
+
+3. Java for Low-Latency & Performance
+	"Java Performance: The Definitive Guide" by Scott Oaks – Focuses on optimizing Java for speed.
+	"Java Concurrency in Practice" by Brian Goetz – A must-read for concurrent programming in Java.
+	"Modern Java in Action" by Raoul-Gabriel Urma – Covers Java streams, lambdas, and modern concurrency patterns.
+
+4. Data Structures, Algorithms & System Design
+	"The Algorithm Design Manual" by Steven Skiena – Good for algorithmic problem-solving.
+	"Competitive Programmer’s Handbook" by Antti Laaksonen – Great for learning DSA efficiently.
+	"Designing Data-Intensive Applications" by Martin Kleppmann – Covers distributed systems, databases, and real-time data processing.
+
+5. Online Courses & Other Resources
+	Coursera – "Mathematical Methods for Quantitative Finance" (by University of Washington)
+	MIT OpenCourseWare – "Introduction to Computational Finance"
+	Investopedia – Quant Trading & Market Microstructure Basics
+	If you want hands-on experience, you can try building a basic backtesting system in Java using Apache Commons Math, JQuantLib, or AlgoTrader (an open-source Java trading engine).
+

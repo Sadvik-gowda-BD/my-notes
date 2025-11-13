@@ -1,0 +1,144 @@
+
+
+Private IP
+	Always assigned
+	It is used for internal communication.
+	Does not change even if you restart the instance.
+Public IP
+	It is Optional
+	It is needed to access service via internet.
+	Changes if the instance is stopped and restarted.
+	Assigned only if the EC2 is in a public subnet.
+
+
+
+
+
+S3:
+	->It is a cloud storage container used to store and manage data objects.
+	->It is a global service, and all S3 buckets are accessible over the internet. So can't able to create this service inside VPC.
+	->Stores data as objects rather than files or blocks.
+	->It can store any type of like image, video, zip, jar etc.
+	->Supports IAM policies, bucket policies, and ACLs for permissions.
+	->Versioning: Keeps multiple versions of objects to prevent accidental deletions
+	->Event Notifications: Can trigger AWS Lambda, SNS, or SQS on changes.
+
+	Limit:
+		Maximum object size: 5TB
+		Single upload limit (PUT operation): 5GB
+		Multipart upload limit: Up to 5TB (Recommended for files larger than 100MB)
+		Minimum part size for multipart upload: 5MB (except the last part)
+		
+		
+Subnet:
+	A subnet is created by dividing an IP network into smaller parts using a Subnet Mask.
+
+	Imagine a company office with multiple departments:
+		HR Department (Handles employee records)
+		IT Department (Manages servers, networks)
+		Finance Department (Deals with payroll, accounts)
+
+	Each department has computers, printers, and other network devices. If all devices were in one large network, issues could arise:
+	❌ Network Congestion – Too many devices sending data in one network → slower internet speeds.
+	❌ Security Risks – Any employee could access confidential finance data.
+	❌ Broadcast Storms – When every device sends messages to every other device → overload.
+
+	✅ How Subnets Solve This Problem?
+	The company divides its network into three subnets, one for each department:
+
+	Department	Subnet (CIDR)		IP Range
+	HR			192.168.1.0/24	192.168.1.1 - 192.168.1.254
+	IT			192.168.2.0/24	192.168.2.1 - 192.168.2.254
+	Finance		192.168.3.0/24	192.168.3.1 - 192.168.3.254
+
+Route Table:
+A Route Table in AWS is a set of rules (routes) that determine how network traffic flows within a VPC
+
+The table contains two colums:
+	1)Destination → Defines where the traffic is going (for ex source EC2 instance try to access 192.0.7.1 IP then 192.0.7.1 is destination).
+	2)Target → Where the traffic should be sent (e.g., IGW, NAT Gateway, another subnet, or VPN). For ex if source instance request to 192.0.7.1 IP then route to target IP nat-123456 (NAT Gateway).
+
+VPC: Virtual Private Cloud
+A VPC (Virtual Private Cloud) is a private, isolated network within AWS where you can launch and manage your AWS resources (like EC2, RDS, Lambda, etc.). It behaves like a traditional data center network, but in the cloud.
+
+->✅ Route table is automatically created when you create a VPC.
+->  A default local route (10.0.0.0/16 local): Allows communication between resources inside the VPC.
+
+	VPC Peering:
+		It is a networking connection between two Virtual Private Clouds (VPCs) that allows them to communicate privately without send request to Internet.
+
+	Public Subnet 
+	->Allows direct internet access.
+	Ex:- Backend services, databases, private APIs
+
+
+	Private Subnet
+	Restricted from direct internet access.
+	Ex:- Hosting public-facing applications (web servers, ALB)
+
+VPC endpoints: 
+	It allows instances in your VPC to privately connect to AWS services (like S3, DynamoDB, SQS, etc.) without using the public internet.
+	For ex S3 always available by public internet, if I need to access privately then VPC endpoints can be used.
+		✔ No Internet Gateway (IGW) required, No need for public IPs, reducing attack surface.
+		✔ No NAT Gateway needed for private subnets
+		✔ More secure & lower latency since traffic stays within AWS
+	
+	AWS provides two types of VPC Endpoints:
+		1) Gateway Endpoint: 
+			Connect VPC to S3 & DynamoDB only.
+			Uses Route Table
+		2) Interface Endpoint: 
+			Connect VPC to other AWS services (SQS, SNS, etc.).
+			Uses Elastic Network Interface (ENI)
+
+Inbound traffic = Internet users can access your public EC2 instance.
+Outbound traffic =  EC2 instances can make requests to the internet.
+
+
+NAT: Network Address Translation Gateway
+	It allows instances in a private subnet to access the internet securely without exposing them to inbound internet traffic.
+	only one-way traffic: outbound traffic
+	Ex: Private EC2 instances can download updates, access external APIs, download security patch etc.
+
+ALB: Application Load Balancer
+	By using ALB, we can access private subnet EC2 instance from Internet
+	Handles Inbound traffic
+	
+	
+Firewall:
+	NACL: Network access controll list
+		It is a security layer in AWS that controls inbound and outbound traffic at the subnet level.
+		Supports both Allow & Deny rules (explicitly block traffic).
+		Applies to all instances in a subnet.
+		Stateless → Each request is evaluated separately.
+		Ex: You want to block traffic at the subnet level (e.g., block SSH to all EC2 instances in a subnet).
+
+	
+	Security Groups:
+		An instance-level firewall (applies to EC2, RDS, etc.).
+		Only Allow rules (No explicit deny).
+		Stateful → If an inbound request is allowed, the response is automatically allowed.
+		Ex: You need instance-level security (e.g., allow SSH only from a specific IP).
+		
+
+
+Question:
+What is again public and private in VPC structure?
+
+TODO:
+See about IAMO
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

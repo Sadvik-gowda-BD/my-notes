@@ -159,11 +159,56 @@ Problem solving technique
 16)Greedy
 
 
+Floyd’s Cycle Detection Algorithm (Tortoise and Hare).
+	his technique is used to detect cycles in a linked list or find duplicate numbers in an array efficiently. It uses two pointers:
+	->Slow pointer (Tortoise) moves one step at a time.
+	->Fast pointer (Hare) moves two steps at a time.
+	If there's a cycle, the two pointers will eventually meet inside the cycle.
+	
+	Once they meet fast==slow, we can say cycle is exist.
+	If we need find start point of cycle then reset slow pointer to 0 and move both slow and fast pointer one one step until meet. The meeting point is the starting point of cycle.
+	
 
 
 
+==============================
+Binary search
+
+It works by repeatedly dividing the search interval in half.
+Time complexity of O(log n).
+
+Binary search can be appplied on problems like:
+	sorted array
+	minimum and maximum range/bound
+	Binary Search on the Answer. (try for all min and max possible answers)
+
+Find mid overflow case
+   int mid=(low+high)/2 - can lead to overflow if low=50 and high=INTEGER_MAX, low+high value is beyond int range
+   Solution
+    1)use - long mid
+    2)int mid = low+(high-low)/2
 
 
+✅ Use while (left <= right) when:
+	You're searching for an exact value (like a classic binary search).
+	You usually return immediately when you find the element (arr[mid] == target).
+	You move left = mid + 1 and right = mid - 1 to shrink the window.
+	Ending Condition: left > right
+	If you are not sure about the expected answer & ans depend on range, then use ans variable and update ans=mid on possible side.
+
+	
+Questions
+	1. Search in Rotated Sorted Array
+	2. Finding First or Last Occurrence (Bound Problems)
+	3. Peak Element (Unimodal Array)
+	4. Binary Search on the Answer
+		Minimum capacity to ship packages in D days
+		Allocate minimum number of pages (book allocation). minPossibleAns= max(pages array) maxPossibleAns= sum(pages array)
+		Aggressive cows (maximize minimum distance).
+		Koko eating bananas.
+	5. Search Space Reduction in Optimization
+	
+	
 
 
 
@@ -187,11 +232,19 @@ Sliding Window:
 Greedy:
 A greedy algorithm decides what to do in each step, only based on the current situation, without a thought of how the total problem looks like.
 
+At every step, we can make a choice that looks best at the moment, and we get the optimal solution to the complete problem. 
+
 How it works
 	Greedy Choice Property: The problem must be such that making the best choice at each step will lead to the best overall solution.
 	Optimal Substructure: The problem must be such that the best solution to the whole problem is made up of the best solutions to each subproblem.
 
-In Greedy I observed that for most of the problem we need to sort the array.
+In Greedy I observed that for most of the problem we need to sort the array. Knapsack, job sequence, coin problem etc
+
+->"two and one pass greedy"
+-> two pass is traverse array from left to right then right to left
+P) Greedy algorith may not work always, it's looks promisssing but not work.
+	for Ex in minimum coin for 20 rs problem. Given [18, 10, 1] coins are there according to greedy it pick 18+1+1 3 coins, but 10+10 2 coin is optimized way.
+	
 ---------------------------------------------------------------------
 
 Recursion
@@ -277,6 +330,69 @@ Prevents reprocessing: It ensures you don’t add the same node to the queue mul
 But in Prims algorith, mark visited when we poll from the queue	
 
 P)DSU - (Disjoint Set Union)
+P)you cannot use disjoint set union (DSU) for directed graphs. 
 P)In DSU we can group some nodes as component and then we can check they belong to which component by finding the parent
 P)In DSU or any graph problem, if we not able use arr[i] as a node (arr[i] could be -ve), use  ValueToIndex Map and then use index as a graph node.
+P)To give node value to grid. formula(r, c) = (r * total_Col) + col
 
+
+-------------Dynamic Programming-------
+DP is a method used in algorithm design to solve complex problems by breaking them down into simpler subproblems. It is particularly useful for optimization problems where solutions to subproblems are reused multiple times.
+
+Approach
+The top-down approach, also known as memoization & recurssion.
+The bottom-up approach, or tabulation, starts with the smallest subproblems and iteratively builds up to the solution.
+
+Key Idea:
+"Solve each subproblem once and store the result for future use."
+This avoids redundant computation, which is common in naïve recursive approaches.
+
+When to Use Dynamic Programming:
+	A problem can be solved using DP if it has:
+
+	Overlapping Subproblems:
+		The same subproblems are solved multiple times.
+		Example: In computing Fibonacci numbers recursively.
+
+	Optimal Substructure:
+		The solution to a problem depends on the solutions of its subproblems.
+		Example: Shortest path in a graph, knapsack problem.
+
+
+Ex: Fibonacci problem
+In recursion/memoization we start from top/the ans which we need and go until base case, so top-down.
+In Tabulation approach we start from 0 base and go upto N, so bottom-up
+
+DP is common for:
+	Minimize / Maximize problems (e.g., minimum cost/stone, maximum profit)
+	Counting problems (e.g., number of ways to reach a target)
+	Try all possible ways problem.
+	
+🚫 Not DP If:
+	Subproblems are independent (e.g., merge sort).
+	You cannot reuse previous results.
+	Each subproblem depends on new inputs every time.
+	
+Trick to solve:-
+	1)Try to represent problem in terms of index.
+	2)Do all possible stuffs(direction, jump-1/jump-2,  etc) on that index, according to problem statement.
+	3)Put value/answer to that index.If question says:
+		->find all ways - add all stuffs
+		->find min/max - get min(all stuffs)/ get max(all stuffs)
+
+Points to remember (PTB):
+-> Memoization can be used for overlapping sub problems.
+
+
+
+
+
+
+
+
+---------------------------------------
+Must read before Interview.
+
+1)There are problems where we need to find the possible answer range and try for all values to get best output. Then if possible apply Binary Search algorithm.
+	For ex: Binary Search on answer
+		Book/page allocation problem

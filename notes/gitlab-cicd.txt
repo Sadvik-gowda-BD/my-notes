@@ -1,0 +1,47 @@
+
+
+Gitlab CICD pipeline
+gitlab syntax:- https://docs.gitlab.com/ci/yaml/ 
+
+
+Define all config in .gitlab-ci.yml file
+
+=============================================================
+Global keywords:
+	default : Custom default values for job keywords.
+	include : Import configuration from other YAML files.
+	stages	: The names and order of the pipeline stages.
+	workflow: Control what types of pipeline run.
+
+-------------------------------------------------------
+job keywords:
+	visit gitlab syntax page.
+
+
+
+
+
+
+artifacts:
+ artifacts are the file stored on gitlab server after a job is executed.
+ artifacts:
+  paths:
+    - target/bin/
+	
+ ->All files inside target/bin/ will be collected.
+ ->The directory structure is preserved.
+
+
+
+Gitlab runner/agents
+	In GitLab, runners are agents that execute the jobs defined in your CI/CD pipelines.
+	These agents can run on physical machines or virtual instances.
+
+
+
+
+stage:
+
+job:
+
+	->If 

@@ -1,0 +1,19 @@
+
+
+Rate Limiter:
+A rate limiter is used to control the number of requests or operations allowed in a given time window.
+
+Hybrid approach:- Use userId when login else use IP address as fallback
+
+Approach 1 InMemory RateLimiter:-
+	Use RateLimiter in application iself. Drawback is not suitable when we use multiple instance/scale up.
+	
+Ex Usage:-
+	To avoid DDoS attack
+	To control login attempts
+	Limit of operation in ChatGpt free trail for paid version
+	To avoid extra load on server
+	YouTube video - Watch my own video 10000 times
+	
+
+	

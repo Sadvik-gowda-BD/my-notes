@@ -32,6 +32,12 @@ write view and store procedure query , it'll be easy to remember
 find nth highest salary
 
 
+Q)find nth heighest salary
+SELECT TOP 1 Salary 
+FROM ( SELECT DISTINCT TOP N Salary FROM Employee ORDER BY Salary DESC) AS Subquery
+ORDER BY Salary ASC;
+
+
 Q)Print max salary by each department with employee name
 
 soln1:
