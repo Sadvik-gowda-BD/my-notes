@@ -104,7 +104,7 @@ Q)Types of Garbage collector
 	
 	4)G1 Garbage Collector
 		->Firstly G1 Garbage Collector is introduced in JDK 7
-		->G1 (Garbage First) Garbage Collector is designed for applications running on multi-processor machines with large memory space. 
+		->G1 (Garbage First) Garbage Collector is designed for applications running on multi-processor machines with large memory space. It also uses mutiple threads. 
 		->java -XX:+UseG1GC -jar Application.java
 
 Q)Default garbage collector
@@ -114,6 +114,7 @@ Q)Default garbage collector
 	Java 9 - G1 GC
 	Java 10 - G1 GC
 	java 11 - G1 GC
+	java 21 - G1 GC
 
 P)Garbage collector uses mark and sweep algorithm to remove object
 
@@ -134,6 +135,10 @@ P)In Java, all the wrapper classes (like Integer, Boolean, Byte, Short, Float, D
 		
 Q)Use of finalize() method
 It is invoked by the garbage collector before destroy the object. It is used to release the resources and clean up.
+This is deprecated, alternativily use 
+	try-with-resources → automatic cleanup
+    AutoCloseable with close() → manual cleanup
+    Cleaner (Java 9+) → safe background cleanup
 
 Q)How memory leaks can be happen
 A Memory Leak is a situation where there are objects present in the heap that are no longer used, but the garbage collector is unable to remove them from memory
@@ -281,6 +286,7 @@ Deep copy:
 		
 Q)Cloneable interface 
 	It is a marker interface ( clone() method is part of Object class)
+	It is used when we need to clone the object, otherwise we get CloneNotSupportedException
 	The default implementation of Java Object clone() method is using shallow copy.
 		Ex:- class A implements Cloneable
 
@@ -300,6 +306,7 @@ Both are functional interface which contain SAM method.
 		Ex:- Collections.sort(myList, Comparator.reverseOrder());
 			 listOfStudent.sort(new AgeComparator())
 			 listOfStudent.sort(new NameComparator())
+			 listOfStudent.sort((s1,s2) -> s1.age - s2.age)
 		
 3)Singleton pattern with thread safe double check locking
 --> Make class as final, so not able for inheretence
@@ -344,6 +351,7 @@ Q)In Java why abstract class is required when there is an Interface
 ->Interface cannot have instance variable, it will have (public, static, final)variables. 
 ->Abstract class can have protected methods, Interfaces only allow public or default(package private) access
 ->Abstract class does not support multiple inheretence
+->Cannot be able to create object for abstract class
 		
 Q) Java POJO vs Java Bean
 
@@ -384,11 +392,24 @@ HAS-A
 	car has engine
 	car has tires
 	
-
+Multitasking/multi programming:- One user run multiple program in at same time called multitasking.
+Multitasking is the ability of an operating system to run multiple tasks (processes) at the same time.
+	
+Multitasking
+	Definition: Multitasking is the ability of an operating system to run multiple tasks (processes) at the same time.
+	How It Works: The operating system manages multiple processes by allocating CPU time slices to each task. These time slices are so small that it appears as though the tasks are running simultaneously, but in reality, the CPU is rapidly switching between tasks.
+	Ex:- running chrome, edge, youtube and MS word at same time
+	
+Multithreading
+	Definition: Multithreading is the ability of a single process to manage multiple threads of execution within itself.
+	How It Works: A single process can be divided into multiple threads, where each thread represents a separate path of execution. These threads share the same memory space but can execute independently.
+	Ex: web servers, where each thread can handle a separate client request concurrently
+	JUnits uses threads to run test cases in parallel
+	
 
 4)Multithreading
 
-	In Java cannot be able to restart the thread, new instance will be required 
+	In Java, cannot be able to restart the thread, new instance will be required 
 
 	Actually thread.start() creates a new thread and have its own execution scenario.
 	but thread.run() not creating any new thread, instead it execute the run method in the current running thread just like invokation of normal thread.
@@ -403,11 +424,11 @@ The t1.join() method of thread class waits for a thread t1 to die (current threa
 
 Multithreading:- Do multiple operation at same time with in the single application. Threads are lightweight processes within processes as seen. 
 
-In java we can achieve by 2 types by extending Thread class and implementing Runnable interface. (Here it supports multiple inheritence)
+In java we can achieve by 2 types by extending Thread class and implementing Runnable interface. (Runnable supports multiple inheritence)
 
 EX:-
 	A basic example of multithreading is downloading two files from two different tabs in a single web browser
-	Spelling check in wordpad, The typing happens in Main thred and speelling check is happen on different thread (with low priority).
+	Spelling check in wordpad, The typing happens in Main thread and speelling check is happen on different thread (with low priority).
 	In gaming application car, bike runs in different threads
 	In youtube video is playing on one thread, comment, ads play in different threads.
 	Multiple request & response process in a sigle web server.
@@ -445,20 +466,7 @@ Synchronized static methods:
 extrensic/explict lock:
 		Ex: reentrent lock
 
-Multitasking/multi programming:- One user run multiple program in at same time called multitasking.
-Multitasking is the ability of an operating system to run multiple tasks (processes) at the same time.
-	
-Multitasking
-	Definition: Multitasking is the ability of an operating system to run multiple tasks (processes) at the same time.
-	How It Works: The operating system manages multiple processes by allocating CPU time slices to each task. These time slices are so small that it appears as though the tasks are running simultaneously, but in reality, the CPU is rapidly switching between tasks.
-	Ex:- running chrome, edge, youtube and MS word at same time
-	
-Multithreading
-	Definition: Multithreading is the ability of a single process to manage multiple threads of execution within itself.
-	How It Works: A single process can be divided into multiple threads, where each thread represents a separate path of execution. These threads share the same memory space but can execute independently.
-	Ex: web servers, where each thread can handle a separate client request concurrently
-	JUnits uses threads to run test cases in parallel
-	
+
 Thread obj.wait():- lockObj.wait()
 	that causes the current thread to wait and go to sleep until some other threads call the notify () or notifyAll() method for the object’s monitor (lock). It simply releases the lock and is mostly used for inter-thread communication.
 	It is defined in the object class, and should only be called from a synchronized context. 
@@ -479,23 +487,34 @@ p)notify() and notifyAll()
 	notifyAll():
 		Wakes up all threads that are waiting on the object's monitor.
 
+Use notify() only when you are sure all waiting threads are waiting on the same condition.
+Otherwise, use notifyAll() to avoid deadlocks and lost notifications.
 
-Q)DIfference b/w Multithreading and Async
+
+P)	thread.start() is NON-BLOCKING - Starts a new thread and returns immediately
+	thread.run() is BLOCKING - Just calls the method like normal Java code
+	thread.join() is BLOCKING - Main thread waits for child thread to finish
+	
+	
+
+Q)Difference b/w Multithreading and Async
 
 
 MultiThread:-
 
 P)Daemon Thread & User Thread
-The main difference between user thread and daemon thread is that JVM does not wait for daemon thread  before exiting while it do waits for the user thread.
+The main difference between user thread and daemon thread is that JVM does not wait for daemon thread before exiting while it do waits for the user thread.
 Daemon thread is a low-priority thread that runs in the background.
-
+	Thread t = new Thread(r);
+    t.setDaemon(true);
+	
 Async:-
 It doesn't wait for the response, 
 Async programming is about non-blocking execution between functions
 
 Q)What is excecuterService?
 The ExecutorService interface simplifies the execution of asynchronous tasks, such as running tasks in parallel, scheduling tasks, and managing the lifecycle of tasks and threads.
-Ex: ThreadPoolTaskExecuter, ForkJoinPool etc.
+Ex: ThreadPoolTaskExecuter, ForkJoinPool, CompletableFuture etc.
 
 Q)How the parallel stream works
 The parallel stream uses the ForkJoinPool to execute the tasks. This pool is a type of ExecutorService.
@@ -577,11 +596,11 @@ Q) How to make any LinkedList or ArrayList thread safe in java
 4)Set
 It represents the unordered set of elements which doesn't allow us to store the duplicate items.
 	1)Hash Set
-		It does't maintain any order. It is faster than all other sets. It internally uses HashMap to hold data.
+		It does't maintain any order. It is faster than all other sets. It internally uses HashMap to hold data. It permit null elements.
 	2)Linked Hash Set
 		LinkedHashSet class represents the LinkedList implementation of Set Interface. Like HashSet, It also contains unique elements. It maintains the insertion order and permits null elements.
 	3)TreeSet
-		Java TreeSet class implements the Set interface that uses a tree for storage. The elements in TreeSet stored in ascending order.
+		Java TreeSet class implements the Set interface that uses a tree DS for storage. The elements in TreeSet stored in ascending order.
 		It won't allow NULL values, because of sorting
 
 5)Map
@@ -590,11 +609,13 @@ It represents the unordered set of elements which doesn't allow us to store the 
 		It is a known fact that the HashMap key utilizes the hashCode() and the equals() method for finding the index and finding a key's value. Therefore, it is required to implement these methods properly. If these methods are not implemented properly, then hashMap will not work properly. 
 	
 		->HashMap in Java is basically an array of bucket where each bucket uses linked list to hold elements. A linked list is a list of nodes where each node contains a key-value pair(EntrySet).
+		->key and value are stored inside a Node object. Node object store on LinkeList
 		->The default initial capacity of HashMap is 16 (i.e. the number of buckets). and load factor is 75%
 		->First the hashcode of key will taken (for null key hashcode will be 0) then pass that hashcode to hash() method it returns bucket location (int value). In that bucket key,value pair will be stored in LinkedList.
 		->Time complexity to insert and retrieve a value is O(1)
 		HashMap in Java 8 
 		In Java 8, HashMap replaces the linked list with another useful data structure i.e. balanced trees (specifically red-black trees) tree on breaching a certain threshold, which is known as TREEIFY_THRESHOLD (size is 8, if bucket size/number of elements in a bucket is more than 8 link list become Red-Black tree). Once this threshold is reached, the linked list of Entries is converted to the Red-Black TreeNodes which reduces the time complexity from O(n) to O(log(n)).
+		->Only particular bucket LinkedList convert to Tree, not all bucket elements.
  
 		TreeNodes are nothing but the structures supporting the balanced trees (specifically red-black trees) trees which have two nodes, smaller node goes to the left and the larger to the right. Whenever we want to search for any key the whole left or right subtree is discarded with a single check. This is how the time complexity is reduced to O(log(n). This change has lead to a significant improvement of HashMap.
  
@@ -628,7 +649,7 @@ IdentityHashMap:
 	Ex:
 		In Hibernate, entities fetched from the database might have overridden equals() and hashCode() methods based on business key attributes. However, the framework may need to track each proxy instance independently, so it could use an IdentityHashMap to manage proxy references.
 		
-Q)HashMap Vs ConcurrentHashMap Vs HashTable 
+Q)HashMap Vs Concurrent HashMap Vs HashTable 
 	HashMap:-
 		HashMap is not synchronized there by making it better for non-threaded applications.
 		Allows only one null key but any number of null in the values.
@@ -638,7 +659,7 @@ Q)HashMap Vs ConcurrentHashMap Vs HashTable
 		
 	ConcurrentHashMap:-
 		ConcurrentHashMap is synchronized and thread safe.
-		This does not allow null in both keys or values.
+		This does not allow null in both keys or values.Because NULL key braks interl algorithm & NULL value creates ambugity problem in multi-thread env.
 		It is slow.
 		Suitable for multi-thread appliactions.
 		
@@ -649,6 +670,10 @@ Q)HashMap Vs ConcurrentHashMap Vs HashTable
 		Order of insertion is not guaranteed in HashTable.
 		Suitable for multi-thread appliactions.
 		It is legacy class. We can use ConcurrentHashMap instead of HashTable.
+
+Q)How to make normal map thread safe
+	Collection.synchronizedMap(myNormalMap);
+	It wrap every operation in single synchronized lock, hence slow. ConcurrentHashMap is lock free, so it not allow null values.
 		
 Q)Interanl working 
 
@@ -800,3 +825,12 @@ P) Access specifier of java outer class	should be public or default.
 P) .class will be created for java all java file like class, Interface, Enum, NestedClass, Abstract class etc.
 
 P)we can run any .class file which has main method. main method can be in public class or default class. If main method not present then we will get Main method not found error
+
+Q)Marker interface
+Interface that has no method and fields. It gives a hint to the JVM or frameworks to apply special behavior.
+It check like:
+	if (obj instanceof Serializable) {
+		// JVM will serialize the object - special signal.
+	}
+
+Ex: Cloneable, Serializable(The JVM now knows this class can be converted into a byte stream)

@@ -22,6 +22,13 @@ stored procedure
 
 
 @Lob in entity
+	->@Lob is used to map large objects like CLOB or BLOB in the database for storing large text or binary data
+	ex:	@Lob
+		@Basic(fetch = FetchType.LAZY)
+		private byte[] fileOrData;
+		private char[] text;
+		private String description;
+
 Normalization
 
 To revisit
@@ -41,36 +48,48 @@ ORDER BY Salary ASC;
 Q)Print max salary by each department with employee name
 
 soln1:
-SELECT e.name AS employee_name, e.salary, d.name AS department_name
-FROM Employee e
-JOIN Department d ON e.department_id = d.id
-WHERE e.salary = (SELECT MAX(e2.salary) FROM Employee e2 WHERE e2.department_id = e.department_id);
+	SELECT e.name AS employee_name, e.salary, d.name AS department_name
+	FROM Employee e
+	JOIN Department d ON e.department_id = d.id
+	WHERE e.salary = (SELECT MAX(e2.salary) FROM Employee e2 WHERE e2.department_id = e.department_id);
 
 soln2:
-WITH DepartmentMaxSalaries AS (
-    SELECT Department, MAX(Salary) AS HighestSalary
-    FROM Employees
-    GROUP BY Department
-)
-SELECT e.EmployeeName, e.Department, e.Salary AS HighestSalary
-FROM Employees e
-INNER JOIN DepartmentMaxSalaries dms
-ON e.Department = dms.Department AND e.Salary = dms.HighestSalary; 
+	WITH DepartmentMaxSalaries AS (
+		SELECT Department, MAX(Salary) AS HighestSalary
+		FROM Employees
+		GROUP BY Department
+	)
+	SELECT e.EmployeeName, e.Department, e.Salary AS HighestSalary
+	FROM Employees e
+	INNER JOIN DepartmentMaxSalaries dms
+	ON e.Department = dms.Department AND e.Salary = dms.HighestSalary; 
 
-Soln3:
-Use RANK() functions
-SELECT DepartmentName, EmployeeName, Salary
-FROM (
-    SELECT 
-        d.DepartmentName,
-        e.EmployeeName,
-        e.Salary,
-        RANK() OVER (PARTITION BY e.DepartmentID ORDER BY e.Salary DESC) AS Rank
-    FROM Employee e
-    JOIN Department d ON e.DepartmentID = d.DepartmentID
-) RankedSalaries
-WHERE Rank = 1;
+Soln3: Expected
+	Use RANK() functions
+	SELECT DepartmentName, EmployeeName, Salary
+	FROM (
+		SELECT 
+			d.DepartmentName,
+			e.EmployeeName,
+			e.Salary,
+			RANK() OVER (PARTITION BY e.DepartmentID ORDER BY e.Salary DESC) AS Rank
+		FROM Employee e
+		JOIN Department d ON e.DepartmentID = d.DepartmentID
+	) RankedSalaries
+	WHERE Rank = 1;
 
+soln4:
+
+	SELECT e.name AS employee_name, e.salary, d.name AS department_name
+	FROM Employee e
+	JOIN Department d ON e.department_id = d.id
+	JOIN (
+		SELECT department_id, MAX(salary) AS max_salary
+		FROM Employee
+		GROUP BY department_id
+	) t2max
+	ON e.department_id = t2max.department_id
+	AND e.salary = t2max.max_salary;
 
 
 Q)Print the day where temp is increased
@@ -88,7 +107,7 @@ Q)Print the day where temp is increased
 		weather t1
 	JOIN 
 		weather t2 
-		ON t1.day = DATEADD(day, 1, t2.day)  -- t1 is the day after t2
+		ON t1.day = t2.day+1  -- t1 is the day after t2 (when t1 is day 5, t2 is the day 4. T1_day_5 compare with T2_day_4)
 	WHERE 
 		t1.temperature > t2.temperature;     -- temp increased
 		
@@ -122,6 +141,9 @@ SessionFactory sessionFactoty = new Configuration().configure("hibernate.cfg.xml
 	session.get(UserDetails.class, 101); //hit database
 	session.get(UserDetails.class, 101); //won't hit database return data from cache
 	session.close();
+	
+	Each HTTP request gets its own persistence context (L1 cache).
+	So multiple API calls → different DB sessions → NO L1 cache sharing.
 	
 	
 2nd level cache

@@ -14,25 +14,30 @@ Spring CLI
 Security – to provide authentication and authorization
 Logging – to record events at certain points during program execution
 
+Q)What is Dependency Injection.
+Spring injects bean to its depnedent class. (For example ControllerClass is depend on ServiceClass, here spring create a bean of service class and it injects to variable)
+
 Q)What is spring IOC? - Inversion of Control Container 
 Spring IoC container is the program that injects dependencies into an object and make it ready for our use. It manages the beans lifecycle etc.
 It implements the concept of dependency injection (DI)
 
-P)2 types spring IOC contaiiner: BeanFactory and ApplicationContext 
+P)2 types spring IOC contaiiner:
+	BeanFactory Container : This is the basic container that provides support for dependency injection.
+	ApplicationContext Container : This is an advanced container built on top of the BeanFactory.
 
 P)A bean is an object that is managed by the Spring IoC (Inversion of Control) container. 
-
-Q)What is Dependency Injection.
-Spring injects bean to its depnedent class. (For example ControllerClass is depend on ServiceClass, here spring create a bean of service class and it injects to variable)
 
 Q)What is springboot starter dependency
 In Spring Boot, a "starter" is a set of convenient dependency descriptors that you can include in your application. Starters are used to simplify the process of setting up and configuring a Spring Boot application. They provide a way to include a group of related dependencies with a single dependency declaration, eliminating the need to manually specify each individual dependency.
 
 Why we need?: Quick Setup:, Developers do not need to know the names of the dependencies required for an application, Developers do not need to know the exact version of the dependencies to use
-for ex: springboot-starter-web will be include tomacat dependency, springboot-starter-test will include junit and mockit, power mock all test related dependency
+for ex: springboot-starter-web will be include tomacat dependency,springboot-starter-actuator, springboot-starter-test will include junit and mockit, power mock all test related dependency
 
 Q)Describe spring-boot-starter-parent?
 It is a unique starter which adds jars to the classpath for easy Maven or Gradle dependency management.
+Benifits of using:
+	No need to specify versions for most Spring Boot dependencies like spring-boot-starter-web etc.
+	Maven plugins like spring-boot-maven-plugin are automatically configured.
 
 Q)Stereo type annotations
 component, controller, service, repository
@@ -89,19 +94,31 @@ It is used to mark a Java class as a bean.
 	Switch can be possible. But it is not recommended. 
 	
 Q)Can we use @Component/@Service in place of @Controller ?
-No we cant't TODO check
+No we cant't. because @Controller handles incomming HTTP requests
+
+P)The default bean scope is Singleton. Only once instance for the whole application
+P)prototype bean
+	Everytime you request/inject it, spring will create new bean.
+		@Component
+		@Scope("prototype")
+		class xyy
+		
+P)we can use ObjectProvider<Xyz> provider;
+			 provider.getObject(); //It returns new object everytime
+
 
 Q)In which scenerio, you'll use singleton and prototype scope?
+When we need new object each time. Object is stateful and temporary.
 singleton scope should be used with EJB stateless session bean and prototype scope with EJB stateful session bean.
 
 Q)What is auto configuration
 Automatically configure the spring property values into the bean. For example database properties which is in properties file into DataSourceAutoConfiguration.class
 
-Q)Circular dependency
+Q)Circular dependency - BeanCurrentlyInCreationException
 Circular dependencies occur when two or more beans depend on each other, either directly or indirectly.
 It occur only on constructor injection
 
-We can resolve by using Setter or Field injection or we can use @Lazy in constructor injection. 
+We can resolve by using Setter Injection or we can use @Lazy in constructor injection or Field injection. 
 
 @SpringBootApplication = @Configuration + @EnableAutoConfiguration + @ComponentScan
 
@@ -114,7 +131,7 @@ Q) How to exclude auto configuration in springboot
 	spring.autoconfigure.exclude= \org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration, \org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
 	
 Q)How to Register a Custom Auto-Configuration?
-we can below property in properties file
+we can use below property in properties file
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.baeldung.autoconfigure.CustomAutoConfiguration
 
 Q)How many request can springboot handle simultaneously?
@@ -149,7 +166,7 @@ In both values can be declare as optional. but in path variable it makes confuse
 
 	1) @pathVariable
 	localhost:8443/employee/get/{id}
-	It is not URL encoded	-> localhost:8443/employee/get/ab+c result of id is a+b
+	It is not URL encoded	-> localhost:8443/employee/get/ab+c [result of id is ab+c]
 	Default value cannot be mention
 ----
 ID: ab+c
@@ -160,6 +177,9 @@ ID: ab+c
 	
 	localhost:8443/employee/get/id=ab+c result of id is a b (here + is removed because of URL encode)
 	Default value can be sepecified  @RequestParam(defaultValue = "0", name = "age", required = false) String age)
+
+P)Only Post API supports form data on postman. For GET API we have provide key-value pair on URL.
+
 
 Q)Why URL encoding is required
 URLs can contain characters that are not safe or meaningful in their raw form. Special characters like spaces, ampersands (&), question marks (?), slashes (/), and others have special meanings in URLs. URL encoding converts these characters into a format that can be safely transmitted over the web.
@@ -194,7 +214,7 @@ Q)
 @ConfigurationProperties:
 	Used to bind external configuration properties to a Java object.
 	Focused on externalizing configuration and mapping it to a structured, type-safe bean.
-	Ex:- ConfigurationProperties(prefix = "app")
+	Ex:- ConfigurationProperties(prefix = "app.db")
 	
 	
 Q)How Singleton bean works when multiple request comes at same time
@@ -247,11 +267,11 @@ Run on its own server
 
 
 4)How to increase MSA performance
-Implemnent circuit breaker to save the resource
-Implement in memory cache
-add index to DB
-Asynchronous calls
-added cache for ping JWT call
+	Implement circuit breaker to save the resource
+	Implement in memory cache
+	add index to DB
+	Asynchronous calls
+	added cache for ping JWT call
 
 Q)How sensitive data like password maintained in springboot properties file?
 1)Sensitive data can be send via commandline arguments at run time. Ex:- mvn spring-boot:run -Dspring.datasource.password=secretpassword
@@ -259,13 +279,14 @@ Q)How sensitive data like password maintained in springboot properties file?
 	Ex:- In properties file password:ENC(encrypted key) -> ENC(scEjemHosjc/hjA8saT7Y6uC65bs0swg)
 		 >mvn spring-boot:run -Djasypt.encryptor.password=secretkey
 		 
-3)We can use vault servers like ansible vault, spring cloud vault by HashiCorp etc.
+3)We can use vault servers like ansible vault,HashiCorp vault, spring cloud vault by HashiCorp etc.
 
 5)Circuitbreaker
-It is design pattern to handle failure services. 
+It is a design pattern to handle failure services. 
 we can implement fallbackMethod to return the default messages
 Here we save resource(JWT call etc) by not invoking the failed microservice, instead we return default message. (When circuit is open)
-we also can implement retry mechanism.
+we also can implement retry mechanism in CB but it is not recommended (retry on failur service makes CircuitBraker to open state quickly).
+P)Better to use retry in Resilience4j
 
 6)Service discovery/ service registry/ Eureka server
 In Microservices, Service Discovery helps us by providing a database of available service instances so that services can be discovered, registered, and de-registered based on usage.
@@ -282,7 +303,7 @@ It should register in service registry so it can identify the other services
 
 ===========Spring data JPA
 What is ORM?
-Object Relational Mapping (ORM) is a functionality which is used to develop and maintain a relationship between an object and relational database by mapping an object state to database column. It is capable to handle various database operations easily such as inserting, updating, deleting etc.
+Object Relational Mapping (ORM) is a functionality which is used to develop and maintain a relationship between an object and relational database by mapping an object state to database row. It is capable to handle various database operations easily such as inserting, updating, deleting etc.
 Ex:- Hibernate, TopLink, iBATIS etc
 
 Q)JPA - Java Persistance API
@@ -290,7 +311,7 @@ It is specification provided by Java and implemented by ORM providers.
 At any time we can change our project from Hibernate to other orm without effecting our springboot code.
 
 
-Q)spring.jpa.hibernate.ddl-auto
+Q)spring.jpa.hibernate.ddl-auto=
 values are CREATE UPDATE CREATE-DROP NONE, Recommended to use NONE in production,
 because table structure modify happens by using SQL query by DBA spring.jpa.hibernate.ddl-auto=none
 
@@ -353,7 +374,17 @@ Change data capture (CDC) pattern
 
 Sidecar
 Same pod contains 2 container - one for main application and other for sidercar application.
+they must be two different applications (two different containers). One can be springboot app and sidecar can be Python app.
+They run together, but are independent
 Main application can have business logic and sidecar can have logging, monitoring, configs, alaraming etc
+We can make main app and side car communicate each other.
+	Exactly like two processes running on the same machine.
+	main app to sidecar:- http://localhost:<sidecar-port>/
+	sidecar app to main app:- http://localhost:<mainapp-port>/
+
+Ex:
+	Main app writes logs to a file:/var/log/order-service.log
+	Side car app reads the same file and forwards logs to: ElasticSearch, Splunk etc
 
 Q)Swagger 
 Swagger in Spring Boot is an open-source project that helps generate documents of REST APIs for RESTful web services via a web browser. 
@@ -376,7 +407,7 @@ load()
 	- Lazy intialization
 	- Use when we don't need complete object which includes foreign key object
 	- load() method throws ObjectNotFoundException if there is no object found in the database.
-	-load() method does not retrieve the object from the database when it is called. Instead, it returns a proxy object that represents the object. The actual object is only 		retrieved from the database when it is needed, such as when a method of the object is called or a property is accessed. This technique is known as “lazy loading” and it is used to improve the performance of Hibernate by avoiding unnecessary database queries.
+	-load() method does not retrieve the object from the database when it is called. Instead, it returns a proxy object that represents the object. The actual object is only retrieved from the database when it is needed, such as when a method of the object is called or a property is accessed. This technique is known as “lazy loading” and it is used to improve the performance of Hibernate by avoiding unnecessary database queries.
 	-load() method is used to retrieve an object from the database by its identifier (primary key). It is used to initialize a proxy object instead of a fully-initialized object, so it can be used to lazily load the object when it is needed.
 
 
@@ -408,9 +439,27 @@ Q)Stubbing
 	Stubs are usually handwritten, and some are generated by tools.
 	
 Q)What is distributed tracing in microservices?
-Distributed tracing in microservices is a technique used to track and observe requests as they propagate through various services within a microservices architecture. It provides visibility into how a single request moves across different services, making it easier to diagnose issues, optimize performance, and understand the flow of transactions.
-	spring-cloud-starter-sleuth
-	spring-cloud-starter-zipkin
+Distributed tracing in Spring Boot is a mechanism that helps you trace a single request as it flows across multiple microservices. It provides visibility into how a single request moves across different services, making it easier to diagnose issues, optimize performance, and understand the flow of transactions, Which microservice called which, Service-to-service latency.
+	spring-cloud-starter-sleuth - springboot 2.x
+	opentelemetry - sprinboot 3.x
+	
+This gives you:
+	Automatic Trace ID generation
+	Automatic Span generation
+	HTTP tracing
+	REST template tracing
+	Feign tracing
+	JDBC tracing
+	Kafka tracing
+	Log correlation
+
+P) We can get traceId and SpanId 
+	1)In java code
+		SpanContext context = Span.current().getSpanContext();
+		String traceId = context.getTraceId();
+		String spanId = context.getSpanId();
+	2)In log
+		logging.pattern.level=%5p [traceId=%X{trace_id} spanId=%X{span_id}]
 
 
 Q)Queries in springboot
