@@ -66,8 +66,12 @@ Removal of Deprecated APIs (e.g., Applet API, Experimental AOT, and JIT compiler
 Pattern Matching for switch
 
 Q)Java 21 features
+->list.getFirst(); & list.getLast(); Cleaner than list.get(0) or list.get(size-1)
+->Performance & GC Improvements
+->Virtual Threads (🔥 Biggest change) - Perfect for I/O-heavy apps (REST APIs, DB calls)
 
-P)The latest version of Java is Java SE 23.0.1
+
+P)The latest version of Java is Java-25 (released on sept 2025)
 
 Q)Difference between Web Application and Non-Web Application
 Web Application: 

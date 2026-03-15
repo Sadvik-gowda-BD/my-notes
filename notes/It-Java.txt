@@ -122,6 +122,15 @@ P)In Java, all the wrapper classes (like Integer, Boolean, Byte, Short, Float, D
 	we can also create a custom immutable class- it should contain only constructor/builder and getters, no setters.
 	Whenever we pass List<Object> as parameter we need to create a new list and then assign otherwise outside it can be modify, same need to do while returing as well
 
+Q)Why in java String and other wrapper class are made as immutable?
+For security, performance, correctness, and simplicity.
+String is used everywhere in Java: Usernames/passwords, Environment variables, URL, file path etc
+If it is mutable, this would be dangerous. After validation of sring, some other thread or any other can modify the reference and it would imapct on all place.
+
+	Integer a = 10;
+	Integer b = a;
+	a = 20;  //b still remains 10, No shared state corruption
+
 1)Object class
 	The Object class is the parent class of all the classes in java by default. In other words, it is the topmost class of java.
 	
@@ -217,7 +226,7 @@ The String class is immutable. (cannot change the object).
 String is slow and consumes more memory when we concatenate too many strings because every time it creates new instance
 String class is slower while performing concatenation operation
 String class overrides the equals() method of Object class. So you can compare the contents of two strings by equals() method
-String class uses String constant pool
+String class uses String constant pool (SCP)
 
 StringBuffer:-
 The StringBuffer class is mutable.
@@ -388,7 +397,7 @@ P)IS-A and HAS-A (composition or aggregatio)
 IS-A
 	The "IS-A" relationship in Java refers to inheritance.
 	bike ia Vehicle, car is a vehicle
-HAS-A 
+HAS-A (may be foreign key relation)
 	car has engine
 	car has tires
 	
@@ -404,7 +413,7 @@ Multithreading
 	Definition: Multithreading is the ability of a single process to manage multiple threads of execution within itself.
 	How It Works: A single process can be divided into multiple threads, where each thread represents a separate path of execution. These threads share the same memory space but can execute independently.
 	Ex: web servers, where each thread can handle a separate client request concurrently
-	JUnits uses threads to run test cases in parallel
+	JUnits uses multiple threads to run test cases in parallel
 	
 
 4)Multithreading
@@ -564,7 +573,7 @@ Q)Difference b/w collection and collections
 	Collection - It is a interface implemented by List, set etc
 	Collections - It is a utility class in java and it contain only static methods. Ex:- Collections.emptyList(), Collections.emptySet(), Collections.sort() etc.
  
-2)List
+2)List  
  
 	1)Arraylist
 		The ArrayList class implements the List interface. It uses a dynamic array to store the duplicate element of different data types.
@@ -775,7 +784,7 @@ Java send signal to Interface AutoCloseable close() method during the try-with-r
 Exception
 ->Exception handle in catch block should be in order like NullPointer --> Runtime --> Exception etc, otherwise compiletime error will be thrown
 ->After try block catch or finally any one is must expected
-->Finally block always execute
+->Finally block always execute, even if we return data from try/catch block.
 ->If try, catch and finally has return statement then always finally block value will be returned. (error or non-error doesn't matter)
 
 Q) Reflections

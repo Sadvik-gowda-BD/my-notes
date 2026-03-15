@@ -152,6 +152,7 @@ Q)What Is Spring Boot Actuator Used For?
 	/httptrace displays HTTP trace information
 	/info displays arbitrary application information
 	/metrics shows metrics information
+	/prometheus
 	loggers shows and modifies the configuration of loggers in the application
 	mappings displays a list of all @RequestMapping paths
 	It also shows the circuit breaker status
@@ -191,6 +192,7 @@ Q)Why microservice is better than monolithic
 		New technology barriers :- Can't able to use different technologies because all services are in single project
 		if we need to scale up we need to do for whole big application 
 		If application goes down then it effect all services
+		Testing is difficult, may need to test whole app even if we modify single module.
 		Maintainance cost is low
 
 	Microservices
@@ -198,6 +200,7 @@ Q)Why microservice is better than monolithic
 		Different technology can be used for different services.
 		We can scale-up most demanded service
 		If one service goes down, it will not effect other services. (If register service goes down, still payment service can be work independently)
+		Testing is easy
 		Maintainance cost is high
 
 Difference between @PropertySource and @ConfigurationProperties
@@ -222,7 +225,8 @@ Q)How Singleton bean works when multiple request comes at same time
 		->Two different thread will have their own exection context(stack) which won't overlap with each other
 		->Singleton bean is a stateless
 		
-		->If the Singleton bean is shared, it needs to be thread-safe if it handles state that could be modified by concurrent requests. If the bean is stateless (it doesn't store any information that changes per request), it doesn't require special handling for concurrency.
+		“Spring singleton beans are shared across threads. Spring does not provide thread safety automatically. Singleton beans are safe as long as they are stateless(It will contain only methods and don't have instance variable like [int count]). 
+		Concurrency issues arise only when mutable shared state is introduced, which must be handled using thread-safe constructs or proper design.”
 
 
 ======= Explaination
@@ -395,13 +399,15 @@ It is used as:
 		
 Q)Difference between get() and load() in hibernate?
 
+Both method only hits the database if the object is not present in the session cache. If the same object is already present in the cache then it returns previously stored data from the cache.
+
 get()	
 	-Customer customer = (Customer) session.get(Customer.class, 1L);
 	- Eager intialization
 	- Use when we need complete object
 	- get() method returns null if there is no object present in the database.
-	- get() method only hits the database if the object is not present in the session cache. If the same object is already present in the cache then it returns previously stored data from the cache.
 	- get() method is used to retrieve a persistent object from the database. It is a member of the Session interface, and it takes the class of the object to be retrieved and the primary key of the object as arguments.
+	JPA Equivalent: findById()
 
 load()
 	- Lazy intialization
@@ -409,19 +415,8 @@ load()
 	- load() method throws ObjectNotFoundException if there is no object found in the database.
 	-load() method does not retrieve the object from the database when it is called. Instead, it returns a proxy object that represents the object. The actual object is only retrieved from the database when it is needed, such as when a method of the object is called or a property is accessed. This technique is known as “lazy loading” and it is used to improve the performance of Hibernate by avoiding unnecessary database queries.
 	-load() method is used to retrieve an object from the database by its identifier (primary key). It is used to initialize a proxy object instead of a fully-initialized object, so it can be used to lazily load the object when it is needed.
+	JPA Equivalent: getReferenceById()
 
-
-Q)What is springboot CLI
-Spring Boot CLI (Command Line Interface) is a command line software or tool. This tool is provided by the Spring framework for quickly developing and testing Spring Boot applications from the command prompt.
-
-->Frist we need install the sprinboot CLI tool and set bin path in env variables
-->we can use by running the commands
-
-commands:
-	>spring version
-	>spring init --dependencies=web,data-jpa my-project //to create a new project from the CLI with name my-project
-	>spring run HelloWorld.groovy
-	>mvn spring-boot:run
 
 Q)Difference between Junit and Mockito
 	Junit:

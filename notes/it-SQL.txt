@@ -139,7 +139,7 @@ SessionFactory sessionFactoty = new Configuration().configure("hibernate.cfg.xml
 	
 	Session session = sessionFactoty.openSession();
 	session.get(UserDetails.class, 101); //hit database
-	session.get(UserDetails.class, 101); //won't hit database return data from cache
+	session.get(UserDetails.class, 101); //won't hit database again, return data from cache
 	session.close();
 	
 	Each HTTP request gets its own persistence context (L1 cache).

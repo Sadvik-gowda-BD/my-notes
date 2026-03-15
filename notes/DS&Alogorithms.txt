@@ -1,5 +1,7 @@
 
 
+Refer one notes
+
 Data Structures:
 
 1. Linear Data Structures 
@@ -18,14 +20,14 @@ Data Structures:
 	Slower access
 	
 
-1. Linear Data Structures - elements are stored in swquential order (Middle elements will have one predessor and one successor)
+1. Linear Data Structures - elements are stored in sequential order (Middle elements will have one predessor and one successor)
 1)Array:
 	 A fixed-size, contiguous block of elements, where each element is accessed by its index.
 	 
 	 Ex:
 		Databases: Storing fixed-length records.
 		Game Development: Storing game boards or grid data for chess, snack & ladder (e.g., in a 2D array).
-		2-D array in bookMyShow, bus or flight booking
+		2-D array for seat layout in bookMyShow, bus or flight booking
 		Mathematical Computations: Representing matrices and vectors.
 
 2)Linked List:
@@ -48,6 +50,9 @@ Data Structures:
 		Function Call Stack: In programming languages, managing function calls and returns.
 		Expression Evaluation: Converting infix expressions to postfix/prefix and vice versa.
 		undo & redo option
+		
+3.1)Monotonic Stack
+A monotonic stack is a special type of stack data structure where elements are kept in either increasing or decreasing order. The main idea is to maintain this order while pushing and popping elements, which helps solve a wide range of problems efficiently.
 
 4)Queue: 
 	A First-In-First-Out (FIFO) structure; elements are added at the back and removed from the front.
@@ -147,7 +152,7 @@ Problem solving technique
 4)Fast & Slow Pointer
 5)Linked List In-Place Reversal 
 6)Monotonic Stack
-7)Top 'k' Elements
+7)Top 'k' Elements & heap
 8)Quick Select
 9)Overlapping Intervals
 10)Modified Binary Search 
@@ -164,9 +169,10 @@ Floyd’s Cycle Detection Algorithm (Tortoise and Hare).
 	->Slow pointer (Tortoise) moves one step at a time.
 	->Fast pointer (Hare) moves two steps at a time.
 	If there's a cycle, the two pointers will eventually meet inside the cycle.
+	->In even element there will be two middle elements. If we start with slow=head & fast=head, get the second middle. slow=head & fast=head.next, get first element as middle.
 	
 	Once they meet fast==slow, we can say cycle is exist.
-	If we need find start point of cycle then reset slow pointer to 0 and move both slow and fast pointer one one step until meet. The meeting point is the starting point of cycle.
+	If we need find start point of cycle then reset fast pointer to 0 and move both slow and fast pointer one one step until meet. The meeting point is the starting point of cycle.
 	
 
 
@@ -181,6 +187,7 @@ Binary search can be appplied on problems like:
 	sorted array
 	minimum and maximum range/bound
 	Binary Search on the Answer. (try for all min and max possible answers)
+	
 
 Find mid overflow case
    int mid=(low+high)/2 - can lead to overflow if low=50 and high=INTEGER_MAX, low+high value is beyond int range
@@ -391,8 +398,42 @@ Points to remember (PTB):
 
 
 ---------------------------------------
-Must read before Interview.
+Points to remember:
 
 1)There are problems where we need to find the possible answer range and try for all values to get best output. Then if possible apply Binary Search algorithm.
 	For ex: Binary Search on answer
 		Book/page allocation problem
+		
+
+Binary tree
+1)To solve some kind of problems, we have to maintain some states.
+-> Ex, To find top view of binary tree we have to maintain some states.
+    ->If we use BFS - queue<{node, horizontalDistance}> . so the first horizontalDistance is the outermost node
+    ->If we use DFS -Map<Integer, {node, level}>. lowest level horizontalDistance is the outermost node	
+
+
+Priority Queue
+->On graph problem, find largest maximum path		
+------------------------------------------------------
+
+
+
+Problem based on topic
+
+1)Two pointer
+	In a sorted array, find if a pair exists with a given sum S
+	Reverse an array
+	Palindrome
+	
+	Fast slow pointer
+	cyclic detection on link list
+	Find the middle of a linked list
+	
+
+2)Monotonic Stack
+	->Find next highest number on array. (traverse from right to left array and use stack)
+
+
+
+
+

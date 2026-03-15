@@ -1,0 +1,76 @@
+
+
+System Design
+
+
+Rate Limiter (RL):
+A rate limiter is used to control the number of requests or operations allowed in a given time window.
+
+Hybrid approach:- Use userId for login customer else use IP address as fallback for client identification.
+
+Approaches:
+	InMemory RateLimiter:-
+		cons: Use RateLimiter in application iself. Drawback is not suitable when we use multiple instance/scale up.
+	
+	Dedicated Distributed RL service:-
+		pros: No need to worry about scale up & down.
+		cons: Load Balancer need to invoke RL service for each and every requests to decide. It add additional n/w calls. It makes slow down.
+		
+	Dedicated Distributed RL service with caching:-
+		Use write back cache in load balancer. If rate limit is 10, once user request reaches threshold limit 10, then add user IP to LoadBalancer cache. Next time it return from cache without invoke the RL service. Also cache holds only particulat IP.
+		
+Database choice for RL service:
+	We want both read & write fast as possible. So don't have time to write and read from disk.
+	So, use Redis/Memecahe which uses in-memory (hashmap etc) data structure.
+
+Algorithm:
+	Fixed size Window RL:
+		consider new data for every window. Window size will be x min. For every x min, it consider new data.
+		
+	Sliding window RL:
+		
+	
+Ex Usage:-
+	To avoid DDoS attack
+	To control login attempts
+	Limit of operation in ChatGpt free trail for paid version
+	To avoid extra load on server
+	YouTube video - Watch my own video 10000 times
+	
+
+	
+
+################################################################################
+Design pattern
+Q)Why do we need design pattern (DP)?
+A design pattern is a well-described solution to a common software problem. 
+
+Creational Design Pattern
+	Creational design patterns are concerned with the way of creating objects.
+	These patterns define the best way to create an object in a particular situation.
+
+1)Singleton Pattern 
+	The Singleton pattern ensures that a class has only one instance and provides a global access point to that instance. 
+	This pattern is useful when a single instance of a class is required to coordinate actions across the system. 
+	It ensures that only one instance of the class exists in the Java Virtual Machine.
+	Ex:- JDBCSingleton class,  logging, drivers objects, caching, and thread pool.
+	
+2) Factory design Method
+	That provide an interface for creating objects in superclass, but subclasses are responsible to create the instance of the class.
+	Here we are not exposing object creation directly
+	Ex:- Collections.emptyList(),NumberFormat#getInstance(), java.util.Calendar, ResourceBundle and NumberFormat getInstance() methods uses Factory pattern.
+	
+3) Builder Design Pattern
+	Builder Pattern says that "construct a complex object from simple objects using step-by-step approach".
+	For example if a POJO class has 20 variables and if user has to create an object with 10 fields then it is very deficult because for every object he may need use different variables. And also if some one add new variable then again it won't be a part of constructor. Builder pattern will solve this issue
+	
+	Ex:- Stream.Builder, StringBuilder#append(), StringBuffer#append() 
+	
+4)Observer design pattern
+
+----------------------------------------------------
+
+Q)What is consistant hashing?
+
+
+
