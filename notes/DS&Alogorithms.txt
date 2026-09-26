@@ -152,7 +152,7 @@ Problem solving technique
 4)Fast & Slow Pointer
 5)Linked List In-Place Reversal 
 6)Monotonic Stack
-7)Top 'k' Elements & heap
+7)Top 'k' Elements & heap (priority queue)
 8)Quick Select
 9)Overlapping Intervals
 10)Modified Binary Search 

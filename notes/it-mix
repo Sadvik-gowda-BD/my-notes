@@ -69,9 +69,17 @@ Q)Java 21 features
 ->list.getFirst(); & list.getLast(); Cleaner than list.get(0) or list.get(size-1)
 ->Performance & GC Improvements
 ->Virtual Threads (🔥 Biggest change) - Perfect for I/O-heavy apps (REST APIs, DB calls)
+	Lightweight threads designed for high-concurrency applications. They make it much easier to handle many blocking I/O operations without creating a huge number of platform threads.
+		Traditional:
+			ExecutorService executor = Executors.newFixedThreadPool(100); // Platform Thread - Expensive OS-backed resource
+		Java 21:
+			try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+				executor.submit(() -> callDatabase());
+				executor.submit(() -> callAnotherService());
+			}
 
 
-P)The latest version of Java is Java-25 (released on sept 2025)
+P)The latest version of LTS Java is Java-25 (released on sept 2025)
 
 Q)Difference between Web Application and Non-Web Application
 Web Application: 
@@ -144,6 +152,6 @@ Class B extends A {
 	default/protected/private void print(){}
 }
 
--> If we change the return type of overriden method then compile error will occur
+P) If we change the return type of overriden method then compile error will occur
 
 

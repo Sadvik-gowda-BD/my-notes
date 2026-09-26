@@ -32,13 +32,13 @@ Algorithm:
 	
 Ex Usage:-
 	To avoid DDoS attack
+		
 	To control login attempts
 	Limit of operation in ChatGpt free trail for paid version
 	To avoid extra load on server
 	YouTube video - Watch my own video 10000 times
 	
 
-	
 
 ################################################################################
 Design pattern

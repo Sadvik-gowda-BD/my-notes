@@ -22,7 +22,7 @@ Spring IoC container is the program that injects dependencies into an object and
 It implements the concept of dependency injection (DI)
 
 P)2 types spring IOC contaiiner:
-	BeanFactory Container : This is the basic container that provides support for dependency injection.
+	BeanFactory Container : This is the basic container that provides support for dependency injection. (It uses factory design pattern)
 	ApplicationContext Container : This is an advanced container built on top of the BeanFactory.
 
 P)A bean is an object that is managed by the Spring IoC (Inversion of Control) container. 
@@ -473,6 +473,24 @@ Q)Queries in springboot
 	
 	HQL and JPQL work on entity properties (e.g., Student's fields like age and name).
 	Native SQL works directly on database tables and columns (e.g., student table, age column).
+
+
+Q)What happens internally when you call a REST API?
+
+When a REST API is called, the request goes through multiple layers:
+
+	DNS resolution
+	TCP connection
+	TLS handshake (if HTTPS)
+	HTTP request sent
+	Server accepts connection
+	Web server / servlet container processes request
+	Framework routing (e.g., Spring DispatcherServlet)
+	Controller → Service → Repository/DB
+	Response serialized (usually JSON)
+	HTTP response sent back
+	Client parses response
+
 
 
 spring-cloud-starter-zipkin

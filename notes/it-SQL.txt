@@ -120,6 +120,16 @@ Q)Print the day where temp is increased
 	Note:- when W1=1 then W2=2
 
 P)In SQL Server, the WITH clause is used to define a Common Table Expression (CTE). A CTE is a temporary result set that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement. It is similar to creating a temporary table, but it's only available for the duration of the query it is defined in.
+
+
+Q)Employee - Manager hierarchy (uses same table - selfjoin)
+SELECT e.Name as Employee, m.Name as Manager FROM Employees e INNER JOIN Employees m ON e.ManagerId = m.EmployeeId
+
+Q)Find duplicate rows (uses same table - selfjoin)
+SELECT a.Name FROM Customers a INNER JOIN Customers b ON a.Name = b.Name AND a.CustomerId != b.CustomerId
+
+
+
 	
 Q)How database index works
 When you create an index on a column, you’re creating a new table with two columns: one for the column you indexed on, and another for the pointer to the record it relates to.
@@ -226,6 +236,15 @@ P)BSON / Binary JSON
 
 Common BSON types
 String, Object, Array, Boolean, Integer NumberInt(50), Double, ObjectId("xyz"), Date ISODate("2018-....)
+
+P)mangoDb to SQL equivalent
+Database -> Database
+Collection -> Table
+Document -> row
+Field -> column
+Embedded document -> Foreign key / Join
+
+
 
 To start mongo shell
 >mongosh

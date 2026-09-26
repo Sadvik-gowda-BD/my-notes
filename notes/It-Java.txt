@@ -16,7 +16,7 @@ Q)Difference between JDK, JRE and JVM
 
 	JDK - Java Development Kit
 		It is a platform dependent
-		Use to develop and copile the code
+		Use to develop and compile the code
 		It contains JVM & JRE, javac compiler, Java docs and other libraries which help us to create an application.
 		Libraries:- javac compiler, java doc, java debugger
 	
@@ -242,8 +242,6 @@ StringBuilder is faster than StringBuffer, because stringbuffer is synchronized 
 
 static
 P)we can able to invoke static method by objects like obj.staticMetName() but it not makes any sense because it belongs to class not object.
-Q)Can we override static methods?
-No, In java we can't override static mehtods because it belongs to Class not objects. If we use it gives compile error .
 
 P)We cannot override static mehtods because it belongs to Class not objects. If we use it gives compile error.
 P)Both child and parent class can have static method with same name. - called method hiding
@@ -270,7 +268,7 @@ Q)How many ways to create an object?
 
 
 Q)How is the ‘new’ operator different from the ‘newInstance()’ operator in java?
-If we don’t know the class name for which we need to create the object, Or we get the class name from the command line argument, or the database, or the file. Then in that case we use the ‘newInstance()’ operator.
+If we don’t know the class name for which we need to create the object, Or we get the class name from the command line argument, or the database, or the file. Then in that case we use the ‘.newInstance()’ operator.
 
 Student st = new Student() // Here we should know the class name
 
@@ -281,7 +279,7 @@ Student st = (Student)c.newInstance();
 Q)What are shallow copy and deep copy in java?
 
 Shallow copy:
-	It copy the reference of one object to another, modifying on one object effect on another object.
+	It copy the reference of one object to another, modifying on one object effect on another object. We have to override clone method and impleemnt Cloneable interface.
 	Person cloned = (Person) super.clone();
 
 Deep copy:
@@ -401,7 +399,7 @@ HAS-A (may be foreign key relation)
 	car has engine
 	car has tires
 	
-Multitasking/multi programming:- One user run multiple program in at same time called multitasking.
+Multitasking/multi programming:- One user run multiple program at same time called multitasking.
 Multitasking is the ability of an operating system to run multiple tasks (processes) at the same time.
 	
 Multitasking
@@ -421,7 +419,7 @@ Multithreading
 	In Java, cannot be able to restart the thread, new instance will be required 
 
 	Actually thread.start() creates a new thread and have its own execution scenario.
-	but thread.run() not creating any new thread, instead it execute the run method in the current running thread just like invokation of normal thread.
+	but thread.run() not creating any new thread, instead it execute the run method in the current running thread just like invokation of normal method.
 	
 	MIN_PRIORITY: It has an integer value assigned with 1.
 	MAX_PRIORITY: It has an integer value assigned with 10.
@@ -525,6 +523,9 @@ Q)What is excecuterService?
 The ExecutorService interface simplifies the execution of asynchronous tasks, such as running tasks in parallel, scheduling tasks, and managing the lifecycle of tasks and threads.
 Ex: ThreadPoolTaskExecuter, ForkJoinPool, CompletableFuture etc.
 
+P)we can return data from threads in Java, even though run() returns void. 
+Runnable.run()/Thread class run() cannot return data because it has a void return type. To return data from a thread we usually use Callable, which returns a value via the call() method. The result is obtained using a Future. In modern Java, CompletableFuture is preferred because it supports asynchronous pipelines and non-blocking callbacks.”
+
 Q)How the parallel stream works
 The parallel stream uses the ForkJoinPool to execute the tasks. This pool is a type of ExecutorService.
 ForkJoinPool manages the threads and splitting/joining of tasks.
@@ -623,7 +624,7 @@ It represents the unordered set of elements which doesn't allow us to store the 
 		->First the hashcode of key will taken (for null key hashcode will be 0) then pass that hashcode to hash() method it returns bucket location (int value). In that bucket key,value pair will be stored in LinkedList.
 		->Time complexity to insert and retrieve a value is O(1)
 		HashMap in Java 8 
-		In Java 8, HashMap replaces the linked list with another useful data structure i.e. balanced trees (specifically red-black trees) tree on breaching a certain threshold, which is known as TREEIFY_THRESHOLD (size is 8, if bucket size/number of elements in a bucket is more than 8 link list become Red-Black tree). Once this threshold is reached, the linked list of Entries is converted to the Red-Black TreeNodes which reduces the time complexity from O(n) to O(log(n)).
+		In Java 8, HashMap replaces the linked list with another useful data structure i.e. balanced trees (specifically red-black trees) on breaching a certain threshold, which is known as TREEIFY_THRESHOLD (size is 8, if bucket size/number of elements in a bucket is more than 8 link list become Red-Black tree). Once this threshold is reached, the linked list of Entries is converted to the Red-Black TreeNodes which reduces the time complexity from O(n) to O(log(n)).
 		->Only particular bucket LinkedList convert to Tree, not all bucket elements.
  
 		TreeNodes are nothing but the structures supporting the balanced trees (specifically red-black trees) trees which have two nodes, smaller node goes to the left and the larger to the right. Whenever we want to search for any key the whole left or right subtree is discarded with a single check. This is how the time complexity is reduced to O(log(n). This change has lead to a significant improvement of HashMap.
@@ -654,7 +655,7 @@ WeakHashMap:
 		In event-driven applications, listeners or event handlers may need to be registered for specific events but automatically deregistered when they’re no longer in use.
 		
 IdentityHashMap: 
-	IdentityHashMap stores strong key reference not on .equals(), Compares keys based on reference (==) rather than logical equality (equals()).
+	IdentityHashMap stores strong key reference not on .equals(), Compares keys based on reference (==) rather than logical equality (.equals() in normal HashMap).
 	Ex:
 		In Hibernate, entities fetched from the database might have overridden equals() and hashCode() methods based on business key attributes. However, the framework may need to track each proxy instance independently, so it could use an IdentityHashMap to manage proxy references.
 		
@@ -668,7 +669,7 @@ Q)HashMap Vs Concurrent HashMap Vs HashTable
 		
 	ConcurrentHashMap:-
 		ConcurrentHashMap is synchronized and thread safe.
-		This does not allow null in both keys or values.Because NULL key braks interl algorithm & NULL value creates ambugity problem in multi-thread env.
+		This does not allow null in both keys or values.Because NULL key breaks interl algorithm & NULL value creates ambugity problem in multi-thread env.
 		It is slow.
 		Suitable for multi-thread appliactions.
 		
@@ -681,7 +682,7 @@ Q)HashMap Vs Concurrent HashMap Vs HashTable
 		It is legacy class. We can use ConcurrentHashMap instead of HashTable.
 
 Q)How to make normal map thread safe
-	Collection.synchronizedMap(myNormalMap);
+	Collections.synchronizedMap(myNormalMap);
 	It wrap every operation in single synchronized lock, hence slow. ConcurrentHashMap is lock free, so it not allow null values.
 		
 Q)Interanl working 
@@ -783,7 +784,7 @@ Java send signal to Interface AutoCloseable close() method during the try-with-r
 
 Exception
 ->Exception handle in catch block should be in order like NullPointer --> Runtime --> Exception etc, otherwise compiletime error will be thrown
-->After try block catch or finally any one is must expected
+->After try block, catch or finally any one is must expected
 ->Finally block always execute, even if we return data from try/catch block.
 ->If try, catch and finally has return statement then always finally block value will be returned. (error or non-error doesn't matter)
 

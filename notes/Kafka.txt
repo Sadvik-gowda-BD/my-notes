@@ -1,5 +1,320 @@
-Kafka
+1. Kafka
 
+	Apache Kafka is a distributed event-streaming platform used to:
+		Publish and consume messages/events
+		Build asynchronous communication between services
+		Handle high-throughput data pipelines
+		Decouple producers and consumers
+		Process real-time event streams
+	Key characteristics
+		Distributed
+		Fault tolerant
+		Horizontally scalable
+		High throughput
+		Persistent message storage
+		Pull-based consumers
+		Partition-based parallelism
+		
+2. Producer
+	A producer publishes records to Kafka topics.
+	A Kafka record can contain: Key, Value, Headers, Timestamp
+
+4. Topic
+	A topic is a logical stream/category/organize of messages.
+
+5. Partition
+	A partition in Apache Kafka is a physical, ordered, and immutable log file inside a Kafka Topic where messages are stored.
+	It helps distribute the single topic load across the different brokers.
+	Different partitions can be processed simultaneously.
+	Number of partitons can be more than number of number of broker because 1 broker can have multiple partition.
+	
+	Parallel processing, Scalability, Distribution across brokers, Higher throughput
+	
+	Ex:	PhonePe sending billions of messages to single payment topic. Now if we use single partition of payment topic then we may get storage and other performance issues. So, if we create mutiple partiton, the load will be shared across the different brokers and consumer cn consume parallely.
+
+6. Offset
+	An offset is the position of a record within a partition.
+	Offset is unique only within a partition.
+	The real identity of message is: (topic, partition, offset)
+		Partition 0 → offset 10
+		Partition 1 → offset 10
+
+7. Broker
+	A broker is a Kafka server.
+	A Kafka cluster can contain multiple brokers.
+		Store partitions
+		Serve producer & consumer requests
+		Maintain replicas
+		Participate in cluster coordination
+
+8. Kafka Cluster
+	A cluster is a collection of Kafka brokers working together.
+
+9. Replication Factor
+	Replication factor = number of copies of each partition.
+	Replication factor is configured per topic.
+	Replication Factor ≤ Number of brokers
+	
+		Replication Factor = 3
+		Partition 0:
+
+		Broker 1 → Leader
+		Broker 2 → Replica
+		Broker 3 → Replica
+
+10. Leader and Followers
+	Each partition has:
+		One leader
+		Zero or more followers
+		
+	Producer Normally writes to the leader.
+	Consumer Normally reads from the leader in traditional Kafka setups, though newer Kafka features/configurations can support follower fetching in specific scenarios.
+
+11. ISR — In-Sync Replicas
+	We don't set this property, it's just show us currently how may replicals are in sync with leader.
+	For ex, initial we set RF to 3 and 3 broker as UP, then it shows current ISR is 3. Assume after some time 1 broken went down or crashed, then ISR shows 2.
+
+	Replication Factor = configured number of replicas
+	ISR = replicas currently considered in sync
+	
+Example:
+	Replication Factor = 3
+
+		Broker 1 → Leader
+		Broker 2 → ISR
+		Broker 3 → ISR
+		
+	Suppose Broker 3 falls behind:
+	
+		Broker 1 → Leader
+		Broker 2 → ISR
+		Broker 3 → Out of Sync
+	Then
+		ISR = {Broker 1, Broker 2}
+			
+			
+
+12. min.insync.replicas
+	This controls how many replicas must be in ISR for certain writes to succeed when using acks=all.
+
+
+13 Consumer
+	A consumer reads messages from Kafka.
+	Kafka consumers pull records from brokers.
+
+
+14. Consumer Group
+	A consumer group is a set of consumers that cooperate to consume a topic.
+	Within a consumer group, a partition is consumed by only one consumer at a time.
+	Kafka distributes partitions among consumers in the same consumer group.
+	
+		Topic: orders
+		Partitions: 4
+		Consumer Group A has 3 consumers, then 
+			P0 → Consumer 1
+			P1 → Consumer 1
+			P2 → Consumer 2
+			P3 → Consumer 3
+
+
+15. Consumer Group Parallelism
+	Maximum useful consumer parallelism within a consumer group is generally limited by the number of partitions.
+	
+	Partitions = 3 Consumers = 2
+		C1 → P0, P1, C2 → P2
+		
+	Partitions = 3 Consumers = 3
+		C1 → P0 C2 → P1 C3 → P2
+		
+	Partitions = 3 Consumers = 5
+		C1 → P0 C2 → P1 C3 → P2 C4 → idle C5 → idle
+		Two consumers will have no partition assigned.
+
+	Never multiple consumer within same consumer-group reads messages from single Partition. No C1,C2 -> P1.
+
+
+Producer Parallelism
+	Multiple producer can write message to same partitions
+	
+	Level 1 — Multiple partitions
+		Writes to different partitions can happen concurrently.
+		A single partition is an ordered append-only log, so records within that partition get offsets sequentially:
+		
+	Level 2 — Producer batching
+		The producer doesn't necessarily send every individual message as a separate network request.
+		It can accumulate records into batches:
+		
+	Level 3 — Multiple in-flight requests
+		A Kafka producer can have multiple requests in flight.
+		So the producer doesn't necessarily have to wait for one request to completely finish before preparing/sending another.
+			Producer
+			   ├── Request 1 ──► Broker
+			   ├── Request 2 ──► Broker
+			   └── Request 3 ──► Broker
+		max.in.flight.requests.per.connection=5
+		This means the producer can have up to 5 unacknowledged requests in flight per broker connection.
+		The producer doesn't necessarily wait for Request 1's response before sending Request 2.
+			   
+	"A Kafka partition is an ordered log, so records within a partition are appended sequentially and receive sequential offsets. Producer-side concurrency is achieved through multiple partitions, batching, and multiple in-flight requests. Records destined for different partitions can be written concurrently, while ordering is maintained within each partition."
+		
+
+16. Multiple Consumer Groups
+	Different consumer groups independently consume the same topic.
+	Each group maintains its own offsets.
+	
+17. Offset Management
+	Consumers track their progress using offsets
+	Its committed position tells Kafka where it should resume.
+	Offsets are commonly stored in Kafka's internal topic: __consumer_offsets
+	
+18. Auto Commit
+	Kafka consumers can automatically commit offsets.
+	Risk - the application may commit an offset before successfully processing the message.
+	enable.auto.commit=true
+
+19. Manual Commit
+	You can commit after successful processing.
+	The record can be consumed again depending on the consumer's position/retry strategy.
+
+23. Message Ordering
+	Kafka guarantees ordering within a partition.
+	There is no global ordering guarantee.
+	If ordering is required for a customer
+		Use the same key while publishing a message, Then events for that customer go to the same partition.
+		
+24. Kafka Message Immutability
+	Once a record is written to Kafka, you generally do not update that record in place.
+	Kafka is an append-only log.
+
+25. Retention
+	Kafka does not normally delete a message immediately after a consumer reads it.
+	Kafka retains records based on policies such as: retention.ms, retention.bytes
+
+27. Replay/ reset-offset
+	Because messages remain according to retention, a consumer can move its offset backward and process old messages again.
+
+28. Producer acks
+
+	acks=0
+		Producer doesn't wait for broker acknowledgment.
+	acks=1
+		Leader acknowledges the message.
+		Leader failure before replication can potentially cause data loss.
+	acks=all
+		Leader waits for the required ISR acknowledgments according to Kafka's replication configuration.
+		Generally preferred when stronger durability is required.
+
+32. Null Key
+	If no key is provided, Kafka can distribute records across partitions according to the producer's partitioning behavior/configuration.
+
+35. Rebalancing
+	When number of consumer changes in consumer group, Kafka may redistribute partitions.
+
+39. ZooKeeper vs KRaft
+	Older Kafka versions used ZooKeeper for cluster metadata and coordination. Modern Kafka uses KRaft.
+	In KRaft architecture, controllers manage Kafka metadata using the Raft consensus protocol. Partition leadership, Broker membership changes, Metadata management.
+
+41. Partition Leader Election
+Suppose Broker 1 fails. Kafka can elect another eligible replica as leader. This provides fault tolerance.
+
+43. Partition vs Replication
+	Partition Provides:
+		Parallelism
+		Scalability
+		Distribution
+		
+	Replication	Provides:
+		Fault tolerance
+		High availability
+		Data redundancy
+
+47. Kafka Message Structure example
+	Topic     = orders
+	Partition = 2
+	Offset    = 105
+	Key       = customer123
+	Value     = {OrderCreated ....}
+	Headers   = correlation-id, trace-id, source (Headers can carry metadata without putting it inside the message body.)
+
+49. Dead Letter Topic
+	Kafka itself doesn't require a DLQ in the same way some queue systems do, but applications commonly implement a Dead Letter Topic (DLT). It is a standard Kafka topic used as a destination for messages that a consumer application cannot process successfully.
+	The failed message can then be investigated/reprocessed separately.
+
+50. Retry Topic
+	Spring Kafka provides mechanisms for retries and DLT handling.
+	
+51. Kafka Transactions
+	Kafka supports producer transactions. useful when you want atomicity between Kafka operations.
+	
+52. Serialization / Deserialization
+	Common formats: JSON, Avro, Protobuf, String, Byte array
+
+20. At-Most-Once
+21. At-Least-Once
+22. Exactly-Once
+
+
+
+
+-----------------------------------
+⭐ Points to Remember
+
+These are the short notes I would memorize before your interview:
+
+	Kafka is a distributed event-streaming platform.
+	A topic is divided into partitions.
+	Partition provides scalability and parallelism.
+	Kafka guarantees ordering within a partition, not across partitions.
+	Offset identifies a record's position within a partition.
+	topic + partition + offset identifies a specific record location.
+	A broker is a Kafka server.
+	A cluster is a collection of Kafka brokers.
+	Replication provides fault tolerance/high availability.
+	Replication factor = total number of replicas of each partition.
+	Replication factor cannot exceed the number of brokers when replicas must reside on distinct brokers.
+	Every partition has one leader and potentially multiple followers.
+	Producers normally write to the partition leader.
+	ISR = replicas currently considered in sync with the leader.
+	Replication Factor and ISR are NOT the same thing.
+	RF can be 3 while ISR can temporarily be 2.
+	min.insync.replicas matters particularly with acks=all.
+	acks=0 → no broker acknowledgment.
+	acks=1 → leader acknowledgment.
+	acks=all → acknowledgment after required ISR replicas acknowledge.
+	A consumer pulls records from Kafka using poll().
+	Consumers in the same consumer group share partitions.
+	One partition is assigned to only one consumer within a consumer group at a time.
+	One consumer can consume multiple partitions.
+	Consumers > partitions → some consumers remain idle.
+	Multiple consumer groups can independently consume the same topic.
+	Each consumer group maintains its own offsets.
+	Kafka messages are not normally deleted when consumed.
+	Messages are retained based on retention policies.
+	Kafka supports replay by consuming from an earlier offset, subject to retention.
+	Kafka records are append-only; you don't update a record in place.
+	Same key generally maps to the same partition, preserving ordering for that key.
+	Consumer lag = consumer's position is behind the latest available data.
+	Consumer group membership changes can cause a rebalance.
+	Partition → scalability.
+	Replication → fault tolerance.
+	Offset → consumer progress/position.
+	Consumer group → parallel consumption.
+	Kafka does not automatically guarantee exactly-once effects for external systems such as REST APIs or databases.
+	At-least-once processing can result in duplicate processing, so consumers should often be idempotent.
+	Idempotent producer helps prevent duplicate Kafka records caused by producer retries.
+	Idempotent producer ≠ entire application is idempotent.
+	KRaft is the modern Kafka architecture; older Kafka used ZooKeeper.
+	Kafka transactions can provide atomicity for supported Kafka read/process/write workflows.
+	DLT/DLQ is generally an application-level pattern for failed Kafka records.
+
+
+
+
+
+
+
+
+--------------------------------------------------------------- Kafka Commands.
 D:\kafka-software\kafka-3.5.0
 
 Be in path D:\kafka-software\kafka-3.5.0>
