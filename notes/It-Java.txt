@@ -118,6 +118,10 @@ Q)Default garbage collector
 
 P)Garbage collector uses mark and sweep algorithm to remove object
 
+Q)Which GC is best?
+There is no best GC for every scenario. G1 GC is generally prefered choice for most prod app, while ZGC and Shenandoah are chosen for ultra low latency requirement.
+
+
 P)In Java, all the wrapper classes (like Integer, Boolean, Byte, Short, Float, Double, Long) and String class is immutable.
 	we can also create a custom immutable class- it should contain only constructor/builder and getters, no setters.
 	Whenever we pass List<Object> as parameter we need to create a new list and then assign otherwise outside it can be modify, same need to do while returing as well
@@ -168,6 +172,10 @@ A Memory Leak is a situation where there are objects present in the heap that ar
 	2)Whenever the unused connection or resources are not closed/terminated. Ex: File resource, DB connection sessions
 		Whenever we make a new connection or open a stream, the JVM allocates memory for these resources. A few examples of this include database connections, input streams, and session objects.
 	3)When the garbage collection takes more time.
+
+Q)How did you manage memory leak?
+"I monitored heap usage and GC behavior using tools like VisualVM, JConsole, Intellij Profiler, and heap dumps. If memory kept increasing after GC, I analyzed the heap dump to identify objects retaining references unnecessarily. Common causes I look for are static collections, unremoved listeners/callbacks, caches without eviction, ThreadLocal values, and resources not being closed. I use try-with-resources for resources and proper cache eviction/cleanup, then verify the fix by monitoring heap and GC behavior."
+->run jvm commanda ad get GarbageCollector, thread dumps, heap dumps log.
 
 Q)How to increase the java heap memory size 
 java -Xms512m -Xmx1024m TestData.java
@@ -377,27 +385,6 @@ Q) Java POJO vs Java Bean
 
 P)we can say that we cannot use this() and super() keywords in the same block, it will compilation error. Because this() & super() both should be first statement inside any constructor.
 
-P)Association,Aggregation, composition
-	Association:
-		It is a general term that describes a relationship between two independent classes. It can be unidirectional or bidirectional and can exist in various forms such as one-to-one, one-to-many, many-to-one, and many-to-many.
-		
-	Aggregation:
-		Aggregation is a specific form of association in which one class, the whole, contains a collection of other classes.
-		A special form of association with a “has-a” relationship
-		Ex: Library and Books
-		
-	Composition:
-		A stronger form of association with a “part-of” relationship.
-		Ex: Car and Engine, car cannot exist without an Engine
-		
-
-P)IS-A and HAS-A (composition or aggregatio)
-IS-A
-	The "IS-A" relationship in Java refers to inheritance.
-	bike ia Vehicle, car is a vehicle
-HAS-A (may be foreign key relation)
-	car has engine
-	car has tires
 	
 Multitasking/multi programming:- One user run multiple program at same time called multitasking.
 Multitasking is the ability of an operating system to run multiple tasks (processes) at the same time.
@@ -443,11 +430,10 @@ EX:-
 	
 Q)Life cycle of java thread
 
-	New
-	Runnable
-	Running
-	Non-Runnable (Block/wait) - during synchronized block/methods
-	Terminated
+	New				//Thread object is created, but start() hasn't been called.
+	Runnable		//After t.start(); It includes both ready to run and actually running.
+	Non-Runnable (Block/wait) - during synchronized block/methods - Thread is waiting to acquire a monitor lock.
+	Terminated		//run() finishes or terminates due to an uncaught exception.
 	
 Q)What is synchronized?
 It is a mechanism that ensures controlled access to shared resources in a multi-threaded environment. 
@@ -502,7 +488,9 @@ P)	thread.start() is NON-BLOCKING - Starts a new thread and returns immediately
 	thread.run() is BLOCKING - Just calls the method like normal Java code
 	thread.join() is BLOCKING - Main thread waits for child thread to finish
 	
-	
+Q)How to make class Thread safe.
+		->Make class immutable, so state can't be modifed.
+		->Add synchronized or lock to method if it's mutable.
 
 Q)Difference b/w Multithreading and Async
 
@@ -526,6 +514,10 @@ Ex: ThreadPoolTaskExecuter, ForkJoinPool, CompletableFuture etc.
 P)we can return data from threads in Java, even though run() returns void. 
 Runnable.run()/Thread class run() cannot return data because it has a void return type. To return data from a thread we usually use Callable, which returns a value via the call() method. The result is obtained using a Future. In modern Java, CompletableFuture is preferred because it supports asynchronous pipelines and non-blocking callbacks.”
 
+Why Thread class support only Runnable not Callable?
+Thread's task API is based on Runnable and run() is void method; Callable belongs to the Executor/Future abstraction because it supports a return value and checked exceptions.
+
+
 Q)How the parallel stream works
 The parallel stream uses the ForkJoinPool to execute the tasks. This pool is a type of ExecutorService.
 ForkJoinPool manages the threads and splitting/joining of tasks.
@@ -538,6 +530,9 @@ Q)How to prevent deadlock
 Always aquire locks in a consistent order
 Use tryLock with timeout: Instead of using synchronized blocks, use ReentrantLock with timeout. (lock.tryLock(1000)).
 Avoid nested locks
+
+Q)locks in recursive method
+Java's synchronized lock is reentrant: a thread that already owns a monitor can acquire it again. The monitor maintains a reentrancy count, and the lock is released only when the count returns to zero.
 
 Q)Java class execution flow
 	initialization of static variable
@@ -844,3 +839,8 @@ It check like:
 	}
 
 Ex: Cloneable, Serializable(The JVM now knows this class can be converted into a byte stream)
+
+
+P)Java is Pass By Value not Pass By Reference.
+Java is strictly pass-by-value. For primitives, the primitive value is copied. For objects, the reference value is copied.
+Java passes a copy of whatever is in the variable. For objects, what's in the variable is a reference.

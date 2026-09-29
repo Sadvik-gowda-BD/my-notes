@@ -81,20 +81,6 @@ Q)Java 21 features
 
 P)The latest version of LTS Java is Java-25 (released on sept 2025)
 
-Q)Difference between Web Application and Non-Web Application
-Web Application: 
-	This is a software application that runs on a web server and is accessed through a web browser over the internet or an intranet. Examples include Google Docs, online banking portals, and social media platforms. Web applications rely on web technologies like HTML, CSS, and JavaScript, and they often require an internet connection to function.
-	->It requires internet connection
-	->It uses remote server resources
-
-Non-Web Application: 
-	This category includes applications that don’t run in a web browser. Examples are desktop applications (like Microsoft Word or Adobe Photoshop), mobile applications (like WhatsApp or Instagram on your phone), and command-line tools. These applications are often installed directly on a user’s device and can work offline.
-	->It can be used offline
-	->It uses user system resources
-	
-P)Example of springboot non web applications.
-Batch Processing Applications, Event-Driven Applications, Console Applications
-
 
 Q)what are exception handling and why we need to handle?
 Exception handling is the process of responding to unwanted or unexpected events when a computer program runs.
@@ -154,4 +140,17 @@ Class B extends A {
 
 P) If we change the return type of overriden method then compile error will occur
 
+Q)Difference between Web Application and Non-Web Application
+Web Application: 
+	This is a software application that runs on a web server and is accessed through a web browser over the internet or an intranet. Examples include Google Docs, online banking portals, and social media platforms. Web applications rely on web technologies like HTML, CSS, and JavaScript, and they often require an internet connection to function.
+	->It requires internet connection
+	->It uses remote server resources
+
+Non-Web Application: 
+	This category includes applications that don’t run in a web browser. Examples are desktop applications (like Microsoft Word or Adobe Photoshop), mobile applications (like WhatsApp or Instagram on your phone), and command-line tools. These applications are often installed directly on a user’s device and can work offline.
+	->It can be used offline
+	->It uses user system resources
+	
+P)Example of springboot non web applications.
+Batch Processing Applications, Event-Driven Applications, Console Applications
 

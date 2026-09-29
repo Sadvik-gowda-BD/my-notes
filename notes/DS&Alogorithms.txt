@@ -165,11 +165,11 @@ Problem solving technique
 
 
 Floyd’s Cycle Detection Algorithm (Tortoise and Hare).
-	his technique is used to detect cycles in a linked list or find duplicate numbers in an array efficiently. It uses two pointers:
+	This technique is used to detect cycles in a linked list or find duplicate numbers in an array efficiently. It uses two pointers:
 	->Slow pointer (Tortoise) moves one step at a time.
 	->Fast pointer (Hare) moves two steps at a time.
 	If there's a cycle, the two pointers will eventually meet inside the cycle.
-	->In even element there will be two middle elements. If we start with slow=head & fast=head, get the second middle. slow=head & fast=head.next, get first element as middle.
+	->In even element there will be two middle elements. If we start with slow=head & fast=head, slow pointer willbe in the second middle when fast reches null. slow=head & fast=head.next, get first element as middle.
 	
 	Once they meet fast==slow, we can say cycle is exist.
 	If we need find start point of cycle then reset fast pointer to 0 and move both slow and fast pointer one one step until meet. The meeting point is the starting point of cycle.

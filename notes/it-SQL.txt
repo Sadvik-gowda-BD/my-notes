@@ -128,13 +128,59 @@ SELECT e.Name as Employee, m.Name as Manager FROM Employees e INNER JOIN Employe
 Q)Find duplicate rows (uses same table - selfjoin)
 SELECT a.Name FROM Customers a INNER JOIN Customers b ON a.Name = b.Name AND a.CustomerId != b.CustomerId
 
+Q)Clustered Index
+It determines the physical/logical order of the actual table data based on the index key. Usually 1 per table.
+By default, the PRIMARY KEY creates a clustered index if you don't explicitly specify otherwise.
+Non-Clustered Index
+A non-clustered index is a separate data structure that stores the indexed value plus a reference/pointer to the actual row.
 
-
+Q)Can a table have no cluster index in SQL?
+Yes. A table can exist without a clustered index (no primary key also); in SQL Server, such a table is called a heap. It can still have one or more non-clustered indexes
 	
 Q)How database index works
 When you create an index on a column, you’re creating a new table with two columns: one for the column you indexed on, and another for the pointer to the record it relates to.
 This index structure is then sorted, allowing Binary Searches to be performed on it. As a result, your query is O Log(n) efficient compare to linear search O(N/2)
-	
+
+what is self join and when do we use?
+A self join means joining a table with itself. There is no SELF JOIN SQL keyword/command. You can use LEFT, RIGHT or any command.
+t is useful when rows in the same table have a relationship with other rows in that same table. For example Employee → Manager	
+SELECT e.name AS employee, m.name AS manager FROM Employee e LEFT JOIN Employee m ON e.manager_id = m.id;
+
+Q)What is query execution?
+A query execution plan is the set of operations chosen by the database optimizer to execute a SQL query. It shows how tables and indexes are accessed, how joins are performed, and the estimated cost/cardinality of each operation.
+
+What is different level of isolation in SQL?
+Isolation levels control the visibility of changes between concurrent transactions. The four standard levels are Read Uncommitted, Read Committed, Repeatable Read, and Serializable. They progressively prevent dirty reads, non-repeatable reads, and phantom reads, with Serializable providing the strongest isolation.
+	Dirty read → reading uncommitted data.
+	Non-repeatable read → reading the same row twice and getting different values.
+	Phantom read → repeating a range query and getting a different set of rows.
+
+1. Pessimistic Locking - lock first, then work.
+Pessimistic locking acquires a database lock before modifying data, assuming conflicts are likely.
+Use when conflicts are frequent and you really need to prevent another transaction from modifying the data while you're working with it.
+
+2. Optimistic Locking - work first, check for conflict before saving.
+Optimistic locking doesn't lock during the read; instead, it uses a version or timestamp to detect whether another transaction modified the data before the update.
+
+Q) how does SQL handle rollback and commit operations?
+COMMIT permanently makes a transaction's changes part of the database, while ROLLBACK undoes the changes made by that transaction. Databases use transaction logs and recovery mechanisms to maintain atomicity and recover from failures. On commit, the transaction is finalized; on rollback or crash before commit, uncommitted changes are undone.
+
+Q)what is save point
+A SAVEPOINT is a point inside a transaction that allows you to partially roll back instead of rolling back the entire transaction.
+	COMMIT → keep everything
+	ROLLBACK → undo everything in the transaction
+	ROLLBACK TO SAVEPOINT → undo only changes after the savepoint
+
+What are the best practice for writing secure and efficient SQL queries?
+	1, use parameterized queries to prevent SQL injection. (String sql = "SELECT * FROM users WHERE name = '" + name + "'"; avoide this and use WHERE name = ?)
+	2, use appropriate indexes and verify performance using execution plans. 
+	3, retrieve only the required data and use pagination for large result sets. No SELECT * FROM ..
+
+
+
+
+
+
 
 Q)Difference between 1st and 2nd level cache
 
